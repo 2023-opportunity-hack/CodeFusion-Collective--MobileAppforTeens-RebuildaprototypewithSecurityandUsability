@@ -13,7 +13,7 @@ export default function TabOneScreen() {
       <Link href="/lockscreen"> Lockscreen </Link>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <Link href='/emergency'>
-        <Text>Go to emergencies</Text>
+        <Text>Emergency</Text>
       </Link>
       <EditScreenInfo path="app/(tabs)/index.tsx" />
 
