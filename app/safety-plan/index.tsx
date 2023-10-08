@@ -1,15 +1,17 @@
 import React, {useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
+import {Alert, Modal, StyleSheet, Text, Pressable, ScrollView, View} from 'react-native';
+import bank from './safetyLibrary.jsx'
 
 const SafePlanHome = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [safetyCategory, setSafetyCategory] = useState('Home');
 
-  const categories = ['Home', 'Partner', 'Technology', 'Word'];
 
   return (
     <View style={styles.centeredView}>
+      <Text>{bank.Statement}</Text>
       {
-      categories.map((ele) => {
+      bank.Categories.map((ele) => {
         return <View><Modal
         animationType="fade"
         transparent={true}
@@ -20,7 +22,9 @@ const SafePlanHome = () => {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Contact someone</Text>
+            <ScrollView>
+            {bank[safetyCategory].map((tips) => {return <Text style={styles.modalText}>{tips}</Text>})}
+            </ScrollView>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}>
@@ -31,7 +35,7 @@ const SafePlanHome = () => {
       </Modal>
       <Pressable
         style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}>
+        onPress={() => {setModalVisible(true); setSafetyCategory(ele)}}>
         <Text style={styles.textStyle}>{ele}</Text>
       </Pressable>
       </View>
@@ -47,6 +51,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
+    backgroundColor:'#F0EDF1'
   },
   modalView: {
     margin: 20,
@@ -64,18 +69,21 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    borderRadius: 20,
     padding: 10,
     elevation: 2,
+    backgroundColor: '#ffffff',
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: '#683D7D'
   },
   buttonOpen: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#ffffff',
   },
   buttonClose: {
     backgroundColor: '#F194FF',
   },
   textStyle: {
-    color: 'white',
+    color: '#683D7D',
     fontWeight: 'bold',
     textAlign: 'center',
   },
