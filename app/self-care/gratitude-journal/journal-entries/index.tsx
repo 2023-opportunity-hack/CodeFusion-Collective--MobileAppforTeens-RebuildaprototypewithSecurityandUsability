@@ -2,30 +2,43 @@ import { Pressable, StyleSheet, useColorScheme, Image, View, Text, TouchableOpac
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useState, useEffect, useMemo } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
+import * as SQLite from 'expo-sqlite';
+import { dismissBrowser } from 'expo-web-browser';
 
 
 export default function JournalEntries() {
+  const db = SQLite.openDatabase('safespace.db');
+  const [entries, setEntries] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentValue, setCurrentValue] = useState('');
+  const items = [];
 
-  const items: {label: string; value: string}[] = [
-    {label: 'Placeholder 1', value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.'}, {label: 'Placeholder 2', value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.'}, {label: 'Placeholder 3', value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.'}
-    ];
+    useEffect(() => {
+      db.transaction((tx) => {
+        tx.executeSql('SELECT * FROM journal_entries', undefined,
+        (txObj, resultSet) => {
+          console.log(resultSet.rows);
+        })
+      })
+    })
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Journal Entries</Text>
-        <DropDownPicker
-          items={items}
-          open={isOpen}
-          setOpen={() => setIsOpen(!isOpen)}
-          value={currentValue}
-          setValue={(val) => setCurrentValue(val)}
-          dropDownContainerStyle={{
-            top: 0,
-            maxHeight: 150,
-        }}
-        />
+      <View style={styles.form}>
+        <Text style={styles.title}>Journal Entries</Text>
+          <DropDownPicker
+            items={entries}
+            open={isOpen}
+            setOpen={() => setIsOpen(!isOpen)}
+            value={currentValue}
+            setValue={(val) => setCurrentValue(val)}
+            dropDownContainerStyle={{
+              top: 0,
+              maxHeight: 150,
+          }}
+          />
+        <Text style={styles.entry}>{currentValue}</Text>
+      </View>
     </View>
   );
 }
@@ -41,7 +54,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F0EDF1'
+    backgroundColor: '#F0EDF1',
+  },
+  entry: {
+    marginTop: 10,
   },
   form: {
     width: '70%',

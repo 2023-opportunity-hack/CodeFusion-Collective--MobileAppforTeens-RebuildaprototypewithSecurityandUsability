@@ -3,6 +3,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { useState, useEffect, useMemo } from 'react';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { Link } from 'expo-router';
+import * as SQLite from 'expo-sqlite';
 
 
 export default function GratitiudeJournal() {
@@ -11,18 +12,46 @@ export default function GratitiudeJournal() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentValue, setCurrentValue] = useState('');
   const [submitJournal, setSubmitJournal] = useState(false);
+  const db = SQLite.openDatabase('safespace.db');
+  const date = new Date();
+  const formattedDate = date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+
+  useEffect(() => {
+    db.transaction((tx) => {
+      // tx.executeSql('DROP TABLE IF EXISTS journal_entries');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS journal_entries (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, gratefulEntry TEXT, promptEntry TEXT)');
+    })
+  }, []);
 
   const handleGratefulChange = (newEntry: string) => {
     setGratefulEntry(newEntry)
   }
 
   const handlePromptChange = (newEntry: string) => {
-    setPromptEntry(newEntry)
+    setPromptEntry(newEntry);
   }
 
-  const submitHandler= () => {
-    setSubmitJournal(true);
-  }
+  const handleSubmit = () => {
+    if (promptEntry.length > 0 || gratefulEntry.length > 0) {
+      db.transaction((tx) => {
+        tx.executeSql(
+          'INSERT INTO journal_entries (date, gratefulEntry, promptEntry) VALUES (?, ?, ?)',
+          [formattedDate, gratefulEntry, promptEntry],
+          (txObj, resultSet) => {
+            console.log('SUBMISSION COMPLETE');
+            console.log('Number of affected rows: ', resultSet.rowsAffected);
+          },
+          (txObj, error) => {
+            console.error('SUBMISSION FAILED: ', error);
+          }
+        );
+      });
+    }
+  };
 
   const items: {label: string; value: string}[] = [
     {label: 'List 10 things that you are grateful for in your life right now.', value: 'List 10 things that you are grateful for in your life right now.'}, {label: 'What talent or skill do you have that you are grateful for?', value: 'What talent or skill do you have that you are grateful for?'}, {label: 'Write about a book, movie, or song that has inspired you.', value: 'Write about a book, movie, or song that has inspired you.'},
@@ -67,11 +96,11 @@ export default function GratitiudeJournal() {
               style={styles.textinput}
               />
         </View>
-        <TouchableOpacity style={styles.submitbutton} onPress={submitHandler}>
+        <TouchableOpacity style={styles.submitbutton} onPress={handleSubmit}>
             <Text style={styles.submittext}>Save Journal Entry</Text>
         </TouchableOpacity>
         {submitJournal === true ? <Text>Submitted!</Text> : <Text></Text>}
-        <Link href="/gratitude-journal/journal-entries" asChild>
+        <Link href="/self-care/gratitude-journal/journal-entries" asChild>
           <TouchableOpacity style={styles.submitbutton}>
             <Text style={styles.submittext}>
               View Entries </Text>
