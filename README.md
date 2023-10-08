@@ -20,6 +20,9 @@ npm start
 ```
 The terminal will give directions to open the application on your preferred device (iOS, Android, or web).
 
+## Challenges
+- The first challenge was establishing development environments for different developers and different machines. Some developers were able to use iOS, but others had to resort to an Android or web environment.
+- The next challenge was familiarizing ourselves with the tools for the project. The team had varying levels of experience with React Native and Expo Go. Research was necessary at the start of the project to ensure common understanding when working on the project.
 
 ## Contributors
 - Gabe Jimenez
