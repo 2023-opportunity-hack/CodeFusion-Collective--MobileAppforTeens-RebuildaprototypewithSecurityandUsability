@@ -1,11 +1,12 @@
 import { Link } from "expo-router";
 import { Image, Linking, Platform, Pressable, StyleSheet, Text, View } from "react-native";
-import * as Location from 'expo-location';
-import * as SMS from 'expo-sms';
-import * as SecureStore from 'expo-secure-store';
+import { useState } from "react";
+import { checkPermission } from "../../lib/utils";
+import { useEmergencyContactContext } from "../../context/contactContext";
 
 
 export default function Emergency() {
+  const { emerContacts } = useEmergencyContactContext();
 
   const callEmergencyNum = async () => {
     const phoneNumber = "tel:911";
@@ -17,44 +18,13 @@ export default function Emergency() {
     }
   }
 
-  const sendLocation = async () => {
-    const { coords } = await Location.getCurrentPositionAsync();
-    const { latitude, longitude } = coords;
-    const locationLink = `https://maps.google.com/?q=${latitude},${longitude}`;
-    const isAvailable = await SMS.isAvailableAsync();
-
-    if (isAvailable) {
-      await SMS.sendSMSAsync(['8013184919'], locationLink);
-    } else {
-      console.error("SMS is not available");
-    }
-  };
-
-  const checkPermission = async () => {
-    try {
-      const storedPermission = await SecureStore.getItemAsync('locationPermission');
-      if (storedPermission) {
-        await sendLocation();
-      } else {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status === "granted") {
-          await sendLocation();
-        } else {
-          console.error("Permission denied");
-        }
-      }
-    } catch (error) {
-      console.error("Permission not granted: ", error);
-    }
-  };
-
   return (
     <View style={styles.container} >
       <Pressable style={styles.button} onPress={callEmergencyNum}>
         <Image style={styles.image} source={require("../../assets/images/telephone.png")} />
         <Text style={styles.text}>Call 911</Text>
       </Pressable>
-      <Pressable style={styles.button} onPress={checkPermission}>
+      <Pressable style={styles.button} onPress={() => checkPermission(emerContacts)}>
         <Image style={styles.image} source={require("../../assets/images/location.png")} />
         <Text style={styles.text}>Send location to contacts</Text>
       </Pressable>
