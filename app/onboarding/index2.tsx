@@ -7,12 +7,12 @@ const Onboarding2 = () => {
   return (
     <View style={styles.container}>
 
-      <Image style={styles.logo} source={`../../assets/images/onboard2.png`} />
+      <Image style={styles.logo} source={require(`../../assets/images/onboard2.png`)} />
       <Text style={styles.title}>How it works</Text>
       <Text style={styles.description}>The app is disguised as a game to offer a layer of confidentiality and protection</Text>
       <Link style={styles.button} href="/onboarding/index3">
         <Pressable style={styles.buttontext}>
-          <View style={styles.temp}><Text>How it Works &#8594;</Text></View>
+          <View><Text>How it Works &#8594;</Text></View>
         </Pressable>
       </Link>
 

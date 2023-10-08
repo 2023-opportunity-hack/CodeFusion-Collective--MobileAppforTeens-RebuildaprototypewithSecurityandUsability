@@ -6,10 +6,10 @@ const Onboarding = () => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.logo} source={`../../assets/images/onboard1.png`} />
+      <Image style={styles.logo} source={require(`../../assets/images/onboard1.png`)} />
       <Link style={styles.button} href="/onboarding/index2">
         <Pressable style={styles.buttontext}>
-          <View style={styles.temp}><Text>How it Works &#8594;</Text></View>
+          <View><Text>How it Works &#8594;</Text></View>
         </Pressable>
       </Link>
     </View>
@@ -23,8 +23,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 558,
-    height: 960,
+    height: '70%',
+    width: '70%',
+    margin: 10,
   },
   title: {
     marginVertical: 20,
