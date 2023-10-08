@@ -23,7 +23,6 @@ export default function TabOneScreen() {
   }
 
   useEffect(()=> {
-    // AsyncStorage.clear()
     componentDidMount();
   },[])
 

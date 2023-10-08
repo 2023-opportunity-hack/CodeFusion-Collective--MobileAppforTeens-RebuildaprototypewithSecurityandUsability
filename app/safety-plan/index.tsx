@@ -6,6 +6,17 @@ const SafePlanHome = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [safetyCategory, setSafetyCategory] = useState('Home');
 
+  const icons = {
+    Home: require(`../../assets/images/Home.png`),
+    Basics: require(`../../assets/images/Basics.png`),
+    School: require(`../../assets/images/School.png`),
+    Technology: require(`../../assets/images/Technology.png`),
+    Job: require(`../../assets/images/Job.png`),
+    Children: require(`../../assets/images/Children.png`),
+    Partner: require(`../../assets/images/Partner.png`),
+
+
+  }
 
 
   return (
@@ -20,7 +31,7 @@ const SafePlanHome = () => {
           setModalVisible(!modalVisible);
         }}>
           <View style={[styles.container, styles.modalView]}>
-          <Image style={styles.buttonimages} source={`../../assets/images/${safetyCategory}.png`} />
+          <Image style={styles.buttonimages} source={icons[safetyCategory]} />
             <ScrollView>
               {bank[safetyCategory].map((tips) => { return <Text style={styles.modalText}>{`\u2022 ${tips}`}</Text> })}
             </ScrollView>
@@ -37,7 +48,7 @@ const SafePlanHome = () => {
           <Pressable style={styles.pressArea}
             onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
             <View style={styles.insideButton}>
-              <Image style={styles.buttonimages} source={`../../assets/images/${ele}.png`} />
+              <Image style={styles.buttonimages} source={icons[ele]} />
               <Text style={styles.textStyle}>{ele}</Text>
             </View>
           </Pressable>
