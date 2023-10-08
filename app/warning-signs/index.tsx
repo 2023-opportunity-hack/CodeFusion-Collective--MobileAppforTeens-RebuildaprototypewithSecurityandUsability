@@ -12,7 +12,7 @@ import TechnologicalAssistedAbuseText from '../../components/warning-signs/Techn
 
 
 
-export default function AnotherComponent () {
+export default function WarningSigns () {
 
   const [showMoreDomesticViolence, setShowMoreDomesticViolence] = useState(false);
   const [showMoreEmotionalAbuse, setShowMoreEmotionalAbuse] = useState(false);
