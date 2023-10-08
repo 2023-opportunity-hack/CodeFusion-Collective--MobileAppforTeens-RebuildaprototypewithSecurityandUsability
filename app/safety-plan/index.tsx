@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, ScrollView, View} from 'react-native';
+import React, { useState } from 'react';
+import { Alert, Image, Modal, StyleSheet, Text, Pressable, ScrollView, View } from 'react-native';
 import bank from './safetyLibrary.jsx'
 
 const SafePlanHome = () => {
@@ -8,56 +8,109 @@ const SafePlanHome = () => {
 
 
   return (
-    <View style={styles.centeredView}>
-      <Text>{bank.Statement}</Text>
-      {
-      bank.Categories.map((ele) => {
-        return <View><Modal
+    <View style={styles.container}>
+      <Text style={styles.title}>Safety Plan</Text>
+      <Text style={styles.statement}>{bank.Statement}</Text>
+      <Modal
         animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
+          <View style={[styles.container, styles.modalView]}>
+          <Image style={styles.buttonimages} source={`../../assets/images/${safetyCategory}.png`} />
             <ScrollView>
-            {bank[safetyCategory].map((tips) => {return <Text style={styles.modalText}>{tips}</Text>})}
+              {bank[safetyCategory].map((tips) => { return <Text style={styles.modalText}>{`\u2022 ${tips}`}</Text> })}
             </ScrollView>
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={styles.modalButton}
               onPress={() => setModalVisible(!modalVisible)}>
-                <Text>Close</Text>
+            <Text style={styles.modalBack}>Back</Text>
             </Pressable>
-          </View>
-        </View>
-      </Modal>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => {setModalVisible(true); setSafetyCategory(ele)}}>
-        <Text style={styles.textStyle}>{ele}</Text>
-      </Pressable>
-      </View>
-    })}
-    </View>
-    );
 
-  }
+          </View>
+      </Modal>
+      {bank.Categories.map((ele) => {
+        return <View style={styles.button}>
+          <Pressable style={styles.pressArea}
+            onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
+            <View style={styles.insideButton}>
+              <Image style={styles.buttonimages} source={`../../assets/images/${ele}.png`} />
+              <Text style={styles.textStyle}>{ele}</Text>
+            </View>
+          </Pressable>
+          <Image style={styles.backArrow} source={require('../../assets/images/Back.png')} />
+        </View>
+      })}
+    </View>
+  );
+
+}
 
 const styles = StyleSheet.create({
-  centeredView: {
+  title: {
+    fontWeight: `500`,
+    fontSize: 80,
+    marginBottom: '6%',
+  },
+  container: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'column',
     alignItems: 'center',
-    marginTop: 22,
-    backgroundColor:'#F0EDF1'
+    justifyContent: 'flex-start',
+  },
+  statement: {
+    marginHorizontal: '10%',
+    marginBottom: '6%',
+    fontSize: 15,
+  },
+  pressArea: {
+    width: '90%',
+  },
+  insideButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backArrow: {
+    width: 30,
+    height: 30,
+    transform: [{scaleX: -1}],
+    color: '#420C5C',
+    align: 'right',
+  },
+  button: {
+    width: '70%',
+    height: '5%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: '#683D7D',
+    borderWidth: 2,
+    borderRadius: 10,
+    marginBottom: 15,
+    justifyContent: 'space-between',
+    backgroundColor: '#ffffff',
+  },
+  buttonimages: {
+    height: 30,
+    width: 30,
+  },
+  textStyle: {
+    color: '#683D7D',
+    fontWeight: 'bold',
+    textAlign: 'left',
+  },
+
+
+
+  buttonClose: {
+    backgroundColor: '#F194FF',
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: '#F0EDF1',
     borderRadius: 20,
-    padding: 35,
+    padding: 10,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -68,28 +121,24 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  button: {
-    padding: 10,
-    elevation: 2,
-    backgroundColor: '#ffffff',
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: '#683D7D'
+  modalButton: {
+    height: '5%',
+    width: '80%',
+    borderRadius: 20,
+    backgroundColor: '#683D7D',
+    alignItems: 'center',
+    justifyContent: 'center'
+
   },
-  buttonOpen: {
-    backgroundColor: '#ffffff',
-  },
-  buttonClose: {
-    backgroundColor: '#F194FF',
-  },
-  textStyle: {
-    color: '#683D7D',
+  modalBack: {
+    color: 'white',
     fontWeight: 'bold',
-    textAlign: 'center',
+
   },
   modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
+    marginBottom: 30,
+    fontSize: 17,
+    textAlign: 'left',
   },
 });
 
