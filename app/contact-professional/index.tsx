@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, useColorScheme, Image, View, Text, TouchableOpacity } from 'react-native';
 import { useState, useEffect, useMemo } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { TextInput } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
 
 export default function ContactProfessional() {
@@ -60,111 +60,113 @@ export default function ContactProfessional() {
     ];
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Contact Professional</Text>
-      <View style={styles.form}>
-        <View>
-          <Text style={styles.areatitle}>The dropdown menu provides a list of national hotlines you can text or call information</Text>
-          <DropDownPicker
-            items={items}
-            open={isOpen}
-            setOpen={() => setIsOpen(!isOpen)}
-            value={currentValue}
-            setValue={(val) => setCurrentValue(val)}
-            dropDownContainerStyle={{
-              alignSelf: 'center',
-              position: 'relative',
-              top: 0,
-          }}
-          />
-        </View>
-        <View>
-          <View style={styles.messagecontent}>
-            <Text style={styles.areatitle}>Type your message here</Text>
-            <Text>{count} remaining</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.title}>Contact Professional</Text>
+        <View style={styles.form}>
+          <View>
+            <Text style={styles.areatitle}>The dropdown menu provides a list of national hotlines you can text or call information</Text>
+            <DropDownPicker
+              items={items}
+              open={isOpen}
+              setOpen={() => setIsOpen(!isOpen)}
+              value={currentValue}
+              setValue={(val) => setCurrentValue(val)}
+              dropDownContainerStyle={{
+                alignSelf: 'center',
+                position: 'relative',
+                top: 0,
+            }}
+            />
           </View>
-          <TextInput
-          multiline={true}
-          numberOfLines={7}
-          maxLength={160}
-          value={text}
-          onChangeText={handleTextChange}
-          style={styles.textinput}/>
-        </View>
-        <View>
-          <Text style={styles.areatitle}>Your Name</Text>
-          <TextInput
-          multiline={true}
-          numberOfLines={1}
-          maxLength={20}
-          value={name}
-          onChangeText={handleNameChange}
-          placeholder='First and Last Name'
-          placeholderTextColor="gray"
-          style={styles.infoinput}/>
-        </View>
-        <View>
-          <Text style={styles.areatitle}>Your Phone Number</Text>
-          <TextInput
-          multiline={true}
-          numberOfLines={1}
-          maxLength={20}
-          value={phone}
-          onChangeText={handlePhoneChange}
-          placeholder='+1'
-          placeholderTextColor="gray"
-          style={styles.infoinput}/>
-        </View>
-        <View>
-          <Text style={styles.areatitle}>Your Email Address</Text>
-          <TextInput
-          multiline={true}
-          numberOfLines={1}
-          maxLength={20}
-          value={email}
-          onChangeText={handleEmailChange}
-          placeholder='email address'
-          placeholderTextColor="gray"
-          style={styles.infoinput}/>
-        </View>
-        <View>
-          <Text style={styles.areatitle}>Choose how you want to be contacted</Text>
-          <View style={styles.radio}>
-            <View style={styles.radiooption}><RadioButton
-            value="Call"
-            status={ checked === 'Call' ? 'checked' : 'unchecked' }
-            onPress={() => setChecked('Call')}
-          />
-            <Text>Call</Text>
+          <View>
+            <View style={styles.messagecontent}>
+              <Text style={styles.areatitle}>Type your message here</Text>
+              <Text>{count} remaining</Text>
             </View>
-            <View style={styles.radiooption}><RadioButton
-            value="Text"
-            status={ checked === 'Text' ? 'checked' : 'unchecked' }
-            onPress={() => setChecked('Text')}
-          />
-            <Text>Text</Text>
-            </View>
-            <View style={styles.radiooption}><RadioButton
-            value="Email"
-            status={ checked === 'Email' ? 'checked' : 'unchecked' }
-            onPress={() => setChecked('Email')}
-          />
-            <Text>Email</Text>
+            <TextInput
+            multiline={true}
+            numberOfLines={7}
+            maxLength={160}
+            value={text}
+            onChangeText={handleTextChange}
+            style={styles.textinput}/>
+          </View>
+          <View>
+            <Text style={styles.areatitle}>Your Name</Text>
+            <TextInput
+            multiline={true}
+            numberOfLines={1}
+            maxLength={20}
+            value={name}
+            onChangeText={handleNameChange}
+            placeholder='First and Last Name'
+            placeholderTextColor="gray"
+            style={styles.infoinput}/>
+          </View>
+          <View>
+            <Text style={styles.areatitle}>Your Phone Number</Text>
+            <TextInput
+            multiline={true}
+            numberOfLines={1}
+            maxLength={20}
+            value={phone}
+            onChangeText={handlePhoneChange}
+            placeholder='+1'
+            placeholderTextColor="gray"
+            style={styles.infoinput}/>
+          </View>
+          <View>
+            <Text style={styles.areatitle}>Your Email Address</Text>
+            <TextInput
+            multiline={true}
+            numberOfLines={1}
+            maxLength={20}
+            value={email}
+            onChangeText={handleEmailChange}
+            placeholder='email address'
+            placeholderTextColor="gray"
+            style={styles.infoinput}/>
+          </View>
+          <View>
+            <Text style={styles.areatitle}>Choose how you want to be contacted</Text>
+            <View style={styles.radio}>
+              <View style={styles.radiooption}><RadioButton
+              value="Call"
+              status={ checked === 'Call' ? 'checked' : 'unchecked' }
+              onPress={() => setChecked('Call')}
+            />
+              <Text>Call</Text>
+              </View>
+              <View style={styles.radiooption}><RadioButton
+              value="Text"
+              status={ checked === 'Text' ? 'checked' : 'unchecked' }
+              onPress={() => setChecked('Text')}
+            />
+              <Text>Text</Text>
+              </View>
+              <View style={styles.radiooption}><RadioButton
+              value="Email"
+              status={ checked === 'Email' ? 'checked' : 'unchecked' }
+              onPress={() => setChecked('Email')}
+            />
+              <Text>Email</Text>
+              </View>
             </View>
           </View>
+          <TouchableOpacity style={styles.submitbutton} onPress={submitHandler}>
+            <Text style={styles.submittext}>Submit</Text>
+          </TouchableOpacity>
+          {error === 0 ? (
+          <Text></Text>
+          ) : error === 1 ? (
+          <Text>Error. Please fill out missing information.</Text>
+          ) : (
+          <Text>Message sent!</Text>
+          )}
         </View>
-        <TouchableOpacity style={styles.submitbutton} onPress={submitHandler}>
-          <Text style={styles.submittext}>Submit</Text>
-        </TouchableOpacity>
-        {error === 0 ? (
-        <Text></Text>
-        ) : error === 1 ? (
-        <Text>Error. Please fill out missing information.</Text>
-        ) : (
-        <Text>Message sent!</Text>
-        )}
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
