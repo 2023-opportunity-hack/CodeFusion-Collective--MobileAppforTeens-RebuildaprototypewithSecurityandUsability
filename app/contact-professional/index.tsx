@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
+import axios from 'axios';
 
 export default function ContactProfessional() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +33,7 @@ export default function ContactProfessional() {
     setEmail(newEmail);
   }
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     const contactmessage = {
       hotlineCenter: currentValue,
       message: text,
@@ -45,10 +46,15 @@ export default function ContactProfessional() {
       setError(1);
     }
     else {
-      setError(2);
+      axios.post('localhost:3000/contactProfessional', contactmessage)
+      .then((response) => {
+        setError(2);
+      })
+      .catch((err: Error) => {
+        console.log('Error sending message')
+      })
     }
   };
-
 
   useEffect(() => {
     setCount(160 - text.length)
