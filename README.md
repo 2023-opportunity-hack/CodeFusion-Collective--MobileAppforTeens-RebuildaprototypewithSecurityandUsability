@@ -24,3 +24,6 @@ The terminal will give directions to open the application on your preferred devi
 ## Contributors
 - Gabe Jimenez
 - John Novakowski
+- Anthony Tzeng
+- David Tran
+- Maximus Chen
