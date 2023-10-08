@@ -32,7 +32,6 @@ export default function AnotherComponent () {
           <Text>
             {showMoreDomesticViolence ? <DomesticViolenceText/> : 'What is domestic violence?'}
           </Text>
-          <Image source={require('../../assets/images/Back.png')}   style={styles.image} resizeMode='contain'/>
         </View>
       </TouchableOpacity>
       <Text>Types of abuse</Text>
