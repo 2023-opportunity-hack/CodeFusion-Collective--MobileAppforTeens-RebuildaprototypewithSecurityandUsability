@@ -5,7 +5,6 @@ import { Text, View } from '../components/Themed';
 import { FontAwesome } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import { useNavigation } from '@react-navigation/native';
-import { Link } from 'expo-router';
 
 export default function TabOneScreen() {
   const colorScheme = useColorScheme();
