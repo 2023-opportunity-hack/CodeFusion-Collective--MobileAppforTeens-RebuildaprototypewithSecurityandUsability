@@ -62,7 +62,7 @@ export default function Lockscreen() {
             <View style={styles.button}>
               <Text style={[styles.buttontext, {color: '#420C5C'}]}>Reset Game</Text>
             </View>
-            <Button onPress={()=> {clearAsyncStorage()}}>
+            <Button title="Press Me" onPress={()=> {clearAsyncStorage()}} >
             <Text>Clear Async Storage</Text>
             </Button>
         </View>
