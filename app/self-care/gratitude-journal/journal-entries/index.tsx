@@ -3,31 +3,37 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { useState, useEffect, useMemo } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as SQLite from 'expo-sqlite';
-import { dismissBrowser } from 'expo-web-browser';
 
 
 export default function JournalEntries() {
   const db = SQLite.openDatabase('safespace.db');
-  const [entries, setEntries] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentValue, setCurrentValue] = useState('');
-  const items = [];
+  const items: {label: string; value: string}[] = [
+    {label: 'Placeholder 1', value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '}, {label: 'Placeholder 2', value: 'The quick brown fox jumped over the lazy moon'}, {label: 'Placeholder 3', value: 'She sells seashells down by the seashore.'}
+    ];
 
     useEffect(() => {
-      db.transaction((tx) => {
-        tx.executeSql('SELECT * FROM journal_entries', undefined,
-        (txObj, resultSet) => {
-          console.log(resultSet.rows);
-        })
-      })
+  db.transaction((tx) => {
+    tx.executeSql('SELECT * FROM journal_entries', undefined,
+    (txObj, resultSet) => {
+      console.log(resultSet.rows);
+      // const bigObj = resultSet.rows;
+      // for (var key in bigObj) {
+      //   allEntries.push(bigObj[key])
+      //   console.log(allEntries);
+      // }
     })
+  })
+})
+
 
   return (
     <View style={styles.container}>
       <View style={styles.form}>
         <Text style={styles.title}>Journal Entries</Text>
           <DropDownPicker
-            items={entries}
+            items={items}
             open={isOpen}
             setOpen={() => setIsOpen(!isOpen)}
             value={currentValue}
@@ -42,6 +48,18 @@ export default function JournalEntries() {
     </View>
   );
 }
+
+// return (
+// <View style={styles.container}>
+//   <View style={styles.form}>
+//     <Text style={styles.title}>Journal Entries</Text>
+//     {allEntries.map((entry) => (
+//       <div key={entry.id}>
+//         <Text>Date: {entry.date}</Text>
+//         <Text>{entry.gratefulEntry}</Text>
+//         <Text>{entry.promptEntry}</Text>
+//       </div>
+//     ))}
 
 const styles = StyleSheet.create({
   areatitle: {
