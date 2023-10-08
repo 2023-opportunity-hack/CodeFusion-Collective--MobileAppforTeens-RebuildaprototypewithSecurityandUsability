@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import DomesticViolenceText from '../../components/warning-signs/DomesticViolenceText';
 import EconomicAbuseText from '../../components/warning-signs/EconomicAbuseText';
 import EmotionalAbuseText from '../../components/warning-signs/EmotionalAbuseText';
@@ -26,11 +26,14 @@ export default function AnotherComponent () {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Warning Signs</Text>
-      <Text style={styles.description}>It is not always obvious when someone you care about has been affected by sexual violence. Learning the warning signs for children, teens, and college-ageadults can help you learn when to act.</Text>
+      <Text style={styles.description}>It is not always obvious when someone you care about has been affected by sexual violence. Learning the warning signs for children, teens, and college-age adults can help you learn when to act.</Text>
       <TouchableOpacity onPress={() => setShowMoreDomesticViolence(!showMoreDomesticViolence)}>
-        <Text style={styles.dropDownButtonOne}>
-          {showMoreDomesticViolence ? <DomesticViolenceText/> : 'What is domestic violence?'}
-        </Text>
+        <View style={styles.dropDownButtonOne}>
+          <Text>
+            {showMoreDomesticViolence ? <DomesticViolenceText/> : 'What is domestic violence?'}
+          </Text>
+          <Image source={require('../../assets/images/Back.png')}   style={styles.image} resizeMode='contain'/>
+        </View>
       </TouchableOpacity>
       <Text>Types of abuse</Text>
       <TouchableOpacity onPress={() => setShowMoreEmotionalAbuse(!showMoreEmotionalAbuse)}>
@@ -87,10 +90,11 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   dropDownButtonOne: {
+    flexDirection: 'row',
     backgroundColor: 'white',
     marginTop: 10,
     borderWidth: 1,
-    padding: 10,
+    padding: '3%',
     borderRadius: 5,
     marginBottom: 30,
   },
@@ -98,7 +102,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginTop: 10,
     borderWidth: 1,
-    padding: 10,
+    padding: '3%',
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
   },
@@ -106,14 +110,19 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     backgroundColor: 'white',
     borderWidth: 1,
-    padding: 10,
+    padding: '3%',
   },
   dropDownButtonBottom: {
     borderTopWidth: 0,
     backgroundColor: 'white',
     borderWidth: 1,
-    padding: 10,
+    padding: '3%',
     borderBottomRightRadius: 5,
     borderBottomLeftRadius: 5,
+  },
+  image: {
+    width: 20,
+    height: 20,
+    transform: [{ rotate: '270deg' }],
   },
 });
