@@ -9,6 +9,18 @@ Prototyping mobile app screens | Figma
 Setting up development environment and routing | Expo
 Front-end of app | TypeScript and React Native
 
+## Set-up
+To get the application running, you'll need to have npm. Once you clone the repository to your computer, you will need to run the following to download the node modules to run the application:
+```sh
+npm install
+```
+After that, you can start the Expo Go by running the following
+```sh
+npm start
+```
+The terminal will give directions to open the application on your preferred device (iOS, Android, or web).
+
+
 ## Contributors
 - Gabe Jimenez
 - John Novakowski
