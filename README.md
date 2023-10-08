@@ -11,13 +11,13 @@ SafeSpace is a mobile app that empowers individuals at-risk for sexual assault b
 -reduce backend upkeep demands and costs
 
 ## Technologies Used
-Dev:
+Dev
   Figma
   Expo
-Frontend:
+Frontend
   React Native
   TypeScript
-Backend: 
+Backend 
   SQL
 
 ## Set-up
@@ -32,8 +32,9 @@ npm start
 The terminal will give directions to open the application on your preferred device (iOS, Android, or web).
 
 ## Challenges
-- The first challenge was establishing development environments for different developers and different machines. Some developers were able to use iOS, but others had to resort to an Android or web environment.
+- The first challenge was establishing development environments for different developers on different machines and running different emulations for iOS, Android, and web. Maintaining a codebase that did not introduce critical bugs in any one of these platforms was during development was difficult.
 - The next challenge was familiarizing ourselves with the tools for the project. The team had varying levels of experience with React Native and Expo Go. Research was necessary at the start of the project to ensure common understanding when working on the project.
+- Styling across multiple mobile platforms that offered multiple screen resolutions was also very difficult. The dev team had to constantly balance between something complicated looking that is aesthetically pleasing and something simple looking that will retain proper ratios on different screen resolutions.
 
 ## Contributors
 - Gabe Jimenez
