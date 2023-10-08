@@ -100,12 +100,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'left',
   },
-
-
-
-  buttonClose: {
-    backgroundColor: '#F194FF',
-  },
   modalView: {
     margin: 20,
     backgroundColor: '#F0EDF1',
@@ -128,12 +122,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#683D7D',
     alignItems: 'center',
     justifyContent: 'center'
-
   },
   modalBack: {
     color: 'white',
     fontWeight: 'bold',
-
   },
   modalText: {
     marginBottom: 30,

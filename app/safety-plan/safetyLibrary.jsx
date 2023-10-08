@@ -19,15 +19,15 @@ let bank = {
   ],
 
   School: [
-    `Mock`,
-    `Mock`,
-    `Mock`
+    `Take advantage of campus security services, such as security escorts, emergency call boxes, and well-lit pathways. If you feel unsafe, don't hesitate to request an escort from campus security.`,
+    `Establish connections with friends, classmates, and faculty members who can provide support and assistance. Having a trusted network can be invaluable in navigating potentially risky situations.`,
+    `Many schools in Washington offer counseling services and support groups for survivors of sexual assault. Seek out these resources if needed.`
   ],
 
   Technology: [
-    `Mock`,
-    `Mock`,
-    `Mock`
+    `Avoid sharing sensitive personal information, such as your home address, phone number, or details about your daily routine, on public platforms.`,
+    `Be cautious about sharing your location in real-time, especially if your profile is public. Utilize location-sharing features only with trusted friends and family.`,
+    `Set clear boundaries for online interactions. Be assertive in expressing your comfort level and promptly block or report individuals engaging in inappropriate or harassing behavior.`
   ],
 
   Job: [
@@ -37,15 +37,18 @@ let bank = {
   ],
 
   Children: [
-    `Mock`,
-    `Mock`,
-    `Mock`
+    `Foster an environment where open communication is encouraged. Teach your children the importance of discussing their feelings and experiences with you.`,
+    `Create an atmosphere in which your children feel comfortable talking about personal boundaries, inappropriate behavior, or any concerns they may have.`,
+    `Use age-appropriate language to explain what constitutes inappropriate touching and that their body belongs to them. Reinforce the idea that they have the right to set boundaries.`,
+    `Monitor and supervise your children's online activities. Be aware of the websites they visit, the apps they use, and the people they communicate with online.`,
+    `Discuss the importance of privacy online, the potential risks of sharing personal information, and the significance of reporting any inappropriate messages or interactions.`,
+    `Practice scenarios with your children, teaching them how to assertively communicate their discomfort and how to seek help from a trusted adult.`
   ],
 
   Partner: [
-    `Mock`,
-    `Mock`,
-    `Mock`
+    `Maintain open and honest communication with your spouse. Discuss expectations, desires, and boundaries related to intimacy. Encourage a safe space for both partners to express their feelings and concerns.`,
+    `Prioritize and respect each other's consent. Consent should be enthusiastic, informed, and ongoing. It's important for both partners to feel comfortable expressing their desires and to be receptive to each other's boundaries.`,
+    `If there are challenges or concerns in the relationship, consider seeking the assistance of a qualified therapist or counselor. Professional help can facilitate constructive communication, address underlying issues, and provide strategies for a healthy relationship.`
   ]
 }
 
