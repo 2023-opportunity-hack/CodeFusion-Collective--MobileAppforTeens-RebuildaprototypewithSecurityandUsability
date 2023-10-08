@@ -2,7 +2,7 @@ import { Pressable, StyleSheet } from "react-native";
 import { View, Text } from "./Themed";
 import { A } from '@expo/html-elements';
 
-interface functionProps{
+interface functionProps {
   closeModal: () => void;
 }
 
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   pressable: {
     position: 'absolute',
-    bottom: 30,
+    bottom: 20,
     width: '100%',
     alignItems: 'center',
   },

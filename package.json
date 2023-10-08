@@ -16,6 +16,7 @@
   "dependencies": {
     "@expo/html-elements": "^0.5.1",
     "@expo/vector-icons": "^13.0.0",
+    "@react-native-async-storage/async-storage": "^1.19.3",
     "@react-native-community/datetimepicker": "7.2.0",
     "@react-navigation/native": "^6.0.2",
     "axios": "^1.5.1",
@@ -46,7 +47,8 @@
     "react-native-radio-buttons-group": "^3.0.5",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "expo-sqlite": "~11.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

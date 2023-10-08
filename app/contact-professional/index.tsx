@@ -229,7 +229,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#420C5C',
   },
   submittext: {
-    color: '#FFFFFF'
+    color: '#FFFFFF',
+    fontWeight: 'bold',
   },
   title: {
     fontSize: 20,

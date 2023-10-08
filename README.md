@@ -1,31 +1,29 @@
+# About SafeSpace
+- [SafeSpace](https://safespace525.wixsite.com/home/about-us)
 
-# 2023_fall Hackathon
-https://hack.ohack.dev
-## Team
-CodeFusion Collective
+## Introduction
+SafeSpace is an app designed to allow sexual assault survivor access help discreetly. We are rebuilding the application to take advantage of React Native. This will allow us to redesign the UI to appeal more to the app's target audience and make it easier to maintain or improve the app.
 
-## Slack Channel
-`#`[codefusion-collective](https://opportunity-hack.slack.com/app_redirect?channel=codefusion-collective)
+## Technologies Used
+- Prototyping mobile app screens | Figma
+- Setting up development environment and routing | Expo
+- Front-end of app | TypeScript and React Native
 
-## Problem Statement
-[Mobile App for Teens: Rebuild a prototype with Security and Usability](https://ohack.dev/project/e8y7sIQC7j2lT1YdGMmf)
+## Set-up
+To get the application running, you'll need to have npm. Once you clone the repository to your computer, you will need to run the following to download the node modules to run the application:
+```sh
+npm install
+```
+After that, you can start the Expo Go by running the following
+```sh
+npm start
+```
+The terminal will give directions to open the application on your preferred device (iOS, Android, or web).
 
-## Creator
-@Gabe Jimenez (on Slack)
 
-## Your next steps
-1. ✅ Add everyone to your GitHub repo like this: https://opportunity-hack.slack.com/archives/C1Q6YHXQU/p1605657678139600
-2. ✅ Create your DevPost project like this https://youtu.be/vCa7QFFthfU?si=bzMQ91d8j3ZkOD03
-3. ✅ ASU Students use https://opportunity-hack-2023-asu.devpost.com/
-4. ✅ Everyone else use https://opportunity-hack-2023-virtual.devpost.com/
-5. ✅ Your DevPost final submission demo video should be 3 minutes or less
-6. ✅ Review the judging criteria on DevPost
-
-# What should your final Readme look like?
-Examples of stellar readmes:
-- ✨ [2019 Team 3](https://github.com/2019-Arizona-Opportunity-Hack/Team-3)
-- ✨ [2019 Team 6](https://github.com/2019-Arizona-Opportunity-Hack/Team-6)
-- ✨ [2020 Team 2](https://github.com/2020-opportunity-hack/Team-02)
-- ✨ [2020 Team 4](https://github.com/2020-opportunity-hack/Team-04)
-- ✨ [2020 Team 8](https://github.com/2020-opportunity-hack/Team-08)
-- ✨ [2020 Team 12](https://github.com/2020-opportunity-hack/Team-12)
+## Contributors
+- Gabe Jimenez
+- John Novakowski
+- Anthony Tzeng
+- David Tran
+- Maximus Chen
