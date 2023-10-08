@@ -7,12 +7,12 @@ const Onboarding3 = () => {
   return (
     <View style={styles.container}>
 
-      <Image style={styles.logo} source={`../../assets/images/onboard3.png`} />
+      <Image style={styles.logo} source={require(`../../assets/images/onboard3.png`)} />
       <Text style={styles.title}>How it works</Text>
       <Text style={styles.description}>Tapping any one square three times in a row reveal the real application</Text>
       <Link style={styles.button} href="/lockscreen">
         <Pressable style={styles.buttontext}>
-          <View style={styles.temp}><Text>How to Login &#8594;</Text></View>
+          <View><Text>How to Login &#8594;</Text></View>
         </Pressable>
       </Link>
 

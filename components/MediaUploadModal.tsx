@@ -2,7 +2,7 @@ import { Pressable, StyleSheet } from "react-native";
 import { View, Text } from "./Themed";
 import { A } from '@expo/html-elements';
 
-interface functionProps{
+interface functionProps {
   closeModal: () => void;
 }
 
