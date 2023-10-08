@@ -51,7 +51,7 @@ const SafePlanHome = () => {
 const styles = StyleSheet.create({
   title: {
     fontWeight: `500`,
-    fontSize: 80,
+    fontSize: 40,
     marginBottom: '6%',
   },
   container: {
