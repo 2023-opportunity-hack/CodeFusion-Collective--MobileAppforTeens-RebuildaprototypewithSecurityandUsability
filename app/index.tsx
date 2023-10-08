@@ -4,9 +4,13 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { FontAwesome } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
+import { useNavigation } from '@react-navigation/native';
 
 export default function TabOneScreen() {
   const colorScheme = useColorScheme();
+
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One blah</Text>
