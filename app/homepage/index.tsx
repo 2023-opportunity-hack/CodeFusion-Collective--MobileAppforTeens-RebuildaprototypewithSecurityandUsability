@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     transform: [{scaleX: -1}],
-    color: '#420C5C',
+    // color: '#420C5C',
   },
   button: {
     width: '70%',

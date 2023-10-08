@@ -7,9 +7,9 @@ const Onboarding = () => {
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={require(`../../assets/images/onboard1.png`)} />
-      <Link style={styles.button} href="/onboarding/index2">
-        <Pressable style={styles.buttontext}>
-          <View><Text>How it Works &#8594;</Text></View>
+      <Link style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} href="/onboarding/index2" asChild>
+        <Pressable>
+          <View style={styles.button}><Text style={styles.buttontext}>How it Works </Text></View>
         </Pressable>
       </Link>
     </View>
@@ -33,23 +33,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  separator: {
-    marginBottom: 20,
-    width: '80%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderStyle: 'dashed',
-    backgroundColor: 'f0edf1',
-    borderBottomWidth: 1,
-  },
-  scoreboard: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  score: {
-    fontSize: 60,
   },
   button: {
     display: 'flex',
