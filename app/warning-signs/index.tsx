@@ -1,6 +1,14 @@
 import { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import DomesticViolenceText from '../../components/warning-signs/DomesticViolenceText';
+import EconomicAbuseText from '../../components/warning-signs/EconomicAbuseText';
+import EmotionalAbuseText from '../../components/warning-signs/EmotionalAbuseText';
+import GaslightingText from '../../components/warning-signs/GaslightingText';
+import ReproductiveCoercionText from '../../components/warning-signs/ReproductiveCoercionText';
+import PhysicalAbuseText from '../../components/warning-signs/PhysicalAbuseText';
+import SexualAbuseText from '../../components/warning-signs/SexualAbuseText';
+import TechnologicalAssistedAbuseText from '../../components/warning-signs/TechnologicalAssistedAbuseText';
+
 
 
 export default function AnotherComponent () {
@@ -27,37 +35,37 @@ export default function AnotherComponent () {
       <Text>Types of abuse</Text>
       <TouchableOpacity onPress={() => setShowMoreEmotionalAbuse(!showMoreEmotionalAbuse)}>
         <Text style={styles.dropDownButtonTop}>
-          {showMoreEmotionalAbuse ? 'Hide Details' : 'Emotional abuse'}
+          {showMoreEmotionalAbuse ? <EmotionalAbuseText/> : 'Emotional abuse'}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setShowMoreGaslighting(!showMoreGaslighting)}>
         <Text style={styles.dropDownButtonMiddle}>
-          {showMoreGaslighting ? 'Hide Details' : 'Gaslighting'}
+          {showMoreGaslighting ? <GaslightingText/> : 'Gaslighting'}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setShowMoreReproductiveCoersion(!showMoreReproductiveCoersion)}>
         <Text style={styles.dropDownButtonMiddle}>
-          {showMoreReproductiveCoersion ? 'Hide Details' : 'Reproductive coersion'}
+          {showMoreReproductiveCoersion ? <ReproductiveCoercionText/> : 'Reproductive coercion'}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setShowMorePhysicalAbuse(!showMorePhysicalAbuse)}>
         <Text style={styles.dropDownButtonMiddle}>
-          {showMorePhysicalAbuse ? 'Hide Details' : 'Physical abuse'}
+          {showMorePhysicalAbuse ? <PhysicalAbuseText/> : 'Physical abuse'}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setShowMoreSexualAbuse(!showMoreSexualAbuse)}>
         <Text style={styles.dropDownButtonMiddle}>
-          {showMoreSexualAbuse ? 'Hide Details' : 'Sexual abuse'}
+          {showMoreSexualAbuse ? <SexualAbuseText/> : 'Sexual abuse'}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setShowMoreEconomicAbuse(!showMoreEconomicAbuse)}>
         <Text style={styles.dropDownButtonMiddle}>
-          {showMoreEconomicAbuse ? 'Hide Details' : 'Economic abuse'}
+          {showMoreEconomicAbuse ? <EconomicAbuseText/> : 'Economic abuse'}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setShowMoreTechnologicalAssistedAbuse(!showMoreTechnologicalAssistedAbuse)}>
         <Text style={styles.dropDownButtonBottom}>
-          {showMoreTechnologicalAssistedAbuse ? 'Hide Details' : 'Technological-assisted abuse'}
+          {showMoreTechnologicalAssistedAbuse ? <TechnologicalAssistedAbuseText/> : 'Technological-assisted abuse'}
         </Text>
       </TouchableOpacity>
     </View>
