@@ -7,6 +7,7 @@ const SafePlanHome = () => {
   const [safetyCategory, setSafetyCategory] = useState('Home');
 
 
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Safety Plan</Text>
@@ -45,7 +46,6 @@ const SafePlanHome = () => {
       })}
     </View>
   );
-
 }
 
 const styles = StyleSheet.create({
