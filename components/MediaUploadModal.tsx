@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   pressable: {
     position: 'absolute',
-    bottom: 30,
+    bottom: 20,
     width: '100%',
     alignItems: 'center',
   },

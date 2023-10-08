@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import { Link } from 'expo-router';
 import { Image, Modal, StyleSheet, Text, Pressable, ScrollView, View } from 'react-native';
 
-const Onboarding = () => {
+const Onboarding3 = () => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.logo} source={`../../assets/images/onboard1.png`} />
-      <Link style={styles.button} href="/onboarding/index2">
+
+      <Image style={styles.logo} source={`../../assets/images/onboard3.png`} />
+      <Text style={styles.title}>How it works</Text>
+      <Text style={styles.description}>Tapping any one square three times in a row reveal the real application</Text>
+      <Link style={styles.button} href="/lockscreen">
         <Pressable style={styles.buttontext}>
-          <View style={styles.temp}><Text>How it Works &#8594;</Text></View>
+          <View style={styles.temp}><Text>How to Login &#8594;</Text></View>
         </Pressable>
       </Link>
+
     </View>
   )
 }
@@ -23,8 +27,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 558,
-    height: 960,
+    width: 408,
+    height: 581,
   },
   title: {
     marginVertical: 20,
@@ -32,6 +36,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  description: {
+    fontWeight: 'bold',
+    fontSize: 24,
+    color: `#676767`,
+    marginTop: 10,
+    marginBottom: 30,
+    marginHorizontal: 30,
+ textAlign: 'center',
   },
   separator: {
     marginBottom: 20,
@@ -66,4 +79,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Onboarding;
+
+export default Onboarding3;
+
+
+
