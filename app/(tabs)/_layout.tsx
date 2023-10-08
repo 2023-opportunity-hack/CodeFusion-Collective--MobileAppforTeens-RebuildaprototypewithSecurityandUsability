@@ -1,6 +1,6 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable, useColorScheme } from 'react-native';
+// import FontAwesome from '@expo/vector-icons/FontAwesome';
+// import { Link, Tabs, Stack } from 'expo-router';
+// import { Pressable, useColorScheme } from 'react-native';
 
 // import Colors from '../../constants/Colors';
 
@@ -13,8 +13,10 @@ import { Pressable, useColorScheme } from 'react-native';
 // }) {
 //   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 // }
+
 // export default function TabLayout() {
 //   const colorScheme = useColorScheme();
+
 //   return (
 //     <Tabs
 //       screenOptions={{
