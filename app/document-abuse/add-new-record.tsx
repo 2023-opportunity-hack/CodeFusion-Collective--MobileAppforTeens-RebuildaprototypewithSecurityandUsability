@@ -4,6 +4,7 @@ import { Link } from "expo-router";
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useState } from "react";
 import MediaUploadModal from "../../components/MediaUploadModal";
+import ImagePicker from 'expo-image-picker';
 
 export default function AddNewRecordPage() {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -45,12 +46,15 @@ export default function AddNewRecordPage() {
   return (
     <View style={styles.container}>
       <Modal
-        animationType="slide"
+        animationType="fade"
+        transparent={true}
         visible={modalVisible}
         onRequestClose={() => {setModalVisible(!modalVisible)}}
       >
-        <View>
-          <MediaUploadModal closeModal={closeModal} />
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContents}>
+            <MediaUploadModal closeModal={closeModal} />
+          </View>
         </View>
       </Modal>
       <Text style={styles.title}>Add a New Record</Text>
@@ -98,7 +102,7 @@ export default function AddNewRecordPage() {
         onPress={() => setModalVisible(true)}
       >
         <View style={styles.button}>
-            <Text style={styles.buttonText}>Upload Media</Text>
+            <Text style={styles.buttonText}>Secure your photos & videos</Text>
           </View>
       </Pressable>
       <Pressable
@@ -161,11 +165,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#420C5C',
-    // marginBottom: 40,
   },
   buttonText: {
     marginVertical: 10,
     fontSize: 20,
     color: '#fff',
+  },
+  modalContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.85)'
+  },
+  modalContents: {
+    width: '90%',
+    height: '50%',
+    // margin: 20,
+    borderWidth: 1,
+    borderRadius: 16,
+    borderColor: '#420C5C',
+    overflow: 'hidden',
+    padding: 16,
   }
 })
