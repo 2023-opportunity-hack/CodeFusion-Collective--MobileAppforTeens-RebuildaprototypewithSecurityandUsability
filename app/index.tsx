@@ -1,13 +1,16 @@
-import { StyleSheet } from 'react-native';
-
+import { Pressable, StyleSheet, useColorScheme } from 'react-native';
+import { Link, Tabs, Stack } from 'expo-router';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { Link } from 'expo-router';
+import { FontAwesome } from '@expo/vector-icons';
+import Colors from '../constants/Colors';
 
 export default function TabOneScreen() {
+  const colorScheme = useColorScheme();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One blah</Text>
+      <Link href="/lockscreen"> Lockscreen </Link>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <Link href='/emergency'>
         <Text>Go to emergencies</Text>
