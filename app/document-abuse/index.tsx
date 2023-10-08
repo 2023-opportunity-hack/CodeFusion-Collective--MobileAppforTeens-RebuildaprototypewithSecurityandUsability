@@ -8,7 +8,7 @@ export default function DocumentAbusePage() {
       <Text style={styles.title}>Document Abuse</Text>
       <View style={styles.logoContainer}>
         <Image
-          source={require('../../assets/images/document-abuse.png')}
+          source={require('../../assets/images/1F4C3_color.png')}
           style={styles.logoImage}
         />
       </View>
@@ -49,16 +49,16 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   logoContainer: {
-    width: 150,
-    height: 100,
+    width: 125,
+    height: 125,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
   },
   logoImage: {
-    width: 100,
-    height: 80,
+    width: 80,
+    height: 100,
   },
   description: {
     fontSize: 20,
