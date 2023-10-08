@@ -1,12 +1,13 @@
 import { Pressable, StyleSheet, TextInput, Modal } from "react-native"
 import { View, Text } from "../../components/Themed";
-import { Link } from "expo-router";
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MediaUploadModal from "../../components/MediaUploadModal";
-import ImagePicker from 'expo-image-picker';
+import * as SQLite from 'expo-sqlite';
+import { router } from "expo-router";
 
 export default function AddNewRecordPage() {
+  const db = SQLite.openDatabase('safespace.db');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const [date, setDate] = useState<Date>();
@@ -14,6 +15,12 @@ export default function AddNewRecordPage() {
   const [mode, setMode] = useState<string>('date');
   const [show, setShow] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
+
+  useEffect(() => {
+    db.transaction((tx) => {
+      tx.executeSql('CREATE TABLE IF NOT EXISTS abuse_documents (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, description TEXT)');
+    })
+  }, []);
 
   const onChange = (event: DateTimePickerEvent, selectedDate: Date) => {
     const currentDate = selectedDate;
@@ -41,6 +48,26 @@ export default function AddNewRecordPage() {
 
   const closeModal = () => {
     setModalVisible(!modalVisible);
+  }
+
+  const handleSubmit = () => {
+    if (date && text.length > 0) {
+      db.transaction((tx) => {
+        tx.executeSql('INSERT INTO abuse_documents (date, description) VALUES (?, ?)', [date.toISOString(), text], 
+        (txObj, resultSet) => {
+          console.log('SUBMISSION COMPLETE');
+          console.log(txObj);
+          console.log(resultSet);
+          router.back();
+        },
+        // (txObj, error) => {console.log('SUBMISSION FAILED: ', error)}
+        );
+      });
+    } else if (!date) {
+      console.error('PLEASE SELECT A DATE');
+    } else if (text.length === 0) {
+      console.error('PLEASE FILL OUT FORM');
+    }
   }
 
   return (
@@ -106,7 +133,7 @@ export default function AddNewRecordPage() {
           </View>
       </Pressable>
       <Pressable
-        onPress={() => console.log('PRESSED DONE')}
+        onPress={handleSubmit}
         style={{width: '100%', alignItems: 'center'}}
       >
         <View style={styles.button}>
