@@ -1,29 +1,43 @@
 import { StyleSheet } from "react-native";
 import { Text, View } from "../../components/Themed";
 import TicTacToePin from "../../components/TicTacToePin";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { router } from "expo-router";
 
 export default function Lockscreen() {
-  const [numOfTimesPressed, setNumOfTimesPressed] = useState(0);
   const [buttonSequence, setButtonSequence] = useState('');
 
   const checkButtonPress = (button: string) => {
-    console.log('THIS IS THE BUTTON: ', button);
-    console.log('THIS IS THE SEQUENCE: ', buttonSequence);
     setButtonSequence((oldSequence) => (oldSequence + button));
+  }
+
+  const checkSequence = (sequence: string[]) => {
+    if (sequence.length < 3) {
+      return false;
+    }
     
-    if (buttonSequence.length === 3) {
-      if (buttonSequence === '999') {
-        // UNLOCK APP
-        console.log('HURRAY')
-        setButtonSequence('');
-      } else {
-        setButtonSequence('');
-        // DISPLAY ERROR?
-        console.error('BOO')
+    const firstString = sequence[0];
+    for (let i = 1; i < sequence.length; i++) {
+      if (firstString !== sequence[i]) {
+        return false;
       }
     }
+    return true;
   }
+
+  useEffect(() => {
+    if (buttonSequence.length >= 3) {
+      if (checkSequence(buttonSequence.split(''))) {
+        setButtonSequence('');
+        console.log('HURRAY');
+        router.replace('/homepage');
+      } else {
+        setButtonSequence('');
+        console.log('BOO');
+        // DISPLAY ERROR MESSAGE?
+      }
+    }
+  }, [buttonSequence])
 
     return (
         <View style={styles.container}>

@@ -10,21 +10,21 @@ export default function TicTacToePin({ checkButtonPress = () => {} }: functionPr
     <View style={styles.container}>
       <View style={styles.board}>
         <View style={styles.row}>
-          <View style={styles.square}>
+          <View style={[styles.square, {borderTopWidth: 0, borderLeftWidth: 0}]}>
             <Pressable
               onPress={() => {checkButtonPress('1')}}
               style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
             >
             </Pressable>
           </View>
-          <View style={styles.square}>
+          <View style={[styles.square, {borderTopWidth: 0}]}>
           <Pressable
               onPress={() => {checkButtonPress('2')}}
               style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
             >
             </Pressable>
           </View>
-          <View style={styles.square}>
+          <View style={[styles.square, {borderTopWidth: 0, borderRightWidth: 0}]}>
           <Pressable
               onPress={() => {checkButtonPress('3')}}
               style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
@@ -33,7 +33,7 @@ export default function TicTacToePin({ checkButtonPress = () => {} }: functionPr
           </View>
         </View>
         <View style={styles.row}>
-          <View style={styles.square}>
+          <View style={[styles.square, {borderLeftWidth: 0}]}>
           <Pressable
               onPress={() => {checkButtonPress('4')}}
               style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
@@ -47,7 +47,7 @@ export default function TicTacToePin({ checkButtonPress = () => {} }: functionPr
             >
             </Pressable>
           </View>
-          <View style={styles.square}>
+          <View style={[styles.square, {borderRightWidth: 0}]}>
           <Pressable
               onPress={() => {checkButtonPress('6')}}
               style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
@@ -56,21 +56,21 @@ export default function TicTacToePin({ checkButtonPress = () => {} }: functionPr
           </View>
         </View>
         <View style={[styles.row, {borderBottomWidth: 0}]} >
-          <View style={styles.square}>
+          <View style={[styles.square, {borderBottomWidth: 0, borderLeftWidth: 0}]}>
           <Pressable
               onPress={() => {checkButtonPress('7')}}
               style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
             >
             </Pressable>
           </View>
-          <View style={styles.square}>
+          <View style={[styles.square, {borderBottomWidth: 0}]}>
           <Pressable
               onPress={() => {checkButtonPress('8')}}
               style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
             >
             </Pressable>
           </View>
-          <View style={styles.square}>
+          <View style={[styles.square, {borderBottomWidth: 0, borderRightWidth: 0}]}>
           <Pressable
               onPress={() => {checkButtonPress('9')}}
               style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
