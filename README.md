@@ -2,12 +2,23 @@
 - [SafeSpace](https://safespace525.wixsite.com/home/about-us)
 
 ## Introduction
-SafeSpace is an app designed to allow sexual assault survivor access help discreetly. We are rebuilding the application to take advantage of React Native. This will allow us to redesign the UI to appeal more to the app's target audience and make it easier to maintain or improve the app.
+SafeSpace is a mobile app that empowers individuals at-risk for sexual assault by providing resources discreetly. Originally conceived in Flutter, our team set out to redesign the app in React Native with the following goals:
+
+-improve UI appeal to target users 
+-improve security for sensitive data storage
+-implement functionalities requested by stakeholders' original design documentation
+-improve codebase maintainability
+-reduce backend upkeep demands and costs
 
 ## Technologies Used
-- Prototyping mobile app screens | Figma
-- Setting up development environment and routing | Expo
-- Front-end of app | TypeScript and React Native
+Dev:
+  Figma
+  Expo
+Frontend:
+  React Native
+  TypeScript
+Backend: 
+  SQL
 
 ## Set-up
 To get the application running, you'll need to have npm. Once you clone the repository to your computer, you will need to run the following to download the node modules to run the application:
