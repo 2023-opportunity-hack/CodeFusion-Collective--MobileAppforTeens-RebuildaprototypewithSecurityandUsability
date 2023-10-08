@@ -1,13 +1,10 @@
-import { Pressable, StyleSheet, useColorScheme, Image, View, Text } from 'react-native';
-import { useState, useEffect } from 'react';
-import { Link, Tabs, Stack } from 'expo-router';
-import { FontAwesome } from '@expo/vector-icons';
-import Colors from '../../constants/Colors';
+import { Pressable, StyleSheet, useColorScheme, Image, View, Text, TouchableOpacity } from 'react-native';
+import { useState, useEffect, useMemo } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { TextInput } from 'react-native-gesture-handler';
+import { RadioButton } from 'react-native-paper';
 
 export default function ContactProfessional() {
-  const colorScheme = useColorScheme();
   const [isOpen, setIsOpen] = useState(false);
   const [currentValue, setCurrentValue] = useState('');
   const [text, setText] = useState('');
@@ -15,6 +12,9 @@ export default function ContactProfessional() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [selectedId, setSelectedId] = useState('');
+  const [checked, setChecked] = useState('');
+  const [error, setError] = useState(0);
 
   const handleTextChange = (newText: string) => {
     setText(newText);
@@ -31,6 +31,24 @@ export default function ContactProfessional() {
   const handleEmailChange = (newEmail: string) => {
     setEmail(newEmail);
   }
+
+  const submitHandler = () => {
+    const contactmessage = {
+      hotlineCenter: currentValue,
+      message: text,
+      name: name,
+      phone: phone,
+      email: email,
+      checked: checked,
+    };
+    if ((checked === '') || ((checked === 'Call' || checked === 'Text') && (phone.length < 11)) || ((checked === 'Email') && (!email.includes('@')))) {
+      setError(1);
+    }
+    else {
+      setError(2);
+    }
+  };
+
 
   useEffect(() => {
     setCount(160 - text.length)
@@ -60,8 +78,8 @@ export default function ContactProfessional() {
           }}
           />
         </View>
-        <View style={styles.messageform}>
-          <View>
+        <View>
+          <View style={styles.messagecontent}>
             <Text style={styles.areatitle}>Type your message here</Text>
             <Text>{count} remaining</Text>
           </View>
@@ -91,7 +109,7 @@ export default function ContactProfessional() {
           multiline={true}
           numberOfLines={1}
           maxLength={20}
-          value={name}
+          value={phone}
           onChangeText={handlePhoneChange}
           placeholder='+1'
           placeholderTextColor="gray"
@@ -103,7 +121,7 @@ export default function ContactProfessional() {
           multiline={true}
           numberOfLines={1}
           maxLength={20}
-          value={name}
+          value={email}
           onChangeText={handleEmailChange}
           placeholder='email address'
           placeholderTextColor="gray"
@@ -111,7 +129,40 @@ export default function ContactProfessional() {
         </View>
         <View>
           <Text style={styles.areatitle}>Choose how you want to be contacted</Text>
+          <View style={styles.radio}>
+            <View style={styles.radiooption}><RadioButton
+            value="Call"
+            status={ checked === 'Call' ? 'checked' : 'unchecked' }
+            onPress={() => setChecked('Call')}
+          />
+            <Text>Call</Text>
+            </View>
+            <View style={styles.radiooption}><RadioButton
+            value="Text"
+            status={ checked === 'Text' ? 'checked' : 'unchecked' }
+            onPress={() => setChecked('Text')}
+          />
+            <Text>Text</Text>
+            </View>
+            <View style={styles.radiooption}><RadioButton
+            value="Email"
+            status={ checked === 'Email' ? 'checked' : 'unchecked' }
+            onPress={() => setChecked('Email')}
+          />
+            <Text>Email</Text>
+            </View>
+          </View>
         </View>
+        <TouchableOpacity style={styles.submitbutton} onPress={submitHandler}>
+          <Text style={styles.submittext}>Submit</Text>
+        </TouchableOpacity>
+        {error === 0 ? (
+        <Text></Text>
+        ) : error === 1 ? (
+        <Text>Error. Please fill out missing information.</Text>
+        ) : (
+        <Text>Message sent!</Text>
+        )}
       </View>
     </View>
   )
@@ -123,6 +174,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#F0EDF1'
   },
   form: {
     width: '70%',
@@ -141,12 +193,35 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'white'
   },
+  messagecontent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+  },
   textinput: {
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 5,
     padding: 10,
     backgroundColor: 'white'
+  },
+  radio: {
+    flexDirection: 'column',
+  },
+  radiooption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  submitbutton: {
+    marginTop: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#420C5C',
+  },
+  submittext: {
+    color: '#FFFFFF'
   },
   title: {
     fontSize: 20,
