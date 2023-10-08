@@ -16,19 +16,11 @@ export default function TabOneScreen() {
       <Text style={styles.title}>Tab One blah</Text>
       <Link href="/lockscreen"> Lockscreen </Link>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
-      <Link href="/homepage" asChild>
-        <Pressable>
-          {({ pressed }) => (
-            <FontAwesome
-              name="info-circle"
-              size={25}
-              color={Colors[colorScheme ?? 'light'].text}
-              style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-            />
-          )}
-        </Pressable>
+      <Link href='/emergency'>
+        <Text>Emergency</Text>
       </Link>
+      <EditScreenInfo path="app/(tabs)/index.tsx" />
+
     </View>
   );
 }
