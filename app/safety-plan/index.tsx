@@ -14,10 +14,7 @@ const SafePlanHome = () => {
     Job: require(`../../assets/images/Job.png`),
     Children: require(`../../assets/images/Children.png`),
     Partner: require(`../../assets/images/Partner.png`),
-
-
-  }
-
+  };
 
   return (
     <View style={styles.container}>

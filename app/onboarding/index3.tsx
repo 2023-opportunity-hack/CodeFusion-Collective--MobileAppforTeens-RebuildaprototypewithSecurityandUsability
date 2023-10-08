@@ -10,7 +10,7 @@ const Onboarding3 = () => {
       <Image style={styles.logo} source={require(`../../assets/images/onboard3.png`)} />
       <Text style={styles.title}>How it works</Text>
       <Text style={styles.description}>Tapping any one square three times in a row reveal the real application</Text>
-      <Link style={{width: '100%', justifyContent: 'center', alignItems: 'center'}} href="/lockscreen" asChild>
+      <Link style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} href="/lockscreen" asChild>
         <Pressable>
           <View style={styles.button}><Text style={styles.buttontext}>How it Works </Text></View>
         </Pressable>
@@ -44,24 +44,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 30,
     marginHorizontal: 30,
- textAlign: 'center',
-  },
-  separator: {
-    marginBottom: 20,
-    width: '80%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderStyle: 'dashed',
-    backgroundColor: 'f0edf1',
-    borderBottomWidth: 1,
-  },
-  scoreboard: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  score: {
-    fontSize: 60,
+    textAlign: 'center',
   },
   button: {
     display: 'flex',
