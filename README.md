@@ -11,14 +11,7 @@ SafeSpace is a mobile app that empowers individuals at-risk for sexual assault b
 -reduce backend upkeep demands and costs
 
 ## Technologies Used
-Dev
--Figma
--Expo
-Frontend
--React Native
--TypeScript
-Backend 
--SQL
+Development: Figma, Expo | Frontend: React Native, TypeScript | Backend: SQL
 
 ## Set-up
 To get the application running, you'll need to have npm. Once you clone the repository to your computer, you will need to run the following to download the node modules to run the application:
