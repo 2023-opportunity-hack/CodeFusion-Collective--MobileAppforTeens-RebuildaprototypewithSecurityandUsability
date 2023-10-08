@@ -9,7 +9,6 @@ import { router } from "expo-router";
 export default function AddNewRecordPage() {
   const db = SQLite.openDatabase('safespace.db');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
   const [date, setDate] = useState<Date>();
   const [time, setTime] = useState<Date>();
   const [mode, setMode] = useState<string>('date');
@@ -18,7 +17,7 @@ export default function AddNewRecordPage() {
 
   useEffect(() => {
     db.transaction((tx) => {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS abuse_documents (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, description TEXT)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS abuse_documents (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, description TEXT, time_added BOOLEAN)');
     })
   }, []);
 
@@ -53,7 +52,7 @@ export default function AddNewRecordPage() {
   const handleSubmit = () => {
     if (date && text.length > 0) {
       db.transaction((tx) => {
-        tx.executeSql('INSERT INTO abuse_documents (date, description) VALUES (?, ?)', [date.toISOString(), text], 
+        tx.executeSql('INSERT INTO abuse_documents (date, description, time_added) VALUES (?, ?, ?)', [date.toISOString(), text, time ? 1 : 0], 
         (txObj, resultSet) => {
           console.log('SUBMISSION COMPLETE');
           console.log(txObj);
