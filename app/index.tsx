@@ -12,9 +12,9 @@ export default function TabOneScreen() {
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
 
-   const componentDidMount = async() => {
+  const componentDidMount = async () => {
     const firstTime = await AsyncStorage.getItem("isFirstTime")
-    if(firstTime != null) {
+    if (firstTime != null) {
       router.replace('/lockscreen')
     } else {
       router.replace('/onboarding/')
@@ -22,39 +22,7 @@ export default function TabOneScreen() {
     }
   }
 
-  useEffect(()=> {
-    // AsyncStorage.clear()
+  useEffect(() => {
     componentDidMount();
-  },[])
-
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One blah</Text>
-      <Link href="/lockscreen"> Lockscreen </Link>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <Link href='/emergency'>
-        <Text>Emergency</Text>
-      </Link>
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
-
-    </View>
-  );
+  }, [])
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});

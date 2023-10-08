@@ -10,12 +10,11 @@ const Onboarding2 = () => {
       <Image style={styles.logo} source={require(`../../assets/images/onboard2.png`)} />
       <Text style={styles.title}>How it works</Text>
       <Text style={styles.description}>The app is disguised as a game to offer a layer of confidentiality and protection</Text>
-      <Link style={styles.button} href="/onboarding/index3">
-        <Pressable style={styles.buttontext}>
-          <View><Text>How it Works &#8594;</Text></View>
+      <Link style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} href="/onboarding/index3" asChild>
+        <Pressable>
+          <View style={styles.button}><Text style={styles.buttontext}>How it Works </Text></View>
         </Pressable>
       </Link>
-
     </View>
   )
 }
@@ -27,8 +26,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 408,
-    height: 581,
+    width: '50%',
+    height: '40%',
   },
   title: {
     marginVertical: 20,
@@ -44,24 +43,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 30,
     marginHorizontal: 30,
- textAlign: 'center',
-  },
-  separator: {
-    marginBottom: 20,
-    width: '80%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderStyle: 'dashed',
-    backgroundColor: 'f0edf1',
-    borderBottomWidth: 1,
-  },
-  scoreboard: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  score: {
-    fontSize: 60,
+    textAlign: 'center',
   },
   button: {
     display: 'flex',
