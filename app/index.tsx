@@ -13,12 +13,16 @@ export default function TabOneScreen() {
   const navigation = useNavigation();
 
   const componentDidMount = async () => {
-    const firstTime = await AsyncStorage.getItem("isFirstTime")
-    if (firstTime != null) {
-      router.replace('/lockscreen')
-    } else {
-      router.replace('/onboarding/')
-      await AsyncStorage.setItem("isFirstTime", 'true')
+    try {
+      const firstTime = await AsyncStorage.getItem("isFirstTime")
+      if (firstTime != null) {
+        router.replace('/lockscreen')
+      } else {
+        router.replace('/onboarding/')
+        await AsyncStorage.setItem("isFirstTime", 'true')
+      }
+    } catch (error) {
+      console.error("Error in componentDidMount function: ", error);
     }
   }
 

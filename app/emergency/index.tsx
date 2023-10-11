@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { Image, Linking, Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Linking, Platform, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
 import { checkPermission } from "../../lib/utils";
 import { useEmergencyContactContext } from "../../context/contactContext";
@@ -28,15 +28,12 @@ export default function Emergency() {
         <Image style={styles.image} source={require("../../assets/images/location.png")} />
         <Text style={styles.text}>Send location to contacts</Text>
       </Pressable>
-      <Link href='/emergency/contactsPage' style={styles.link}>
-        {/* <Pressable > */}
-          <View style={styles.linkContent}>
-            <Image style={styles.linkImage} source={require("../../assets/images/friends.png")} />
-            <Text style={styles.linkText}>Call a friend</Text>
-          </View>
-        {/* </Pressable> */}
+      <Link href='/emergency/contactsPage' style={styles.link} asChild>
+        <Pressable style={styles.button}>
+          <Image style={styles.image} source={require("../../assets/images/friends.png")} />
+          <Text style={styles.text}>Call a friend</Text>
+        </Pressable>
       </Link>
-
     </View>
   )
 };
@@ -73,35 +70,10 @@ const styles = StyleSheet.create({
     left: '5%'
   },
   link: {
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
     width: "85%",
     backgroundColor: "black"
   },
-  linkContent: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#683d7d",
-    borderStyle: 'solid',
-    // width: '85%',
-    height: 40,
-    // position: "relative",
-    backgroundColor: "#ffffff",
-    // display: "flex",
-    // flexDirection: "row",
-     width: "100%",
-    // justifyContent: "center",
-    // alignItems: "center",
-  },
-  linkImage: {
-    height: 25,
-    width: 25
-  },
-  linkText: {
-    color: "#683d7d",
-    fontSize: 15,
-  }
 });

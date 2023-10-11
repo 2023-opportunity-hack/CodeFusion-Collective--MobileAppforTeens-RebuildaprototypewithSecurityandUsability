@@ -16,6 +16,9 @@ export default function ContactItem({ name, phoneNumbers, emergency, setEmerCont
       if (setEmerContacts) {
         console.log("made it into if check for setenmercontacts")
         setEmerContacts((prevNumbers) => [...prevNumbers, {[number]: number}]);
+        if (emergency === false) {
+          emergency = true;
+        }
       }
       await SecureStore.setItemAsync('emergencyContacts', JSON.stringify(emerContacts));
     }
