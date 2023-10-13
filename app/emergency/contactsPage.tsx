@@ -22,7 +22,7 @@ export default function ContactsPage() {
           const newContactData: ContactItemProps = {
             name: contact.name || "",
             phoneNumbers: (contact.phoneNumbers || []).map((number) => ({
-              number: number.number || "",
+              number: number && number.number ? number.number : ""
             })),
             emergency: false
           };
@@ -43,7 +43,6 @@ export default function ContactsPage() {
             if (contactNumber === first[contactNumber] || contactNumber === second[contactNumber] || contactNumber === third[contactNumber]) {
               newContactData.emergency = true;
               setEmerContacts((prevContacts) => [...prevContacts, {[contactNumber]: contactNumber}]);
-              console.log("check emergencycontacts: ", emerContacts)
               console.log("check newcontactdata: ", newContactData.emergency)
               return newContactData;
             } else {
@@ -62,7 +61,6 @@ export default function ContactsPage() {
       alert("Contacts could not be rendered");
       console.error("Error retreiving contacts: ", error);
     }
-
   };
 
   const getContacts = async () => {
