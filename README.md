@@ -5,9 +5,13 @@
 SafeSpace is a mobile app that empowers individuals at-risk for sexual assault by providing resources discreetly. Originally conceived in Flutter, our team set out to redesign the app in React Native with the following goals:
 
 -improve UI appeal to target users 
+
 -improve security for sensitive data storage
+
 -implement functionalities requested by stakeholders' original design documentation
+
 -improve codebase maintainability
+
 -reduce backend upkeep demands and costs
 
 ## Technologies Used
