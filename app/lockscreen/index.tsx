@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
         width: '80%',
         alignItems: 'center',
         justifyContent: 'center',
-        borderStyle: 'dashed',
+        borderStyle: 'solid',
         backgroundColor: 'f0edf1',
         borderBottomWidth: 1,
 
