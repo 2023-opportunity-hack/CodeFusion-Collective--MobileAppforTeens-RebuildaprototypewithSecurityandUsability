@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
 import { Link } from 'expo-router';
-import { Image, Modal, StyleSheet, Text, Pressable, ScrollView, View } from 'react-native';
+import { Image, StyleSheet, Text, Pressable, View } from 'react-native';
 
 const Onboarding = () => {
 

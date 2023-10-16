@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Alert, Image, Modal, StyleSheet, Text, Pressable, ScrollView, View } from 'react-native';
+import { useState } from 'react';
+import { Image, Modal, StyleSheet, Text, Pressable, ScrollView, View } from 'react-native';
 import bank from './safetyLibrary.jsx'
 
 const SafePlanHome = () => {

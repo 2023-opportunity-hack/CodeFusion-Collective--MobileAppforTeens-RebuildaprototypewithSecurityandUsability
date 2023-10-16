@@ -1,10 +1,6 @@
-import { Pressable, StyleSheet, useColorScheme } from 'react-native';
-import { useEffect, useState } from "react";
-import { Link, Tabs, Stack, router } from 'expo-router';
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-import { FontAwesome } from '@expo/vector-icons';
-import Colors from '../constants/Colors';
+import { useColorScheme } from 'react-native';
+import { useEffect } from "react";
+import { router } from 'expo-router';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
