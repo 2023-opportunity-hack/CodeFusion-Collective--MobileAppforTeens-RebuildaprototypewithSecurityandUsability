@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Alert, Image, Modal, StyleSheet, Text, Pressable, ScrollView, View } from 'react-native';
+import { useState } from 'react';
+import { Image, Modal, StyleSheet, Text, Pressable, ScrollView, View } from 'react-native';
 import bank from './safetyLibrary.jsx'
 
 const SafePlanHome = () => {
@@ -27,25 +27,25 @@ const SafePlanHome = () => {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}>
-          <View style={[styles.container, styles.modalView]}>
-          <Image style={styles.buttonimages} source={icons[safetyCategory]} />
-            <ScrollView>
-              {bank[safetyCategory].map((tips) => { return <Text style={styles.modalText}>{`\u2022 ${tips}`}</Text> })}
-            </ScrollView>
-            <Pressable
-              style={styles.modalButton}
-              onPress={() => setModalVisible(!modalVisible)}>
+        <View style={[styles.container, styles.modalView]}>
+          <Image style={styles.buttonimages} source={icons[safetyCategory as keyof typeof icons]} />
+          <ScrollView>
+            {(bank[safetyCategory as keyof typeof bank] as []).map((tips: string, i: number) => { return <Text key={i} style={styles.modalText}>{`\u2022 ${tips}`}</Text> })}
+          </ScrollView>
+          <Pressable
+            style={styles.modalButton}
+            onPress={() => setModalVisible(!modalVisible)}>
             <Text style={styles.modalBack}>Back</Text>
-            </Pressable>
+          </Pressable>
 
-          </View>
+        </View>
       </Modal>
-      {bank.Categories.map((ele) => {
-        return <View style={styles.button}>
+      {bank.Categories.map((ele: string, i: number) => {
+        return <View key={'sp' + i} style={styles.button}>
           <Pressable style={styles.pressArea}
             onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
             <View style={styles.insideButton}>
-              <Image style={styles.buttonimages} source={icons[ele]} />
+              <Image style={styles.buttonimages} source={icons[ele as keyof typeof icons]} />
               <Text style={styles.textStyle}>{ele}</Text>
             </View>
           </Pressable>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
   statement: {
     marginHorizontal: '10%',
@@ -83,9 +83,7 @@ const styles = StyleSheet.create({
   backArrow: {
     width: 30,
     height: 30,
-    transform: [{scaleX: -1}],
-    color: '#420C5C',
-    align: 'right',
+    transform: [{ scaleX: -1 }],
   },
   button: {
     width: '70%',
@@ -109,11 +107,14 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   modalView: {
-    margin: 20,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    width: '70%',
+    marginTop: '30%',
+    maxHeight: '70%',
     backgroundColor: '#F0EDF1',
     borderRadius: 20,
     padding: 10,
-    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -129,15 +130,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#683D7D',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 10,
   },
   modalBack: {
     color: 'white',
     fontWeight: 'bold',
   },
   modalText: {
-    marginBottom: 30,
-    fontSize: 17,
+    marginBottom: 15,
+    fontSize: 15,
     textAlign: 'left',
   },
 });
