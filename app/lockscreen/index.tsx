@@ -25,10 +25,6 @@ export default function Lockscreen() {
     return true;
   }
 
-  const clearAsyncStorage = async() => {
-    AsyncStorage.clear();
-}
-
   useEffect(() => {
     if (buttonSequence.length >= 3) {
       if (checkSequence(buttonSequence.split(''))) {
