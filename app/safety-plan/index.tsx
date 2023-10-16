@@ -28,25 +28,25 @@ const SafePlanHome = () => {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}>
-          <View style={[styles.container, styles.modalView]}>
-          <Image style={styles.buttonimages} source={icons[safetyCategory]} />
-            <ScrollView>
-              {bank[safetyCategory].map((tips: string, i: number) => { return <Text key={i} style={styles.modalText}>{`\u2022 ${tips}`}</Text> })}
-            </ScrollView>
-            <Pressable
-              style={styles.modalButton}
-              onPress={() => setModalVisible(!modalVisible)}>
+        <View style={[styles.container, styles.modalView]}>
+          <Image style={styles.buttonimages} source={icons[safetyCategory as keyof typeof icons]} />
+          <ScrollView>
+            {(bank[safetyCategory as keyof typeof bank] as []).map((tips: string, i: number) => { return <Text key={i} style={styles.modalText}>{`\u2022 ${tips}`}</Text> })}
+          </ScrollView>
+          <Pressable
+            style={styles.modalButton}
+            onPress={() => setModalVisible(!modalVisible)}>
             <Text style={styles.modalBack}>Back</Text>
-            </Pressable>
+          </Pressable>
 
-          </View>
+        </View>
       </Modal>
       {bank.Categories.map((ele: string, i: number) => {
         return <View key={'sp' + i} style={styles.button}>
           <Pressable style={styles.pressArea}
             onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
             <View style={styles.insideButton}>
-              <Image style={styles.buttonimages} source={icons[ele]} />
+              <Image style={styles.buttonimages} source={icons[ele as keyof typeof icons]} />
               <Text style={styles.textStyle}>{ele}</Text>
             </View>
           </Pressable>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   backArrow: {
     width: 30,
     height: 30,
-    transform: [{scaleX: -1}],
+    transform: [{ scaleX: -1 }],
   },
   button: {
     width: '70%',
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '70%',
     marginTop: '30%',
-    maxHeight:'70%',
+    maxHeight: '70%',
     backgroundColor: '#F0EDF1',
     borderRadius: 20,
     padding: 10,
