@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, Image, Modal, StyleSheet, Text, Pressable, ScrollView, View } from 'react-native';
 import bank from './safetyLibrary.jsx'
-import { red400 } from 'react-native-paper/lib/typescript/styles/themes/v2/colors.js';
 
 const SafePlanHome = () => {
   const [modalVisible, setModalVisible] = useState(false);
