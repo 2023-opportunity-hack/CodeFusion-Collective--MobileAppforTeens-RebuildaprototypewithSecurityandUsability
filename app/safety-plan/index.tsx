@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Image, Modal, StyleSheet, Text, Pressable, ScrollView, View } from 'react-native';
 import bank from './safetyLibrary.jsx'
+import { red400 } from 'react-native-paper/lib/typescript/styles/themes/v2/colors.js';
 
 const SafePlanHome = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -30,7 +31,7 @@ const SafePlanHome = () => {
           <View style={[styles.container, styles.modalView]}>
           <Image style={styles.buttonimages} source={icons[safetyCategory]} />
             <ScrollView>
-              {bank[safetyCategory].map((tips) => { return <Text style={styles.modalText}>{`\u2022 ${tips}`}</Text> })}
+              {bank[safetyCategory].map((tips: string, i: number) => { return <Text key={i} style={styles.modalText}>{`\u2022 ${tips}`}</Text> })}
             </ScrollView>
             <Pressable
               style={styles.modalButton}
@@ -40,8 +41,8 @@ const SafePlanHome = () => {
 
           </View>
       </Modal>
-      {bank.Categories.map((ele) => {
-        return <View style={styles.button}>
+      {bank.Categories.map((ele: string, i: number) => {
+        return <View key={'sp' + i} style={styles.button}>
           <Pressable style={styles.pressArea}
             onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
             <View style={styles.insideButton}>
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
   statement: {
     marginHorizontal: '10%',
@@ -84,8 +85,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     transform: [{scaleX: -1}],
-    color: '#420C5C',
-    align: 'right',
   },
   button: {
     width: '70%',
@@ -109,11 +108,14 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   modalView: {
-    margin: 20,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    width: '70%',
+    marginTop: '30%',
+    maxHeight:'70%',
     backgroundColor: '#F0EDF1',
     borderRadius: 20,
     padding: 10,
-    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -129,15 +131,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#683D7D',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 10,
   },
   modalBack: {
     color: 'white',
     fontWeight: 'bold',
   },
   modalText: {
-    marginBottom: 30,
-    fontSize: 17,
+    marginBottom: 15,
+    fontSize: 15,
     textAlign: 'left',
   },
 });
