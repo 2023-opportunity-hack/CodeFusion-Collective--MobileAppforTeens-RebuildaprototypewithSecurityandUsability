@@ -7,7 +7,7 @@ export default function EmotionalAbuseText() {
       <Text style={warningSignStyles.title}>Emotional abuse</Text>
       <ScrollView style={warningSignStyles.descriptionContainer}>
         <Text style={warningSignStyles.description}>
-        <Text style={{ fontWeight: 'bold' }}>Emotional abuse </Text>is PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER
+        <Text style={{ fontWeight: 'bold' }}>Emotional abuse </Text>or psychological abuse can be verbal or nonverbal. Emotional abuse may include verbal abuse, such as yelling, name-calling, blaming, and <Text style={{ fontWeight: 'bold' }}>gaslighting. </Text>{'\n'}Nonverbal abuse may consist of behaviors and tactics such as isolation, intimidation, and coercion. Emotional abuse is just as damaging as physical abuse.
         </Text>
       </ScrollView>
     </View>
