@@ -21,9 +21,7 @@ export default function ContactsPage() {
         const filteredData = data.map((contact) => {
           const newContactData: ContactItemProps = {
             name: contact.name || "",
-            phoneNumbers: (contact.phoneNumbers || []).map((number) => ({
-              number: number && number.number ? number.number : ""
-            })),
+            phoneNumbers: contact.phoneNumbers[0]?.number,
             emergency: false
           };
           const contactNumber = newContactData.phoneNumbers[0].number;

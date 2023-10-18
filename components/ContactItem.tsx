@@ -12,7 +12,6 @@ type EmergencyContactObj = {
 export default function ContactItem({ name, phoneNumbers, emergency, setEmerContacts, emerContacts }: ContactItemProps) {
   const [isEmergency, setIsEmergency] = useState(emergency);
   const { number } = phoneNumbers[0];
-  const iconStyles = emergency ? styles.isEmergencyIcon : styles.isNotEmergencyIcon;
 
   const setEmergencyContact = async () => {
     try {

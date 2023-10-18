@@ -4,9 +4,7 @@ type EmergencyContactContextProviderProps = {
   children: React.ReactNode
 };
 
-export type EmergencyContactsType = {
-  [key: string]: string
-}[];
+export type EmergencyContactsType = string[];
 
 type EmergencyContactsContextType = {
   emerContacts: EmergencyContactsType,
