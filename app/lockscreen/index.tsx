@@ -4,9 +4,6 @@ import TicTacToePin from "../../components/TicTacToePin";
 import { useEffect, useState } from "react";
 import { router } from "expo-router";
 
-//REMOVE RESET BUTTON BEFORE PRODUCTION
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 export default function Lockscreen() {
   const [buttonSequence, setButtonSequence] = useState('');
 
@@ -27,10 +24,6 @@ export default function Lockscreen() {
     }
     return true;
   }
-
-  const clearAsyncStorage = async() => {
-    AsyncStorage.clear();
-}
 
   useEffect(() => {
     if (buttonSequence.length >= 3) {
@@ -62,9 +55,6 @@ export default function Lockscreen() {
             <View style={styles.button}>
               <Text style={[styles.buttontext, {color: '#420C5C'}]}>Reset Game</Text>
             </View>
-            <Button title="Press Me" onPress={()=> {clearAsyncStorage()}} >
-            <Text>Clear Async Storage</Text>
-            </Button>
         </View>
     )
 }
@@ -87,7 +77,7 @@ const styles = StyleSheet.create({
         width: '80%',
         alignItems: 'center',
         justifyContent: 'center',
-        borderStyle: 'dashed',
+        borderStyle: 'solid',
         backgroundColor: 'f0edf1',
         borderBottomWidth: 1,
 

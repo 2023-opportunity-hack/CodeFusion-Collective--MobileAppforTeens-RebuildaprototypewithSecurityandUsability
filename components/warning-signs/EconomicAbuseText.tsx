@@ -7,7 +7,7 @@ export default function EconomicAbuseText() {
       <Text style={warningSignStyles.title}>Economic abuse</Text>
       <ScrollView style={warningSignStyles.descriptionContainer}>
         <Text style={warningSignStyles.description}>
-        <Text style={{ fontWeight: 'bold' }}>Economic abuse </Text>is PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER PLACEHOLDER
+        <Text style={{ fontWeight: 'bold' }}>Economic abuse </Text>occurs when one partner controls another's ability to be financially independent. It may include limiting their ability to work or go to school, controlling access to bank acounts or paychecks, and not allowing their partner's name on a lease, mortgage, or car title.
         </Text>
       </ScrollView>
     </View>
