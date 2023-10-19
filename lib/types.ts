@@ -6,7 +6,7 @@ export type NumberProps = {
 
 export type ContactItemProps = {
     name: string,
-    phoneNumbers: NumberProps[],
+    phoneNumbers: string,
     emergency: boolean,
     setEmerContacts?: React.Dispatch<React.SetStateAction<EmergencyContactsType>>,
     emerContacts?: EmergencyContactsType
