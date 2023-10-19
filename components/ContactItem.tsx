@@ -1,31 +1,27 @@
 import { Image, Linking, Pressable, StyleSheet, Text, View } from "react-native";
 import { ContactItemProps } from "../lib/types";
 import * as SecureStore from 'expo-secure-store';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EmergencyContactsType } from "../context/contactContext";
-
-type EmergencyContactObj = {
-  [key: string]: string
-};
 
 
 export default function ContactItem({ name, phoneNumbers, emergency, setEmerContacts, emerContacts }: ContactItemProps) {
   const [isEmergency, setIsEmergency] = useState(emergency);
-  const { number } = phoneNumbers[0];
+  const number = phoneNumbers;
 
   const setEmergencyContact = async () => {
     try {
-      if (emerContacts && emerContacts.length === 3) {
+      if (emerContacts && emerContacts.length > 3) {
         alert("Already 3 emergency contacts. Please remove one to save");
       } else {
+        const newEmerContacts = [...(emerContacts || []), number];
         if (setEmerContacts) {
-          await setEmerContacts((prevNumbers) => [...prevNumbers, {[number]: number}]);
-          if (!isEmergency) {
-            emergency = true;
-            await setIsEmergency(true);
-          }
+          await setEmerContacts(newEmerContacts);
         }
         await SecureStore.setItemAsync('emergencyContacts', JSON.stringify(emerContacts));
+
+        //emergency = true;
+        await setIsEmergency(true);
       }
     } catch (error) {
       console.error("Error setting contact as emergency: ", error);
@@ -34,22 +30,18 @@ export default function ContactItem({ name, phoneNumbers, emergency, setEmerCont
 
   const removeEmergencyContact = async () => {
     try {
-      //retreive emergency contacts
       const emergencyContacts = await SecureStore.getItemAsync('emergencyContacts');
       console.log("original emergency contacts: ", emergencyContacts)
       if (emergencyContacts) {
         const parsedContacts = JSON.parse(emergencyContacts);
-        //filter out the matching number
-        const newEmerContacts = parsedContacts.filter((contact: EmergencyContactObj) => contact[number] !== number);
+        const newEmerContacts = parsedContacts.filter((contact: string) => contact !== number);
         console.log("new emergency contacts: ", newEmerContacts);
-        //store the object back on the device
         await SecureStore.setItemAsync('emergencyContacts', JSON.stringify(newEmerContacts));
-        //remove emergency tags
         emergency = false;
-        setIsEmergency(false);
+        await setIsEmergency(false);
         if (setEmerContacts) {
           console.log("made it into set function if statement")
-          setEmerContacts(newEmerContacts);
+          await setEmerContacts(newEmerContacts);
         }
       } else {
         alert("Could not find emergency contacts to remove");
@@ -69,6 +61,10 @@ export default function ContactItem({ name, phoneNumbers, emergency, setEmerCont
       console.error("Error making emergency phone call", error);
     }
   };
+
+  useEffect(() => {
+    setIsEmergency(emergency);
+  }, [emergency]);
 
   return (
     <Pressable style={styles.container} onPress={callContact}>

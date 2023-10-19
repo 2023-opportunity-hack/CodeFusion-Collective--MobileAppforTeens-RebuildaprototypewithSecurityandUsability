@@ -19,28 +19,33 @@ export default function ContactsPage() {
       });
       if (data.length > 0) {
         const filteredData = data.map((contact) => {
+          let number  = contact.phoneNumbers && contact.phoneNumbers[0].number || "";
+          const digitsOnly = number.replace(/\D/g, "");
+          number = `(${digitsOnly.slice(0, 3)}) ${digitsOnly.slice(3, 6)} - ${digitsOnly.slice(6, 10)}`;
+
           const newContactData: ContactItemProps = {
             name: contact.name || "",
-            phoneNumbers: contact.phoneNumbers[0]?.number,
+            phoneNumbers: number,
             emergency: false
           };
-          const contactNumber = newContactData.phoneNumbers[0].number;
+
+          const contactNumber = newContactData.phoneNumbers;
           if (contacts && contacts.length > 0) {
-            let [first, second, third] = contacts || [{}, {}, {}];
+            let [first, second, third] = contacts || ["", "", ""];
             if (!first) {
-              first = {};
+              first = "";
             };
             if (!second) {
-              second = {};
+              second = "";
             };
             if (!third) {
-              third = {};
+              third = "";
             };
             console.log("check values: ", first, second, third);
             console.log("check contact value: ", contact)
-            if (contactNumber === first[contactNumber] || contactNumber === second[contactNumber] || contactNumber === third[contactNumber]) {
+            if (contactNumber === first || contactNumber === second || contactNumber === third) {
               newContactData.emergency = true;
-              setEmerContacts((prevContacts) => [...prevContacts, {[contactNumber]: contactNumber}]);
+              setEmerContacts((prevContacts) => [...prevContacts, contactNumber]);
               console.log("check newcontactdata: ", newContactData.emergency)
               return newContactData;
             } else {
@@ -84,7 +89,7 @@ export default function ContactsPage() {
       console.error("Error getting contacts: ", error);
     }
   };
-
+  //possibly the issue? only calling getContacts on initialization, what else is updating the contacts?
   useEffect(() => {
     getContacts();
   }, []);
