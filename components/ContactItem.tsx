@@ -1,27 +1,43 @@
-import { Image, Linking, Pressable, StyleSheet, Text, View } from "react-native";
-import { ContactItemProps } from "../lib/types";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
-import { EmergencyContactsType } from "../context/contactContext";
+import { Image, Linking, Pressable, StyleSheet, Text } from "react-native";
+import { useEmergencyContactContext } from "../context/contactContext";
+import { ContactItemProps } from "../lib/types";
 
-
-export default function ContactItem({ name, phoneNumbers, emergency, setEmerContacts, emerContacts }: ContactItemProps) {
+export default function ContactItem({
+  name,
+  phoneNumbers,
+  emergency,
+}: ContactItemProps) {
   const [isEmergency, setIsEmergency] = useState(emergency);
+  console.log("isEmergency STatus: ", isEmergency, name, phoneNumbers);
+  const { emerContacts, setEmerContacts } = useEmergencyContactContext();
+
   const number = phoneNumbers;
 
   const setEmergencyContact = async () => {
     try {
-      if (emerContacts && emerContacts.length > 3) {
+      console.log(
+        "size and values of emerContacts: ",
+        emerContacts.size,
+        emerContacts
+      );
+      if ((emerContacts?.size || 0) > 3) {
         alert("Already 3 emergency contacts. Please remove one to save");
       } else {
-        const newEmerContacts = [...(emerContacts || []), number];
-        if (setEmerContacts) {
-          await setEmerContacts(newEmerContacts);
-        }
-        await SecureStore.setItemAsync('emergencyContacts', JSON.stringify(emerContacts));
+        const setArray = Array.from(emerContacts);
 
-        //emergency = true;
+        await SecureStore.setItemAsync(
+          "emergencyContacts",
+          JSON.stringify(setArray)
+        );
+
+        emergency = true;
         await setIsEmergency(true);
+
+        if (setEmerContacts) {
+          await setEmerContacts(new Set([...(emerContacts || []), number]));
+        }
       }
     } catch (error) {
       console.error("Error setting contact as emergency: ", error);
@@ -30,19 +46,23 @@ export default function ContactItem({ name, phoneNumbers, emergency, setEmerCont
 
   const removeEmergencyContact = async () => {
     try {
-      const emergencyContacts = await SecureStore.getItemAsync('emergencyContacts');
-      console.log("original emergency contacts: ", emergencyContacts)
+      const emergencyContacts = await SecureStore.getItemAsync(
+        "emergencyContacts"
+      );
       if (emergencyContacts) {
         const parsedContacts = JSON.parse(emergencyContacts);
-        const newEmerContacts = parsedContacts.filter((contact: string) => contact !== number);
-        console.log("new emergency contacts: ", newEmerContacts);
-        await SecureStore.setItemAsync('emergencyContacts', JSON.stringify(newEmerContacts));
-        emergency = false;
+        const newEmerContacts = parsedContacts.filter(
+          (contact: string) => contact !== number
+        );
+        await SecureStore.setItemAsync(
+          "emergencyContacts",
+          JSON.stringify(newEmerContacts)
+        );
         await setIsEmergency(false);
         if (setEmerContacts) {
-          console.log("made it into set function if statement")
           await setEmerContacts(newEmerContacts);
         }
+        emergency = false;
       } else {
         alert("Could not find emergency contacts to remove");
         console.error("Error removing emergency contact: ");
@@ -70,12 +90,22 @@ export default function ContactItem({ name, phoneNumbers, emergency, setEmerCont
     <Pressable style={styles.container} onPress={callContact}>
       <Text style={styles.name}>{name}</Text>
       <Text style={styles.number}>{number}</Text>
-      <Pressable onPress={() => isEmergency ? removeEmergencyContact() : setEmergencyContact()} style={{ marginLeft: 45 }}>
-        <Image style={isEmergency ? styles.isEmergencyIcon : styles.isNotEmergencyIcon} source={require("../assets/images/star-icon.png")} />
+      <Pressable
+        onPress={() =>
+          isEmergency ? removeEmergencyContact() : setEmergencyContact()
+        }
+        style={{ marginLeft: 45 }}
+      >
+        <Image
+          style={
+            isEmergency ? styles.isEmergencyIcon : styles.isNotEmergencyIcon
+          }
+          source={require("../assets/images/star-icon.png")}
+        />
       </Pressable>
     </Pressable>
-  )
-};
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -87,11 +117,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#683d7d",
     borderRadius: 5,
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
   },
   name: {
     color: "#683d7d",
-    marginRight: 'auto'
+    marginRight: "auto",
   },
   number: {
     color: "#683d7d",
@@ -103,6 +133,6 @@ const styles = StyleSheet.create({
   isNotEmergencyIcon: {
     width: 20,
     height: 20,
-    opacity: 0.4
-  }
-})
+    opacity: 0.4,
+  },
+});
