@@ -86,8 +86,8 @@ export default function ContactProfessional() {
   }, [text])
 
   const items: {label: string; value: string}[] = [
-    {label: 'Domestic Violence Hotline', value: '88788'}, {label: 'Teen Dating Abuse Hotline', value: '22522'}, {label: 'Safe Helpline for Sexual Assault', value: 'Safe Helpline for Sexual Assault'},
-     {label: '24 Hour Helpline', value: '24 Hour Helpline'}
+    {label: 'Domestic Violence Hotline', value: '88788'}, {label: 'National Teen Dating Abuse Hotline', value: '22522'}, {label: 'Crisis Hotline', value: '741741'},
+     {label: 'Suicide & Crisis Lifeline', value: '988'}
     ];
 
   return (
