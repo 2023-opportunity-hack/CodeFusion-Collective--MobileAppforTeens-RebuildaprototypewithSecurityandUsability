@@ -32,6 +32,7 @@ export default function JournalEntries() {
     <View style={styles.container}>
       <View style={styles.form}>
         <Text style={styles.title}>Journal Entries</Text>
+        <View>
           <DropDownPicker
             items={items}
             open={isOpen}
@@ -39,10 +40,12 @@ export default function JournalEntries() {
             value={currentValue}
             setValue={(val) => setCurrentValue(val)}
             dropDownContainerStyle={{
+              alignSelf: 'center',
+              position: 'relative',
               top: 0,
-              maxHeight: 150,
           }}
           />
+        </View>
         <Text style={styles.entry}>{currentValue}</Text>
       </View>
     </View>

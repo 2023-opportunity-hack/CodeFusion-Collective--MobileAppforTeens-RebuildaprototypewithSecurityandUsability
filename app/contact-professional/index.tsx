@@ -3,7 +3,8 @@ import { useState, useEffect, useMemo } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
-import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SMS from 'expo-sms';
 
 export default function ContactProfessional() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,9 +14,56 @@ export default function ContactProfessional() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [selectedId, setSelectedId] = useState('');
   const [checked, setChecked] = useState('');
   const [error, setError] = useState(0);
+  const [isAvailable, setIsAvailable] = useState(false);
+
+  const retrieveData = async () => {
+    try {
+      const fullName = await AsyncStorage.getItem('fullName')
+      const phoneNumber = await AsyncStorage.getItem('phoneNumber')
+      const storedEmail = await AsyncStorage.getItem('storedEmail')
+      if (fullName != null) {
+        setName(fullName);
+      }
+      if (phoneNumber != null) {
+        setPhone(phoneNumber);
+      }
+      if (storedEmail != null) {
+        setEmail(storedEmail)
+      }
+    } catch (error) {
+      console.error("Error in retrieving info: ", error);
+    }
+  }
+
+  const sendSms = async () => {
+    try {
+      await AsyncStorage.setItem("fullName", `${name}`)
+      await AsyncStorage.setItem("phoneNumber", `${phone}`)
+      await AsyncStorage.setItem("storedEmail", `${email}`)
+    } catch (error) {
+      console.error("Error setting info: ", error);
+    }
+    const {result} = await SMS.sendSMSAsync(
+      [`${currentValue}`],
+      `Hi, my name is ${name}. Please contact me via ${checked}. My contact info is ${phone} or ${email}. ${text}`
+    );
+
+    console.log(result);
+  }
+
+  useEffect(() => {
+    retrieveData();
+    const isSmsAvailable = async () => {
+      await SMS.isAvailableAsync();
+    }
+    isSmsAvailable();
+  }, [])
+
+  useEffect(() => {
+    console.log(currentValue);
+  }, [currentValue])
 
   const handleTextChange = (newText: string) => {
     setText(newText);
@@ -33,35 +81,12 @@ export default function ContactProfessional() {
     setEmail(newEmail);
   }
 
-  const submitHandler = async () => {
-    const contactmessage = {
-      hotlineCenter: currentValue,
-      message: text,
-      name: name,
-      phone: phone,
-      email: email,
-      checked: checked,
-    };
-    if ((checked === '') || ((checked === 'Call' || checked === 'Text') && (phone.length < 11)) || ((checked === 'Email') && (!email.includes('@')))) {
-      setError(1);
-    }
-    else {
-      axios.post('localhost:3000/contactProfessional', contactmessage)
-      .then((response) => {
-        setError(2);
-      })
-      .catch((err: Error) => {
-        console.log('Error sending message')
-      })
-    }
-  };
-
   useEffect(() => {
     setCount(160 - text.length)
   }, [text])
 
   const items: {label: string; value: string}[] = [
-    {label: 'Domestic Violence Hotline', value: 'Domestic Violence Hotline'}, {label: 'Teen Dating Abuse Hotline', value: 'Teen Dating Abuse Hotline'}, {label: 'Safe Helpline for Sexual Assault', value: 'Safe Helpline for Sexual Assault'},
+    {label: 'Domestic Violence Hotline', value: '88788'}, {label: 'Teen Dating Abuse Hotline', value: '22522'}, {label: 'Safe Helpline for Sexual Assault', value: 'Safe Helpline for Sexual Assault'},
      {label: '24 Hour Helpline', value: '24 Hour Helpline'}
     ];
 
@@ -160,7 +185,7 @@ export default function ContactProfessional() {
               </View>
             </View>
           </View>
-          <TouchableOpacity style={styles.submitbutton} onPress={submitHandler}>
+          <TouchableOpacity style={styles.submitbutton} onPress={sendSms}>
             <Text style={styles.submittext}>Submit</Text>
           </TouchableOpacity>
           {error === 0 ? (
