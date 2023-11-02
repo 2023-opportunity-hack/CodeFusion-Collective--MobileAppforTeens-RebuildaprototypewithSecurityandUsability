@@ -1,7 +1,7 @@
-import { Pressable, StyleSheet, useColorScheme, Image, View, Text, TouchableOpacity } from 'react-native';
+import { Pressable, StyleSheet, useColorScheme, Image, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useState, useEffect, useMemo } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import { TextInput } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SMS from 'expo-sms';
@@ -45,12 +45,19 @@ export default function ContactProfessional() {
     } catch (error) {
       console.error("Error setting info: ", error);
     }
-    const {result} = await SMS.sendSMSAsync(
-      [`${currentValue}`],
-      `Hi, my name is ${name}. Please contact me via ${checked}. My contact info is ${phone} or ${email}. ${text}`
-    );
+    if ((currentValue === '' || checked === '') || ((checked === 'Call' || checked === 'Text') && phone === '') || (checked === 'Email' && email === '')) {
+      setError(1);
+    } else {
+      const {result} = await SMS.sendSMSAsync(
+        [`${currentValue}`],
+        `Hi, my name is ${name}. I'd like to be contacted via ${checked}.
+      Phone Number: ${phone}
+      Email: ${email}
+      ${text}`
+      );
 
-    console.log(result);
+      console.log(result);
+    }
   }
 
   useEffect(() => {
@@ -60,10 +67,6 @@ export default function ContactProfessional() {
     }
     isSmsAvailable();
   }, [])
-
-  useEffect(() => {
-    console.log(currentValue);
-  }, [currentValue])
 
   const handleTextChange = (newText: string) => {
     setText(newText);
@@ -91,23 +94,23 @@ export default function ContactProfessional() {
     ];
 
   return (
-    <ScrollView>
+    <ScrollView nestedScrollEnabled={true}>
       <View style={styles.container}>
         <Text style={styles.title}>Contact Professional</Text>
         <View style={styles.form}>
           <View>
-            <Text style={styles.areatitle}>The dropdown menu provides a list of national hotlines you can text or call information</Text>
+            <Text style={styles.areatitle}>The dropdown menu provides a list of national hotlines you can text or call for information</Text>
             <DropDownPicker
               items={items}
               open={isOpen}
               setOpen={() => setIsOpen(!isOpen)}
               value={currentValue}
               setValue={(val) => setCurrentValue(val)}
-              dropDownContainerStyle={{
-                alignSelf: 'center',
-                position: 'relative',
-                top: 0,
-            }}
+            //   dropDownContainerStyle={{
+            //     alignSelf: 'center',
+            //     position: 'relative',
+            //     top: 0,
+            // }}
             />
           </View>
           <View>
@@ -116,6 +119,7 @@ export default function ContactProfessional() {
               <Text>{count} remaining</Text>
             </View>
             <TextInput
+            textAlignVertical='top'
             multiline={true}
             numberOfLines={7}
             maxLength={160}
@@ -167,7 +171,7 @@ export default function ContactProfessional() {
               status={ checked === 'Call' ? 'checked' : 'unchecked' }
               onPress={() => setChecked('Call')}
             />
-              <Text>Call</Text>
+              <Text>Call/Voicemail</Text>
               </View>
               <View style={styles.radiooption}><RadioButton
               value="Text"
@@ -184,17 +188,13 @@ export default function ContactProfessional() {
               <Text>Email</Text>
               </View>
             </View>
+            {error === 0 ? <Text></Text> :
+            <Text>Please ensure all required information is filled.</Text>
+            }
           </View>
           <TouchableOpacity style={styles.submitbutton} onPress={sendSms}>
             <Text style={styles.submittext}>Submit</Text>
           </TouchableOpacity>
-          {error === 0 ? (
-          <Text></Text>
-          ) : error === 1 ? (
-          <Text>Error. Please fill out missing information.</Text>
-          ) : (
-          <Text>Message sent!</Text>
-          )}
         </View>
       </View>
     </ScrollView>
@@ -247,6 +247,7 @@ const styles = StyleSheet.create({
   },
   submitbutton: {
     marginTop: 10,
+    marginBottom: 50,
     borderWidth: 1,
     borderRadius: 10,
     alignItems: 'center',
