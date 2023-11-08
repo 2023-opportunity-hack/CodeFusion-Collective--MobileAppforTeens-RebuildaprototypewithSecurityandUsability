@@ -14,12 +14,14 @@ const sendLocation = async (contacts?: EmergencyContactsType) => {
   if (isAvailable) {
     await SMS.sendSMSAsync(numbersArray, locationLink);
   } else {
+    alert("SMS is not available");
     console.error("SMS is not available");
   }
 };
 
 export const checkPermission = async (contacts?: EmergencyContactsType) => {
   try {
+    console.log("value of contacts: ", contacts);
     const storedPermission = await SecureStore.getItemAsync(
       "locationPermission"
     );
@@ -28,8 +30,9 @@ export const checkPermission = async (contacts?: EmergencyContactsType) => {
     } else {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status === "granted") {
-        await sendLocation();
+        await sendLocation(contacts);
       } else {
+        alert("Permission to access location was denied");
         console.error("Permission denied");
       }
     }

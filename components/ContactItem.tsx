@@ -10,33 +10,28 @@ export default function ContactItem({
   emergency,
 }: ContactItemProps) {
   const [isEmergency, setIsEmergency] = useState(emergency);
-  console.log("isEmergency STatus: ", isEmergency, name, phoneNumbers);
   const { emerContacts, setEmerContacts } = useEmergencyContactContext();
 
   const number = phoneNumbers;
 
   const setEmergencyContact = async () => {
     try {
-      console.log(
-        "size and values of emerContacts: ",
-        emerContacts.size,
-        emerContacts
-      );
-      if ((emerContacts?.size || 0) > 3) {
+      if ((emerContacts?.size || 0) === 3) {
         alert("Already 3 emergency contacts. Please remove one to save");
       } else {
-        const setArray = Array.from(emerContacts);
-
-        await SecureStore.setItemAsync(
-          "emergencyContacts",
-          JSON.stringify(setArray)
-        );
-
-        emergency = true;
-        await setIsEmergency(true);
-
         if (setEmerContacts) {
+          await setIsEmergency(true);
           await setEmerContacts(new Set([...(emerContacts || []), number]));
+
+          const updatedEmerContacts = new Set([
+            ...(emerContacts || []),
+            number,
+          ]);
+
+          const arrayFromSet = Array.from(updatedEmerContacts);
+          const stringifiedArray = JSON.stringify(arrayFromSet);
+
+          await SecureStore.setItemAsync("emergencyContacts", stringifiedArray);
         }
       }
     } catch (error) {

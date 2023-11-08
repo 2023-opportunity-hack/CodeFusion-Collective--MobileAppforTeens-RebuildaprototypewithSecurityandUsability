@@ -35,11 +35,7 @@ export default function ContactsPage() {
           };
 
           const contactNumber = newContactData.phoneNumbers;
-          console.log(
-            "value of contactNumber for comparison: ",
-            contactNumber,
-            contacts
-          );
+
           if (contacts && contacts.size > 0) {
             if (contacts.has(contactNumber)) {
               newContactData.emergency = true;
