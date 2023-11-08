@@ -1,4 +1,5 @@
 import { Link } from "expo-router";
+import { useState } from "react";
 import {
   Image,
   Linking,
@@ -11,6 +12,7 @@ import { useEmergencyContactContext } from "../../context/contactContext";
 import { checkPermission } from "../../lib/utils";
 
 export default function Emergency() {
+  const [isLoading, setIsLoading] = useState(false);
   const { emerContacts } = useEmergencyContactContext();
 
   const callEmergencyNum = async () => {
@@ -25,6 +27,11 @@ export default function Emergency() {
 
   return (
     <View style={styles.container}>
+      {isLoading && (
+        <View style={styles.overlay}>
+          <Text style={styles.loading}>Loading...</Text>
+        </View>
+      )}
       <Pressable style={styles.button} onPress={callEmergencyNum}>
         <Image
           style={styles.image}
@@ -34,7 +41,10 @@ export default function Emergency() {
       </Pressable>
       <Pressable
         style={styles.button}
-        onPress={() => checkPermission(emerContacts)}
+        onPress={() => {
+          setIsLoading(true);
+          checkPermission(setIsLoading, emerContacts);
+        }}
       >
         <Image
           style={styles.image}
@@ -92,5 +102,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "85%",
     backgroundColor: "black",
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    zIndex: 1,
+  },
+  loading: {
+    color: "#683d7d",
+    fontSize: 20,
   },
 });

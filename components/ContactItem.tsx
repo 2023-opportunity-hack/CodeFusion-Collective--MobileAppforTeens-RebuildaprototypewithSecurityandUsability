@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
   name: {
     color: "#683d7d",
     marginRight: "auto",
+    maxWidth: 150,
   },
   number: {
     color: "#683d7d",

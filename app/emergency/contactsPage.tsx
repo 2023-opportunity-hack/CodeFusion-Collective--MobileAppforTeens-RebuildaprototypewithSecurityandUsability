@@ -11,6 +11,7 @@ import { ContactItemProps } from "../../lib/types";
 
 export default function ContactsPage() {
   const [contactList, setContactList] = useState<ContactItemProps[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { emerContacts, setEmerContacts } = useEmergencyContactContext();
 
   const validateContacts = async (contacts?: EmergencyContactsType) => {
@@ -88,26 +89,35 @@ export default function ContactsPage() {
           alert("Permission to access contacts was denied");
         }
       }
+      setIsLoading(false);
     } catch (error) {
       console.error("Error getting contacts: ", error);
+      setIsLoading(false);
     }
   };
-  //possibly the issue? only calling getContacts on initialization, what else is updating the contacts?
+
   useEffect(() => {
+    setIsLoading(true);
     getContacts();
   }, []);
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Contacts</Text>
-      {contactList.map((contact, index) => (
-        <ContactItem
-          name={contact.name}
-          phoneNumbers={contact.phoneNumbers}
-          key={index}
-          emergency={contact.emergency}
-        />
-      ))}
+      {isLoading ? (
+        <Text style={styles.loading}>Loading...</Text>
+      ) : (
+        <>
+          {contactList.map((contact, index) => (
+            <ContactItem
+              name={contact.name}
+              phoneNumbers={contact.phoneNumbers}
+              key={index}
+              emergency={contact.emergency}
+            />
+          ))}
+        </>
+      )}
     </ScrollView>
   );
 }
@@ -116,10 +126,16 @@ const styles = StyleSheet.create({
   container: {
     margin: 5,
     gap: 3,
+    marginBottom: 35,
   },
   title: {
     fontSize: 20,
     marginBottom: 10,
+    color: "#683d7d",
+  },
+  loading: {
+    fontSize: 20,
+    marginTop: 10,
     color: "#683d7d",
   },
 });

@@ -19,7 +19,7 @@ const sendLocation = async (contacts?: EmergencyContactsType) => {
   }
 };
 
-export const checkPermission = async (contacts?: EmergencyContactsType) => {
+export const checkPermission = async (setLoading: (value: boolean) => void, contacts?: EmergencyContactsType) => {
   try {
     const storedPermission = await SecureStore.getItemAsync(
       "locationPermission"
@@ -35,7 +35,9 @@ export const checkPermission = async (contacts?: EmergencyContactsType) => {
         console.error("Permission denied");
       }
     }
+    setLoading(false);
   } catch (error) {
     console.error("Permission not granted: ", error);
+    setLoading(false);
   }
 };
