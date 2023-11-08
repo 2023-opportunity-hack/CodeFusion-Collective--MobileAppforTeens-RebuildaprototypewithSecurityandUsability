@@ -1,7 +1,7 @@
 import * as Contacts from "expo-contacts";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text } from "react-native";
 import ContactItem from "../../components/ContactItem";
 import {
   EmergencyContactsType,
@@ -22,7 +22,10 @@ export default function ContactsPage() {
         const filteredData = data.map((contact) => {
           let number =
             (contact.phoneNumbers && contact.phoneNumbers[0].number) || "";
-          const digitsOnly = number.replace(/\D/g, "");
+          let digitsOnly = number.replace(/\D/g, "");
+          if (digitsOnly.length > 10) {
+            digitsOnly = digitsOnly.slice(1);
+          }
           number = `(${digitsOnly.slice(0, 3)}) ${digitsOnly.slice(
             3,
             6
@@ -95,7 +98,7 @@ export default function ContactsPage() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>Contacts</Text>
       {contactList.map((contact, index) => (
         <ContactItem
@@ -105,7 +108,7 @@ export default function ContactsPage() {
           emergency={contact.emergency}
         />
       ))}
-    </View>
+    </ScrollView>
   );
 }
 

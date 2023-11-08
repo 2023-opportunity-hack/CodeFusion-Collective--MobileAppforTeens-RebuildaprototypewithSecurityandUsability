@@ -21,7 +21,6 @@ const sendLocation = async (contacts?: EmergencyContactsType) => {
 
 export const checkPermission = async (contacts?: EmergencyContactsType) => {
   try {
-    console.log("value of contacts: ", contacts);
     const storedPermission = await SecureStore.getItemAsync(
       "locationPermission"
     );

@@ -68,7 +68,8 @@ export default function ContactItem({
   };
 
   const callContact = async () => {
-    const phoneNumber = `tel:${number}`;
+    const newNumber = number.replace(/\D/g, "");
+    const phoneNumber = `tel:${newNumber}`;
 
     try {
       await Linking.openURL(phoneNumber);
