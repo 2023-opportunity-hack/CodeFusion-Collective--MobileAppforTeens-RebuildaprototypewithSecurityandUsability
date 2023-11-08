@@ -4,7 +4,7 @@ type EmergencyContactContextProviderProps = {
   children: React.ReactNode
 };
 
-export type EmergencyContactsType = string[];
+export type EmergencyContactsType = Set <string>;
 
 type EmergencyContactsContextType = {
   emerContacts: EmergencyContactsType,
@@ -14,7 +14,7 @@ type EmergencyContactsContextType = {
 export const EmergencyContactContext = createContext<EmergencyContactsContextType | null>(null);
 
 export default function EmergencyContactContextProvider({ children }: EmergencyContactContextProviderProps) {
-  const [emerContacts, setEmerContacts] = useState<EmergencyContactsType>([]);
+  const [emerContacts, setEmerContacts] = useState<EmergencyContactsType>(new Set<string>());
 
   return (
     <EmergencyContactContext.Provider value={{ emerContacts, setEmerContacts }}>
