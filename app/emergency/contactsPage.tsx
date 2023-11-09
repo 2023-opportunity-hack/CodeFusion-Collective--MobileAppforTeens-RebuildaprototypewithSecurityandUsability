@@ -1,7 +1,13 @@
 import * as Contacts from "expo-contacts";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import ContactItem from "../../components/ContactItem";
 import {
   EmergencyContactsType,
@@ -11,8 +17,8 @@ import { ContactItemProps } from "../../lib/types";
 
 export default function ContactsPage() {
   const [contactList, setContactList] = useState<ContactItemProps[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { emerContacts, setEmerContacts } = useEmergencyContactContext();
+  const [isLoading, setIsLoading] = useState(false);
+  const { setEmerContacts } = useEmergencyContactContext();
 
   const validateContacts = async (contacts?: EmergencyContactsType) => {
     try {
@@ -104,20 +110,19 @@ export default function ContactsPage() {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Contacts</Text>
-      {isLoading ? (
-        <Text style={styles.loading}>Loading...</Text>
-      ) : (
-        <>
-          {contactList.map((contact, index) => (
-            <ContactItem
-              name={contact.name}
-              phoneNumbers={contact.phoneNumbers}
-              key={index}
-              emergency={contact.emergency}
-            />
-          ))}
-        </>
+      {isLoading && (
+        <View style={styles.overlay}>
+          <ActivityIndicator size="large" color="#683d7d" />
+        </View>
       )}
+      {contactList.map((contact, index) => (
+        <ContactItem
+          name={contact.name}
+          phoneNumbers={contact.phoneNumbers}
+          key={index}
+          emergency={contact.emergency}
+        />
+      ))}
     </ScrollView>
   );
 }
@@ -137,5 +142,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 10,
     color: "#683d7d",
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
+    transitionProperty: "opacity, visibility",
+    transitionDuration: "0.75s",
+    zIndex: 1,
   },
 });

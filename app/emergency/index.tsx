@@ -1,6 +1,7 @@
 import { Link } from "expo-router";
 import { useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   Linking,
   Pressable,
@@ -29,7 +30,7 @@ export default function Emergency() {
     <View style={styles.container}>
       {isLoading && (
         <View style={styles.overlay}>
-          <Text style={styles.loading}>Loading...</Text>
+          <ActivityIndicator size="large" color="#683d7d" />
         </View>
       )}
       <Pressable style={styles.button} onPress={callEmergencyNum}>
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
-    marginTop: "20%",
+    paddingTop: "20%",
     alignItems: "center",
     gap: 25,
   },
@@ -104,18 +105,12 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
   overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "transparent",
+    transitionProperty: "opacity, visibility",
+    transitionDuration: "0.75s",
     zIndex: 1,
-  },
-  loading: {
-    color: "#683d7d",
-    fontSize: 20,
   },
 });
