@@ -99,7 +99,7 @@ export default function ContactProfessional() {
   return (
     <ScrollView nestedScrollEnabled={true}>
       <View style={styles.container}>
-        <Text style={styles.title}>Contact Professional</Text>
+        <Text style={styles.title}>Contact a Professional</Text>
         <View style={styles.form}>
           <View>
             <Text style={styles.areatitle}>The dropdown menu provides a list of national hotlines you can text or call for information</Text>
@@ -243,7 +243,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   submitbutton: {
-    marginTop: 10,
     marginBottom: 50,
     borderWidth: 1,
     borderRadius: 10,
