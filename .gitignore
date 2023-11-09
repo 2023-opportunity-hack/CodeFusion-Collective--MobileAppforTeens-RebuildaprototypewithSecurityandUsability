@@ -40,3 +40,9 @@ node_modules
 
 expo-env.d.ts
 # @end expo-cli
+
+# .idea
+.idea
+
+# Visual Studio Code
+.vscode/

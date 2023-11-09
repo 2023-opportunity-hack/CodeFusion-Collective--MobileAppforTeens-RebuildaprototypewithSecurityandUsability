@@ -9,7 +9,7 @@ export default function HomePageLayout() {
   const colorScheme = useColorScheme();
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{headerShown: false}}>
+      <Stack>
       </Stack>
     </ThemeProvider>
   )

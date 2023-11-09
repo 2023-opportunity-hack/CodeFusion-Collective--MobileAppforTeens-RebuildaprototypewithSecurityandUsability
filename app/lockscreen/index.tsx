@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Button } from "react-native";
 import { Text, View } from "../../components/Themed";
 import TicTacToePin from "../../components/TicTacToePin";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ export default function Lockscreen() {
     if (sequence.length < 3) {
       return false;
     }
-    
+
     const firstString = sequence[0];
     for (let i = 1; i < sequence.length; i++) {
       if (firstString !== sequence[i]) {
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
         width: '80%',
         alignItems: 'center',
         justifyContent: 'center',
-        borderStyle: 'dashed',
+        borderStyle: 'solid',
         backgroundColor: 'f0edf1',
         borderBottomWidth: 1,
 

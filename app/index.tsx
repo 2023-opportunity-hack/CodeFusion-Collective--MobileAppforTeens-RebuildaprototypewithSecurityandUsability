@@ -1,47 +1,28 @@
-import { Pressable, StyleSheet, useColorScheme } from 'react-native';
-import { Link, Tabs, Stack } from 'expo-router';
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-import { FontAwesome } from '@expo/vector-icons';
-import Colors from '../constants/Colors';
+import { useColorScheme } from 'react-native';
+import { useEffect } from "react";
+import { router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TabOneScreen() {
   const colorScheme = useColorScheme();
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One blah</Text>
-      <Link href="/lockscreen"> Lockscreen </Link>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
-      <Link href="/homepage" asChild>
-        <Pressable>
-          {({ pressed }) => (
-            <FontAwesome
-              name="info-circle"
-              size={25}
-              color={Colors[colorScheme ?? 'light'].text}
-              style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-            />
-          )}
-        </Pressable>
-      </Link>
-    </View>
-  );
-}
+  const navigation = useNavigation();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+  const componentDidMount = async () => {
+    try {
+      const firstTime = await AsyncStorage.getItem("isFirstTime")
+      if (firstTime != null) {
+        router.replace('/lockscreen')
+      } else {
+        router.replace('/onboarding/')
+        await AsyncStorage.setItem("isFirstTime", 'true')
+      }
+    } catch (error) {
+      console.error("Error in componentDidMount function: ", error);
+    }
+  }
+
+  useEffect(() => {
+    componentDidMount();
+  }, [])
+}
