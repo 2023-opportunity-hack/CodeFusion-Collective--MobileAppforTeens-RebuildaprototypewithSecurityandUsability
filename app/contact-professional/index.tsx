@@ -1,21 +1,69 @@
-import { Pressable, StyleSheet, useColorScheme, Image, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useState, useEffect, useMemo } from 'react';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import { SelectList } from 'react-native-dropdown-select-list';
+import { TextInput } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
-import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SMS from 'expo-sms';
 
 export default function ContactProfessional() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentValue, setCurrentValue] = useState('');
+  const [selected, setSelected] = useState('');
   const [text, setText] = useState('');
   const [count, setCount] = useState(160);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [selectedId, setSelectedId] = useState('');
   const [checked, setChecked] = useState('');
   const [error, setError] = useState(0);
+
+  const data = [
+    {key: '88788', value: 'Domestic Violence Hotline'},
+    {key: '22522', value: 'National Teen Dating Abuse Hotline'},
+    {key: '741741', value: 'Crisis Hotline'},
+    {key: '988', value: 'Suicide & Crisis Lifeline'},
+  ]
+
+  const retrieveData = async () => {
+    try {
+      const fullName = await AsyncStorage.getItem('fullName')
+      const phoneNumber = await AsyncStorage.getItem('phoneNumber')
+      const storedEmail = await AsyncStorage.getItem('storedEmail')
+      if (fullName != null) {
+        setName(fullName);
+      }
+      if (phoneNumber != null) {
+        setPhone(phoneNumber);
+      }
+      if (storedEmail != null) {
+        setEmail(storedEmail)
+      }
+    } catch (error) {
+      console.error("Error in retrieving info: ", error);
+    }
+  }
+
+  const sendSms = async () => {
+    try {
+      await AsyncStorage.setItem("fullName", `${name}`)
+      await AsyncStorage.setItem("phoneNumber", `${phone}`)
+      await AsyncStorage.setItem("storedEmail", `${email}`)
+    } catch (error) {
+      console.error("Error setting info: ", error);
+    }
+    if ((selected === '' || checked === '') || ((checked === 'Call' || checked === 'Text') && phone === '') || (checked === 'Email' && email === '')) {
+      setError(1);
+    } else {
+      const {result} = await SMS.sendSMSAsync(
+        [`${selected}`],
+        `Hi, my name is ${name}. I'd like to be contacted via ${checked}.
+      Phone Number: ${phone}
+      Email: ${email}
+      ${text}`
+      );
+
+      console.log(result);
+    }
+  }
 
   const handleTextChange = (newText: string) => {
     setText(newText);
@@ -33,56 +81,30 @@ export default function ContactProfessional() {
     setEmail(newEmail);
   }
 
-  const submitHandler = async () => {
-    const contactmessage = {
-      hotlineCenter: currentValue,
-      message: text,
-      name: name,
-      phone: phone,
-      email: email,
-      checked: checked,
-    };
-    if ((checked === '') || ((checked === 'Call' || checked === 'Text') && (phone.length < 11)) || ((checked === 'Email') && (!email.includes('@')))) {
-      setError(1);
+  useEffect(() => {
+    retrieveData();
+    const isSmsAvailable = async () => {
+      await SMS.isAvailableAsync();
     }
-    else {
-      axios.post('localhost:3000/contactProfessional', contactmessage)
-      .then((response) => {
-        setError(2);
-      })
-      .catch((err: Error) => {
-        console.log('Error sending message')
-      })
-    }
-  };
+    isSmsAvailable();
+  }, [])
 
   useEffect(() => {
     setCount(160 - text.length)
   }, [text])
 
-  const items: {label: string; value: string}[] = [
-    {label: 'Domestic Violence Hotline', value: 'Domestic Violence Hotline'}, {label: 'Teen Dating Abuse Hotline', value: 'Teen Dating Abuse Hotline'}, {label: 'Safe Helpline for Sexual Assault', value: 'Safe Helpline for Sexual Assault'},
-     {label: '24 Hour Helpline', value: '24 Hour Helpline'}
-    ];
-
   return (
-    <ScrollView>
+    <ScrollView nestedScrollEnabled={true}>
       <View style={styles.container}>
-        <Text style={styles.title}>Contact Professional</Text>
+        <Text style={styles.title}>Contact a Professional</Text>
         <View style={styles.form}>
           <View>
-            <Text style={styles.areatitle}>The dropdown menu provides a list of national hotlines you can text or call information</Text>
-            <DropDownPicker
-              items={items}
-              open={isOpen}
-              setOpen={() => setIsOpen(!isOpen)}
-              value={currentValue}
-              setValue={(val) => setCurrentValue(val)}
-              dropDownContainerStyle={{
-                alignSelf: 'center',
-                position: 'relative',
-                top: 0,
-            }}
+            <Text style={styles.areatitle}>The dropdown menu provides a list of national hotlines you can text or call for information</Text>
+            <SelectList
+            placeholder='Select a hotline'
+            setSelected={(val) => setSelected(val)}
+            data={data}
+            save="key"
             />
           </View>
           <View>
@@ -91,6 +113,7 @@ export default function ContactProfessional() {
               <Text>{count} remaining</Text>
             </View>
             <TextInput
+            textAlignVertical='top'
             multiline={true}
             numberOfLines={7}
             maxLength={160}
@@ -142,7 +165,7 @@ export default function ContactProfessional() {
               status={ checked === 'Call' ? 'checked' : 'unchecked' }
               onPress={() => setChecked('Call')}
             />
-              <Text>Call</Text>
+              <Text>Call/Voicemail</Text>
               </View>
               <View style={styles.radiooption}><RadioButton
               value="Text"
@@ -159,17 +182,13 @@ export default function ContactProfessional() {
               <Text>Email</Text>
               </View>
             </View>
+            {error === 0 ? <Text></Text> :
+            <Text style={{color:'red'}}>Please ensure all required information is filled.</Text>
+            }
           </View>
-          <TouchableOpacity style={styles.submitbutton} onPress={submitHandler}>
+          <TouchableOpacity style={styles.submitbutton} onPress={sendSms}>
             <Text style={styles.submittext}>Submit</Text>
           </TouchableOpacity>
-          {error === 0 ? (
-          <Text></Text>
-          ) : error === 1 ? (
-          <Text>Error. Please fill out missing information.</Text>
-          ) : (
-          <Text>Message sent!</Text>
-          )}
         </View>
       </View>
     </ScrollView>
@@ -221,7 +240,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   submitbutton: {
-    marginTop: 10,
+    marginBottom: 50,
     borderWidth: 1,
     borderRadius: 10,
     alignItems: 'center',
