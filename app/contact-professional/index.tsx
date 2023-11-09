@@ -1,13 +1,14 @@
 import { Pressable, StyleSheet, useColorScheme, Image, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useState, useEffect, useMemo } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { SelectList } from 'react-native-dropdown-select-list';
 import { TextInput } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SMS from 'expo-sms';
 
 export default function ContactProfessional() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState('');
   const [currentValue, setCurrentValue] = useState('');
   const [text, setText] = useState('');
   const [count, setCount] = useState(160);
@@ -17,6 +18,13 @@ export default function ContactProfessional() {
   const [checked, setChecked] = useState('');
   const [error, setError] = useState(0);
   const [isAvailable, setIsAvailable] = useState(false);
+
+    const data = [
+      {key: '88788', value: 'Domestic Violence Hotline'},
+      {key: '22522', value: 'National Teen Dating Abuse Hotline'},
+      {key: '741741', value: 'Crisis Hotline'},
+      {key: '988', value: 'Suicide & Crisis Lifeline'},
+    ]
 
   const retrieveData = async () => {
     try {
@@ -45,11 +53,11 @@ export default function ContactProfessional() {
     } catch (error) {
       console.error("Error setting info: ", error);
     }
-    if ((currentValue === '' || checked === '') || ((checked === 'Call' || checked === 'Text') && phone === '') || (checked === 'Email' && email === '')) {
+    if ((selected === '' || checked === '') || ((checked === 'Call' || checked === 'Text') && phone === '') || (checked === 'Email' && email === '')) {
       setError(1);
     } else {
       const {result} = await SMS.sendSMSAsync(
-        [`${currentValue}`],
+        [`${selected}`],
         `Hi, my name is ${name}. I'd like to be contacted via ${checked}.
       Phone Number: ${phone}
       Email: ${email}
@@ -59,14 +67,6 @@ export default function ContactProfessional() {
       console.log(result);
     }
   }
-
-  useEffect(() => {
-    retrieveData();
-    const isSmsAvailable = async () => {
-      await SMS.isAvailableAsync();
-    }
-    isSmsAvailable();
-  }, [])
 
   const handleTextChange = (newText: string) => {
     setText(newText);
@@ -85,13 +85,16 @@ export default function ContactProfessional() {
   }
 
   useEffect(() => {
+    retrieveData();
+    const isSmsAvailable = async () => {
+      await SMS.isAvailableAsync();
+    }
+    isSmsAvailable();
+  }, [])
+
+  useEffect(() => {
     setCount(160 - text.length)
   }, [text])
-
-  const items: {label: string; value: string}[] = [
-    {label: 'Domestic Violence Hotline', value: '88788'}, {label: 'National Teen Dating Abuse Hotline', value: '22522'}, {label: 'Crisis Hotline', value: '741741'},
-     {label: 'Suicide & Crisis Lifeline', value: '988'}
-    ];
 
   return (
     <ScrollView nestedScrollEnabled={true}>
@@ -100,17 +103,11 @@ export default function ContactProfessional() {
         <View style={styles.form}>
           <View>
             <Text style={styles.areatitle}>The dropdown menu provides a list of national hotlines you can text or call for information</Text>
-            <DropDownPicker
-              items={items}
-              open={isOpen}
-              setOpen={() => setIsOpen(!isOpen)}
-              value={currentValue}
-              setValue={(val) => setCurrentValue(val)}
-            //   dropDownContainerStyle={{
-            //     alignSelf: 'center',
-            //     position: 'relative',
-            //     top: 0,
-            // }}
+            <SelectList
+            placeholder='Select a hotline'
+            setSelected={(val) => setSelected(val)}
+            data={data}
+            save="key"
             />
           </View>
           <View>
