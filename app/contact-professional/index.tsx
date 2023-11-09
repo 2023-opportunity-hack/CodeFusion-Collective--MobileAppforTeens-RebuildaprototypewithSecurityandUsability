@@ -156,21 +156,21 @@ export default function ContactProfessional() {
           <View>
             <Text style={styles.areatitle}>Select contact preference</Text>
             <View style={styles.radio}>
-              <View style={styles.radiooption}><RadioButton
+              <View style={styles.radiooption}><RadioButton.Android
               value="Call"
               status={ checked === 'Call' ? 'checked' : 'unchecked' }
               onPress={() => setChecked('Call')}
             />
               <Text>Call/Voicemail</Text>
               </View>
-              <View style={styles.radiooption}><RadioButton
+              <View style={styles.radiooption}><RadioButton.Android
               value="Text"
               status={ checked === 'Text' ? 'checked' : 'unchecked' }
               onPress={() => setChecked('Text')}
             />
               <Text>Text</Text>
               </View>
-              <View style={styles.radiooption}><RadioButton
+              <View style={styles.radiooption}><RadioButton.Android
               value="Email"
               status={ checked === 'Email' ? 'checked' : 'unchecked' }
               onPress={() => setChecked('Email')}
@@ -233,7 +233,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   radiooption: {
-    borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
