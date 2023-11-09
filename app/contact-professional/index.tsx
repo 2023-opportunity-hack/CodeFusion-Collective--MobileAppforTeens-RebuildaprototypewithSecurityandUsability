@@ -115,7 +115,6 @@ export default function ContactProfessional() {
             <TextInput
             textAlignVertical='top'
             multiline={true}
-            numberOfLines={7}
             maxLength={160}
             value={text}
             onChangeText={handleTextChange}
@@ -124,8 +123,7 @@ export default function ContactProfessional() {
           <View>
             <Text style={styles.areatitle}>Your Name</Text>
             <TextInput
-            multiline={true}
-            numberOfLines={1}
+            multiline={false}
             maxLength={20}
             value={name}
             onChangeText={handleNameChange}
@@ -136,8 +134,7 @@ export default function ContactProfessional() {
           <View>
             <Text style={styles.areatitle}>Your Phone Number</Text>
             <TextInput
-            multiline={true}
-            numberOfLines={1}
+            multiline={false}
             maxLength={20}
             value={phone}
             onChangeText={handlePhoneChange}
@@ -148,8 +145,7 @@ export default function ContactProfessional() {
           <View>
             <Text style={styles.areatitle}>Your Email Address</Text>
             <TextInput
-            multiline={true}
-            numberOfLines={1}
+            multiline={false}
             maxLength={20}
             value={email}
             onChangeText={handleEmailChange}
@@ -158,7 +154,7 @@ export default function ContactProfessional() {
             style={styles.infoinput}/>
           </View>
           <View>
-            <Text style={styles.areatitle}>Choose how you want to be contacted</Text>
+            <Text style={styles.areatitle}>Select contact preference</Text>
             <View style={styles.radio}>
               <View style={styles.radiooption}><RadioButton
               value="Call"
@@ -230,12 +226,14 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderRadius: 5,
     padding: 10,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    height: 140,
   },
   radio: {
     flexDirection: 'column',
   },
   radiooption: {
+    borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
