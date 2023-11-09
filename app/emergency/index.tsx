@@ -1,11 +1,19 @@
 import { Link } from "expo-router";
-import { Image, Linking, Platform, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
-import { checkPermission } from "../../lib/utils";
+import {
+  ActivityIndicator,
+  Image,
+  Linking,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useEmergencyContactContext } from "../../context/contactContext";
-
+import { checkPermission } from "../../lib/utils";
 
 export default function Emergency() {
+  const [isLoading, setIsLoading] = useState(false);
   const { emerContacts } = useEmergencyContactContext();
 
   const callEmergencyNum = async () => {
@@ -16,35 +24,55 @@ export default function Emergency() {
     } catch (error) {
       console.error("Error making emergency phone call", error);
     }
-  }
+  };
 
   return (
-    <View style={styles.container} >
+    <View style={styles.container}>
+      {isLoading && (
+        <View style={styles.overlay}>
+          <ActivityIndicator size="large" color="#683d7d" />
+        </View>
+      )}
       <Pressable style={styles.button} onPress={callEmergencyNum}>
-        <Image style={styles.image} source={require("../../assets/images/telephone.png")} />
+        <Image
+          style={styles.image}
+          source={require("../../assets/images/telephone.png")}
+        />
         <Text style={styles.text}>Call 911</Text>
       </Pressable>
-      <Pressable style={styles.button} onPress={() => checkPermission(emerContacts)}>
-        <Image style={styles.image} source={require("../../assets/images/location.png")} />
+      <Pressable
+        style={styles.button}
+        onPress={() => {
+          setIsLoading(true);
+          checkPermission(setIsLoading, emerContacts);
+        }}
+      >
+        <Image
+          style={styles.image}
+          source={require("../../assets/images/location.png")}
+        />
         <Text style={styles.text}>Send location to contacts</Text>
       </Pressable>
-      <Link href='/emergency/contactsPage' style={styles.link} asChild>
+      <Link href="/emergency/contactsPage" style={styles.link} asChild>
         <Pressable style={styles.button}>
-          <Image style={styles.image} source={require("../../assets/images/friends.png")} />
+          <Image
+            style={styles.image}
+            source={require("../../assets/images/friends.png")}
+          />
           <Text style={styles.text}>Call a friend</Text>
         </Pressable>
       </Link>
     </View>
-  )
-};
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
-    marginTop: '20%',
-    alignItems: 'center',
-    gap: 25
+    paddingTop: "20%",
+    alignItems: "center",
+    gap: 25,
   },
   text: {
     color: "#683d7d",
@@ -57,23 +85,32 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "#683d7d",
-    borderStyle: 'solid',
-    width: '85%',
+    borderStyle: "solid",
+    width: "85%",
     height: 40,
     position: "relative",
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
   },
   image: {
     height: 25,
     width: 25,
     position: "absolute",
-    left: '5%'
+    left: "5%",
   },
   link: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     width: "85%",
-    backgroundColor: "black"
+    backgroundColor: "black",
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
+    transitionProperty: "opacity, visibility",
+    transitionDuration: "0.75s",
+    zIndex: 1,
   },
 });
