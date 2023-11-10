@@ -8,7 +8,6 @@ const warningSignsStyles = StyleSheet.create({
     marginBottom: 10,
   },
   descriptionContainer: {
-    borderRadius: 15,
     width: 300,
     maxHeight: 200,
   },
