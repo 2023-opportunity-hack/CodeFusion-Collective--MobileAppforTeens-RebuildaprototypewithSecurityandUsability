@@ -9,7 +9,6 @@ const warningSignsStyles = StyleSheet.create({
   },
   descriptionContainer: {
     width: 300,
-    maxHeight: 200,
   },
   description: {
     fontSize: 16,
