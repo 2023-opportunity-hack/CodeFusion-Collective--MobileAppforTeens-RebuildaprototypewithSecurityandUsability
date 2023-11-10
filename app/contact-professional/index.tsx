@@ -115,7 +115,6 @@ export default function ContactProfessional() {
             <TextInput
             textAlignVertical='top'
             multiline={true}
-            numberOfLines={7}
             maxLength={160}
             value={text}
             onChangeText={handleTextChange}
@@ -124,8 +123,7 @@ export default function ContactProfessional() {
           <View>
             <Text style={styles.areatitle}>Your Name</Text>
             <TextInput
-            multiline={true}
-            numberOfLines={1}
+            multiline={false}
             maxLength={20}
             value={name}
             onChangeText={handleNameChange}
@@ -136,8 +134,7 @@ export default function ContactProfessional() {
           <View>
             <Text style={styles.areatitle}>Your Phone Number</Text>
             <TextInput
-            multiline={true}
-            numberOfLines={1}
+            multiline={false}
             maxLength={20}
             value={phone}
             onChangeText={handlePhoneChange}
@@ -148,8 +145,7 @@ export default function ContactProfessional() {
           <View>
             <Text style={styles.areatitle}>Your Email Address</Text>
             <TextInput
-            multiline={true}
-            numberOfLines={1}
+            multiline={false}
             maxLength={20}
             value={email}
             onChangeText={handleEmailChange}
@@ -158,23 +154,23 @@ export default function ContactProfessional() {
             style={styles.infoinput}/>
           </View>
           <View>
-            <Text style={styles.areatitle}>Choose how you want to be contacted</Text>
+            <Text style={styles.areatitle}>Select contact preference</Text>
             <View style={styles.radio}>
-              <View style={styles.radiooption}><RadioButton
+              <View style={styles.radiooption}><RadioButton.Android
               value="Call"
               status={ checked === 'Call' ? 'checked' : 'unchecked' }
               onPress={() => setChecked('Call')}
             />
               <Text>Call/Voicemail</Text>
               </View>
-              <View style={styles.radiooption}><RadioButton
+              <View style={styles.radiooption}><RadioButton.Android
               value="Text"
               status={ checked === 'Text' ? 'checked' : 'unchecked' }
               onPress={() => setChecked('Text')}
             />
               <Text>Text</Text>
               </View>
-              <View style={styles.radiooption}><RadioButton
+              <View style={styles.radiooption}><RadioButton.Android
               value="Email"
               status={ checked === 'Email' ? 'checked' : 'unchecked' }
               onPress={() => setChecked('Email')}
@@ -230,7 +226,8 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderRadius: 5,
     padding: 10,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    height: 140,
   },
   radio: {
     flexDirection: 'column',

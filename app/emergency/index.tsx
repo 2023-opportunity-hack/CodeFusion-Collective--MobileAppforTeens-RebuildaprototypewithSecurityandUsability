@@ -28,6 +28,17 @@ export default function Emergency() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Link href="/homepage" asChild>
+          <Pressable>
+            <Image
+              source={require("../../assets/images/Back.png")}
+              style={styles.backimage}
+            />
+          </Pressable>
+        </Link>
+        <Text style={styles.title}>Emergency</Text>
+      </View>
       {isLoading && (
         <View style={styles.overlay}>
           <ActivityIndicator size="large" color="#683d7d" />
@@ -70,7 +81,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
-    paddingTop: "20%",
+    //paddingTop: "20%",
     alignItems: "center",
     gap: 25,
   },
@@ -112,5 +123,24 @@ const styles = StyleSheet.create({
     transitionProperty: "opacity, visibility",
     transitionDuration: "0.75s",
     zIndex: 1,
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "95%",
+    marginTop: "20%",
+    marginBottom: "10%",
+  },
+  backimage: {
+    height: 30,
+    width: 30,
+    marginRight: "-10%",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 });

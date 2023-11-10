@@ -1,8 +1,11 @@
 import * as Contacts from "expo-contacts";
+import { Link } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Image,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -109,12 +112,22 @@ export default function ContactsPage() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Contacts</Text>
       {isLoading && (
         <View style={styles.overlay}>
           <ActivityIndicator size="large" color="#683d7d" />
         </View>
       )}
+      <View style={styles.header}>
+        <Link href="/emergency" asChild>
+          <Pressable>
+            <Image
+              source={require("../../assets/images/Back.png")}
+              style={styles.backimage}
+            />
+          </Pressable>
+        </Link>
+        <Text style={styles.title}>Contacts</Text>
+      </View>
       {contactList.map((contact, index) => (
         <ContactItem
           name={contact.name}
@@ -131,12 +144,8 @@ const styles = StyleSheet.create({
   container: {
     margin: 5,
     gap: 3,
+    marginTop: -5,
     marginBottom: 35,
-  },
-  title: {
-    fontSize: 20,
-    marginBottom: 10,
-    color: "#683d7d",
   },
   loading: {
     fontSize: 20,
@@ -151,5 +160,24 @@ const styles = StyleSheet.create({
     transitionProperty: "opacity, visibility",
     transitionDuration: "0.75s",
     zIndex: 1,
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "95%",
+    marginTop: "20%",
+    marginBottom: "10%",
+  },
+  backimage: {
+    height: 30,
+    width: 30,
+    marginRight: "-10%",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 });
