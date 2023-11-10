@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Image, Modal, StyleSheet, Text, Pressable, ScrollView, View } from 'react-native';
-import bank from './safetyLibrary.jsx'
+import { Link } from "expo-router";
+import bank from './safetyLibrary.jsx';
 
 const SafePlanHome = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -18,7 +19,17 @@ const SafePlanHome = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Safety Plan</Text>
+       <View style={styles.header}>
+        <Link href="/homepage" asChild>
+          <Pressable>
+            <Image
+              source={require("../../assets/images/Back.png")}
+              style={styles.backimage}
+            />
+          </Pressable>
+        </Link>
+        <Text style={styles.title}>Safety Plan</Text>
+      </View>
       <Text style={styles.statement}>{bank.Statement}</Text>
       <Modal
         animationType="fade"
@@ -58,9 +69,23 @@ const SafePlanHome = () => {
 
 const styles = StyleSheet.create({
   title: {
-    fontWeight: `500`,
-    fontSize: 40,
-    marginBottom: '6%',
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  backimage: {
+    height: 30,
+    width: 30,
+    marginRight: "-10%",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "95%",
+    marginTop: "5%",
+    marginBottom: "5%",
   },
   container: {
     flex: 1,
