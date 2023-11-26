@@ -12,54 +12,54 @@ export default function Homepage() {
       <Link href="/emergency" asChild>
         <Pressable style={styles.button}>
           <View style={styles.iconandtext}>
-          <Image source={require('../../assets/images/SOS.png')} style={styles.image} />
-          <Text style={styles.buttonText}>
-            Emergency </Text></View>
+            <Image source={require('../../assets/images/SOS.png')} style={styles.image} />
+            <Text style={styles.buttonText}> Emergency </Text>
+          </View>
           <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
         </Pressable>
       </Link>
       <Link href="/contact-professional" asChild>
         <Pressable style={styles.button}>
           <View style={styles.iconandtext}>
-          <Image source={require('../../assets/images/contact-professional.png')} style={styles.image} />
-          <Text style={styles.buttonText}>
-            Contact Professional </Text></View>
+            <Image source={require('../../assets/images/contact-professional.png')} style={styles.image} />
+            <Text style={styles.buttonText}> Contact Professional </Text>
+          </View>
           <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
         </Pressable>
       </Link>
       <Link href="/document-abuse" asChild>
         <Pressable style={styles.button}>
           <View style={styles.iconandtext}>
-          <Image source={require('../../assets/images/document-abuse.png')} style={styles.image} />
-          <Text style={styles.buttonText}>
-            Document Abuse </Text></View>
+            <Image source={require('../../assets/images/document-abuse.png')} style={styles.image} />
+            <Text style={styles.buttonText}> Document Abuse </Text>
+          </View>
           <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
         </Pressable>
       </Link>
       <Link href="/safety-plan" asChild>
         <Pressable style={styles.button}>
           <View style={styles.iconandtext}>
-          <Image source={require('../../assets/images/safety-plan.png')} style={styles.image} />
-          <Text style={styles.buttonText}>
-            Safety Plan </Text></View>
+            <Image source={require('../../assets/images/safety-plan.png')} style={styles.image} />
+            <Text style={styles.buttonText}> Safety Plan </Text>
+          </View>
           <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
         </Pressable>
       </Link>
       <Link href="/self-care" asChild>
         <Pressable style={styles.button}>
           <View style={styles.iconandtext}>
-          <Image source={require('../../assets/images/self-care.png')} style={styles.image} />
-          <Text style={styles.buttonText}>
-            Self Care </Text></View>
+            <Image source={require('../../assets/images/self-care.png')} style={styles.image} />
+            <Text style={styles.buttonText}> Self Care </Text>
+          </View>
           <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
         </Pressable>
       </Link>
       <Link href="/warning-signs" asChild>
         <Pressable style={styles.button}>
           <View style={styles.iconandtext}>
-          <Image source={require('../../assets/images/warning-sign.png')} style={styles.image} />
-          <Text style={styles.buttonText}>
-            Warning Signs </Text></View>
+            <Image source={require('../../assets/images/warning-sign.png')} style={styles.image} />
+            <Text style={styles.buttonText}> Warning Signs </Text>
+          </View>
           <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
         </Pressable>
       </Link>
@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     transform: [{scaleX: -1}],
-    // color: '#420C5C',
   },
   button: {
     width: '75%',

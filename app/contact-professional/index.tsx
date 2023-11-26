@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     marginRight: "-10%",
   },
   title: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: "bold",
     marginLeft: "auto",
     marginRight: "auto",
