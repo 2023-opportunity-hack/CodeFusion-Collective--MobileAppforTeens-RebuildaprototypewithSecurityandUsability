@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
+import { useState } from 'react';
+import { Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DomesticViolenceText from '../../components/warning-signs/DomesticViolenceText';
 import EconomicAbuseText from '../../components/warning-signs/EconomicAbuseText';
 import EmotionalAbuseText from '../../components/warning-signs/EmotionalAbuseText';
 import GaslightingText from '../../components/warning-signs/GaslightingText';
-import ReproductiveCoercionText from '../../components/warning-signs/ReproductiveCoercionText';
 import PhysicalAbuseText from '../../components/warning-signs/PhysicalAbuseText';
+import ReproductiveCoercionText from '../../components/warning-signs/ReproductiveCoercionText';
 import SexualAbuseText from '../../components/warning-signs/SexualAbuseText';
 import TechnologicalAssistedAbuseText from '../../components/warning-signs/TechnologicalAssistedAbuseText';
 
@@ -26,76 +26,81 @@ export default function WarningSigns () {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={styles.backButton}>
-          <Link href='/homepage' style={{marginRight: '5%', marginTop: '8%'}}>
-            <Image source={require('../../assets/images/Back.png')}   style={{width: 20, height: 20, marginTop: '5%'}} />
-          </Link>
-          <Text style={styles.title}>Warning Signs</Text>
-        </View>
+      <View style={styles.header}>
+        <Link href="/homepage" asChild>
+          <Pressable>
+            <Image
+              source={require("../../assets/images/Back.png")}
+              style={styles.backimage}
+            />
+          </Pressable>
+        </Link>
+        <Text style={styles.title}>Warning Signs</Text>
+      </View>
         <Text style={styles.description}>It is not always obvious when someone you care about has been affected by sexual violence. Learning the warning signs for children, teens, and college-age adults can help you learn when to act.</Text>
         <TouchableOpacity onPress={() => setShowMoreDomesticViolence(!showMoreDomesticViolence)}>
           <View style={styles.dropDownButtonOne}>
             <Text>
-            {showMoreDomesticViolence ? <DomesticViolenceText/> : 'What is domestic violence?'}
+              {showMoreDomesticViolence ? <DomesticViolenceText/> : 'What is domestic violence?'}
             </Text>
-            <Image source={require('../../assets/images/Back.png')}     style={{width: 20, height: 20, transform: [{ rotate: '270deg' }], marginLeft: '40%'}}resizeMode='contain'/>
+            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
           </View>
         </TouchableOpacity>
         <Text>Types of abuse</Text>
         <TouchableOpacity onPress={() => setShowMoreEmotionalAbuse(!showMoreEmotionalAbuse)}>
-        <View style={styles.dropDownButtonTop}>
-          <Text>
-          {showMoreEmotionalAbuse ? <EmotionalAbuseText/> : 'Emotional abuse'}
-          </Text>
-          <Image source={require('../../assets/images/Back.png')}     style={{width: 20, height: 20, transform: [{ rotate: '270deg' }], marginLeft: '61%'}}resizeMode='contain'/>
+          <View style={styles.dropDownButtonTop}>
+            <Text>
+              {showMoreEmotionalAbuse ? <EmotionalAbuseText/> : 'Emotional abuse'}
+            </Text>
+            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreGaslighting(!showMoreGaslighting)}>
-        <View style={styles.dropDownButtonMiddle}>
-          <Text>
-          {showMoreGaslighting ? <GaslightingText/> : 'Gaslighting'}
-          </Text>
-          <Image source={require('../../assets/images/Back.png')}     style={{width: 20, height: 20, transform: [{ rotate: '270deg' }], marginLeft: '72%'}}resizeMode='contain'/>
-        </View>
+          <View style={styles.dropDownButtonMiddle}>
+            <Text>
+              {showMoreGaslighting ? <GaslightingText/> : 'Gaslighting'}
+            </Text>
+            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreReproductiveCoersion(!showMoreReproductiveCoersion)}>
           <View style={styles.dropDownButtonMiddle}>
             <Text>
-            {showMoreReproductiveCoersion ? <ReproductiveCoercionText/> : 'Reproductive coercion'}
+              {showMoreReproductiveCoersion ? <ReproductiveCoercionText/> : 'Reproductive coercion'}
             </Text>
-            <Image source={require('../../assets/images/Back.png')}     style={{width: 20, height: 20, transform: [{ rotate: '270deg' }], marginLeft: '49%'}}resizeMode='contain'/>
+            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMorePhysicalAbuse(!showMorePhysicalAbuse)}>
           <View style={styles.dropDownButtonMiddle}>
             <Text>
-          {showMorePhysicalAbuse ? <PhysicalAbuseText/> : 'Physical abuse'}
+              {showMorePhysicalAbuse ? <PhysicalAbuseText/> : 'Physical abuse'}
             </Text>
-            <Image source={require('../../assets/images/Back.png')}     style={{width: 20, height: 20, transform: [{ rotate: '270deg' }], marginLeft: '64%'}}resizeMode='contain'/>
+            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreSexualAbuse(!showMoreSexualAbuse)}>
           <View style={styles.dropDownButtonMiddle}>
             <Text>
-            {showMoreSexualAbuse ? <SexualAbuseText/> : 'Sexual abuse'}
+              {showMoreSexualAbuse ? <SexualAbuseText/> : 'Sexual abuse'}
             </Text>
-            <Image source={require('../../assets/images/Back.png')}     style={{width: 20, height: 20, transform: [{ rotate: '270deg' }], marginLeft: '67%'}}resizeMode='contain'/>
+            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreEconomicAbuse  (!showMoreEconomicAbuse)}>
-          <View style={styles.dropDownButtonMiddle}>
+          <View style={{...styles.dropDownButtonMiddle}}>
             <Text>
-            {showMoreEconomicAbuse ? <EconomicAbuseText/> : 'Economic abuse'}
+              {showMoreEconomicAbuse ? <EconomicAbuseText/> : 'Economic abuse'}
             </Text>
-            <Image source={require('../../assets/images/Back.png')}     style={{width: 20, height: 20, transform: [{ rotate: '270deg' }], marginLeft: '60.5%'}}resizeMode='contain'/>
+            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreTechnologicalAssistedAbuse(!showMoreTechnologicalAssistedAbuse)}>
           <View style={styles.dropDownButtonBottom}>
             <Text>
-            {showMoreTechnologicalAssistedAbuse ?     <TechnologicalAssistedAbuseText/> : 'Technological-assisted abuse'}
+              {showMoreTechnologicalAssistedAbuse ? <TechnologicalAssistedAbuseText/> : 'Technological-assisted abuse'}
             </Text>
-            <Image source={require('../../assets/images/Back.png')}     style={{width: 20, height: 20, transform: [{ rotate: '270deg' }], marginLeft: '34%'}}resizeMode='contain'/>
+            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
           </View>
         </TouchableOpacity>
       </View>
@@ -108,12 +113,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0EDF1',
     flex: 1,
     padding: 30,
-  },
-  title: {
-    textAlign: 'center',
-    fontSize: 40,
-    fontWeight: 'bold',
-    marginBottom: 50,
   },
   description: {
     marginBottom: 25,
@@ -156,9 +155,29 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     transform: [{ rotate: '270deg' }],
+    marginLeft: 'auto'
   },
   backButton: {
     textAlign: 'left',
     flexDirection: 'row',
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "95%",
+    marginTop: "20%",
+    marginBottom: "15%",
+  },
+  backimage: {
+    height: 30,
+    width: 30,
+    marginRight: "-10%",
+  },
+  title: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginLeft: "auto",
+    marginRight: "auto",
   }
 });

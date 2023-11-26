@@ -1,10 +1,11 @@
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { useState, useEffect, useMemo } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Link } from 'expo-router';
+import * as SMS from 'expo-sms';
+import { useEffect, useState } from 'react';
+import { Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { TextInput } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as SMS from 'expo-sms';
 
 export default function ContactProfessional() {
   const [selected, setSelected] = useState('');
@@ -96,7 +97,17 @@ export default function ContactProfessional() {
   return (
     <ScrollView nestedScrollEnabled={true}>
       <View style={styles.container}>
-        <Text style={styles.title}>Contact a Professional</Text>
+        <View style={styles.header}>
+          <Link href="/homepage" asChild>
+            <Pressable>
+              <Image
+                source={require("../../assets/images/Back.png")}
+                style={styles.backimage}
+              />
+            </Pressable>
+          </Link>
+          <Text style={styles.title}>Contact a Professional</Text>
+        </View>
         <View style={styles.form}>
           <View>
             <Text style={styles.areatitle}>The dropdown menu provides a list of national hotlines you can text or call for information</Text>
@@ -110,7 +121,7 @@ export default function ContactProfessional() {
           <View>
             <View style={styles.messagecontent}>
               <Text style={styles.areatitle}>Type your message here</Text>
-              <Text>{count} remaining</Text>
+              <Text style={styles.remainingText}>{count} remaining</Text>
             </View>
             <TextInput
             textAlignVertical='top'
@@ -197,7 +208,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F0EDF1'
+    backgroundColor: '#F0EDF1',
+    paddingTop: 20
   },
   form: {
     width: '70%',
@@ -205,9 +217,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   areatitle: {
-    marginTop: 10,
     justifyContent: 'space-between',
     flexDirection: 'row',
+    marginTop: 5,
+    marginBottom: 5
   },
   infoinput: {
     borderWidth: 1,
@@ -248,8 +261,26 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "95%",
+    marginTop: "20%",
+    marginBottom: "5%",
   },
+  backimage: {
+    height: 30,
+    width: 30,
+    marginRight: "-10%",
+  },
+  title: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  remainingText: {
+    fontSize: 12
+  }
 })

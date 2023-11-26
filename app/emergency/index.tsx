@@ -1,10 +1,12 @@
 import { Link } from "expo-router";
-import { useState } from "react";
+import * as SecureStore from "expo-secure-store";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
   Linking,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -14,7 +16,7 @@ import { checkPermission } from "../../lib/utils";
 
 export default function Emergency() {
   const [isLoading, setIsLoading] = useState(false);
-  const { emerContacts } = useEmergencyContactContext();
+  const { emerContacts, setEmerContacts } = useEmergencyContactContext();
 
   const callEmergencyNum = async () => {
     const phoneNumber = "tel:911";
@@ -26,54 +28,67 @@ export default function Emergency() {
     }
   };
 
+  const fetchEmergencyContacts = async () => {
+    const emergencyContacts = await SecureStore.getItemAsync("emergencyContacts");
+    if (emergencyContacts) {
+      const parsedContacts = JSON.parse(emergencyContacts);
+      const newSet = new Set<string>(Array.from(parsedContacts));
+      setEmerContacts(newSet);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmergencyContacts();
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Link href="/homepage" asChild>
-          <Pressable>
-            <Image
-              source={require("../../assets/images/Back.png")}
-              style={styles.backimage}
-            />
-          </Pressable>
-        </Link>
-        <Text style={styles.title}>Emergency</Text>
-      </View>
-      {isLoading && (
-        <View style={styles.overlay}>
-          <ActivityIndicator size="large" color="#683d7d" />
+    <ScrollView contentContainerStyle={styles.container}>
+        {isLoading && (
+          <View style={styles.overlay}>
+            <ActivityIndicator size="large" color="#683d7d" />
+          </View>
+        )}
+        <View style={styles.header}>
+          <Link href="/homepage" asChild>
+            <Pressable>
+              <Image
+                source={require("../../assets/images/Back.png")}
+                style={styles.backimage}
+              />
+            </Pressable>
+          </Link>
+          <Text style={styles.title}>Emergency</Text>
         </View>
-      )}
-      <Pressable style={styles.button} onPress={callEmergencyNum}>
-        <Image
-          style={styles.image}
-          source={require("../../assets/images/telephone.png")}
-        />
-        <Text style={styles.text}>Call 911</Text>
-      </Pressable>
-      <Pressable
-        style={styles.button}
-        onPress={() => {
-          setIsLoading(true);
-          checkPermission(setIsLoading, emerContacts);
-        }}
-      >
-        <Image
-          style={styles.image}
-          source={require("../../assets/images/location.png")}
-        />
-        <Text style={styles.text}>Send location to contacts</Text>
-      </Pressable>
-      <Link href="/emergency/contactsPage" style={styles.link} asChild>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={callEmergencyNum}>
           <Image
             style={styles.image}
-            source={require("../../assets/images/friends.png")}
+            source={require("../../assets/images/telephone.png")}
           />
-          <Text style={styles.text}>Call a friend</Text>
+          <Text style={styles.text}>Call 911</Text>
         </Pressable>
-      </Link>
-    </View>
+        <Pressable
+          style={styles.button}
+          onPress={() => {
+            setIsLoading(true);
+            checkPermission(setIsLoading, emerContacts);
+          }}
+        >
+          <Image
+            style={styles.image}
+            source={require("../../assets/images/location.png")}
+          />
+          <Text style={styles.text}>Send location to contacts</Text>
+        </Pressable>
+        <Link href="/emergency/contactsPage" style={styles.link} asChild>
+          <Pressable style={styles.button}>
+            <Image
+              style={styles.image}
+              source={require("../../assets/images/friends.png")}
+            />
+            <Text style={styles.text}>Call a friend</Text>
+          </Pressable>
+        </Link>
+    </ScrollView>
   );
 }
 
@@ -81,7 +96,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
-    //paddingTop: "20%",
     alignItems: "center",
     gap: 25,
   },
@@ -138,7 +152,7 @@ const styles = StyleSheet.create({
     marginRight: "-10%",
   },
   title: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: "bold",
     marginLeft: "auto",
     marginRight: "auto",
