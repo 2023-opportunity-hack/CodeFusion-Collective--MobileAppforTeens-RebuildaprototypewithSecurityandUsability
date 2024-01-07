@@ -1,5 +1,5 @@
 import { Link } from 'expo-router';
-import { Image, StyleSheet, Text, Pressable, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const Onboarding3 = () => {
 
@@ -8,10 +8,10 @@ const Onboarding3 = () => {
 
       <Image style={styles.logo} source={require(`../../assets/images/onboard3.png`)} />
       <Text style={styles.title}>How it works</Text>
-      <Text style={styles.description}>Tapping any one square three times in a row reveal the real application</Text>
+      <Text style={styles.description}>Tapping any one square three times in a row reveals the real application</Text>
       <Link style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} href="/lockscreen" asChild>
         <Pressable>
-          <View style={styles.button}><Text style={styles.buttontext}>How it Works </Text></View>
+          <View style={styles.button}><Text style={styles.buttontext}>Get Started</Text></View>
         </Pressable>
       </Link>
 
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   logo: {
     width: '50%',

@@ -1,17 +1,16 @@
 import { Link } from 'expo-router';
-import { Image, StyleSheet, Text, Pressable, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const Onboarding2 = () => {
 
   return (
     <View style={styles.container}>
-
       <Image style={styles.logo} source={require(`../../assets/images/onboard2.png`)} />
       <Text style={styles.title}>How it works</Text>
       <Text style={styles.description}>The app is disguised as a game to offer a layer of confidentiality and protection</Text>
       <Link style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} href="/onboarding/index3" asChild>
         <Pressable>
-          <View style={styles.button}><Text style={styles.buttontext}>How it Works </Text></View>
+          <View style={styles.button}><Text style={styles.buttontext}>Continue</Text></View>
         </Pressable>
       </Link>
     </View>
@@ -23,6 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   logo: {
     width: '50%',
