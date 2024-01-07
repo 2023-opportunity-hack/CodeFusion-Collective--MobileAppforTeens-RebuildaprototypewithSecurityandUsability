@@ -1,9 +1,9 @@
-import { Pressable, StyleSheet, useColorScheme, Image, View, Text, TouchableOpacity } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { useState, useEffect, useMemo } from 'react';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
+import { useEffect, useState } from 'react';
+import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { TextInput } from 'react-native-gesture-handler';
 
 
 export default function GratitiudeJournal() {
@@ -60,18 +60,28 @@ export default function GratitiudeJournal() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Gratitude Journal</Text>
+      <View style={styles.header}>
+        <Link href="/self-care" asChild>
+          <Pressable>
+            <Image
+              source={require("../../../assets/images/Back.png")}
+              style={styles.backimage}
+            />
+          </Pressable>
+        </Link>
+        <Text style={styles.title}>Gratitude Journal</Text>
+      </View>
       <View style={styles.form}>
-      <Text style={styles.areatitle}>Today I am grateful for...</Text>
+        <Text style={styles.areatitle}>Today I am grateful for...</Text>
         <TextInput
-              multiline={true}
-              numberOfLines={10}
-              maxLength={480}
-              value={gratefulEntry}
-              onChangeText={handleGratefulChange}
-              placeholder='Try to list three things that went well today and why you are grateful for them.'
-              placeholderTextColor={'gray'}
-              style={styles.textinput}/>
+          multiline={true}
+          numberOfLines={10}
+          maxLength={480}
+          value={gratefulEntry}
+          onChangeText={handleGratefulChange}
+          placeholder='Try to list three things that went well today and why you are grateful for them.'
+          placeholderTextColor={'gray'}
+          style={styles.textinput}/>
         <View>
           <Text style={styles.areatitle}>Or, choose a journal prompt below</Text>
           <DropDownPicker
@@ -83,27 +93,28 @@ export default function GratitiudeJournal() {
             dropDownContainerStyle={{
               top: 0,
               maxHeight: 150,
-          }}
+            }}
           />
           <TextInput
-              multiline={true}
-              numberOfLines={10}
-              maxLength={480}
-              value={promptEntry}
-              onChangeText={handlePromptChange}
-              placeholder='Write your response here.'
-              placeholderTextColor={'gray'}
-              style={styles.textinput}
-              />
+            multiline={true}
+            numberOfLines={10}
+            maxLength={480}
+            value={promptEntry}
+            onChangeText={handlePromptChange}
+            placeholder='Write your response here.'
+            placeholderTextColor={'gray'}
+            style={styles.textinput}
+            />
         </View>
         <TouchableOpacity style={styles.submitbutton} onPress={handleSubmit}>
-            <Text style={styles.submittext}>Save Journal Entry</Text>
+          <Text style={styles.submittext}>Save Journal Entry</Text>
         </TouchableOpacity>
         {submitJournal === true ? <Text>Submitted!</Text> : <Text></Text>}
         <Link href="/self-care/gratitude-journal/journal-entries" asChild>
           <TouchableOpacity style={styles.submitbutton}>
             <Text style={styles.submittext}>
-              View Entries </Text>
+             View Entries
+            </Text>
           </TouchableOpacity>
         </Link>
       </View>
@@ -121,7 +132,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#F0EDF1'
   },
   form: {
@@ -148,8 +159,23 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "95%",
+    marginTop: "20%",
+    marginBottom: "10%",
+  },
+  backimage: {
+    height: 30,
+    width: 30,
+    marginRight: "-10%",
+  },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 25,
+    fontWeight: "bold",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 })

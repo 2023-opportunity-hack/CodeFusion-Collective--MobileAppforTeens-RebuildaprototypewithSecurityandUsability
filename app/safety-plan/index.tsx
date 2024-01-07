@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Image, Modal, StyleSheet, Text, Pressable, ScrollView, View } from 'react-native';
 import { Link } from "expo-router";
+import { useState } from 'react';
+import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import bank from './safetyLibrary.jsx';
 
 const SafePlanHome = () => {

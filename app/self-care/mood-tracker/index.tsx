@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
 import { Link } from 'expo-router';
+import { useState } from 'react';
+import { Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 
 
@@ -15,12 +15,17 @@ export default function MoodTracker () {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={styles.backButton}>
-          <Link href='/self-care' style={{marginRight: '5%', marginTop: '8%'}}>
-          <Image source={require('../../../assets/images/Back.png')}   style={{width: 20, height: 20, marginTop: '5%'}} />
-          </Link>
-          <Text style={styles.title}>Mood Tracker</Text>
-        </View>
+      <View style={styles.header}>
+        <Link href="/self-care" asChild>
+          <Pressable>
+            <Image
+              source={require("../../../assets/images/Back.png")}
+              style={styles.backimage}
+            />
+          </Pressable>
+        </Link>
+        <Text style={styles.title}>Mood Tracker</Text>
+      </View>
         <Text style={styles.description}>If you are not having a great day, it may help to use one of your self care strategies. If you need to, try one and see if it helps!</Text>
         <Text>Your Strategies</Text>
         <TouchableOpacity onPress={() => setShowMoreStrategyOne(!showMoreStrategyOne)}>
@@ -59,15 +64,6 @@ export default function MoodTracker () {
           </View>
         </TouchableOpacity>
       </View>
-        <Link href='/self-care' style={styles.clearButton}>
-          <View>
-            <Pressable>
-              <Text style={styles.clearButtonText}>
-                Back to Self Care
-              </Text>
-            </Pressable>
-          </View>
-        </Link>
     </ScrollView>
   );
 };
@@ -77,12 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0EDF1',
     flex: 1,
     padding: 30,
-  },
-  title: {
-    textAlign: 'center',
-    fontSize: 40,
-    fontWeight: 'bold',
-    marginBottom: 50,
+    paddingTop: 0
   },
   description: {
     marginBottom: 25,
@@ -121,15 +112,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 5,
     borderBottomLeftRadius: 5,
   },
-  image: {
-    width: 20,
-    height: 20,
-    transform: [{ rotate: '270deg' }],
-  },
-  backButton: {
-    textAlign: 'left',
-    flexDirection: 'row',
-  },
   clearButton: {
     backgroundColor: 'white',
     borderWidth: 1,
@@ -143,5 +125,24 @@ const styles = StyleSheet.create({
   clearButtonText: {
     fontSize: 20,
     color: '#420C5C',
-  }
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "95%",
+    marginTop: "20%",
+    marginBottom: "10%",
+  },
+  backimage: {
+    height: 30,
+    width: 30,
+    marginRight: "-10%",
+  },
+  title: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
 });

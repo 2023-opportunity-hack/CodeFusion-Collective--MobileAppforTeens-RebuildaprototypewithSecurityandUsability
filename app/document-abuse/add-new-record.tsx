@@ -1,10 +1,10 @@
-import { Pressable, StyleSheet, TextInput, Modal } from "react-native"
-import { View, Text } from "../../components/Themed";
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { useEffect, useState } from "react";
-import MediaUploadModal from "../../components/MediaUploadModal";
+import { Link, router } from "expo-router";
 import * as SQLite from 'expo-sqlite';
-import { router } from "expo-router";
+import { useEffect, useState } from "react";
+import { Image, Modal, Pressable, StyleSheet, TextInput } from "react-native";
+import MediaUploadModal from "../../components/MediaUploadModal";
+import { Text, View } from "../../components/Themed";
 
 export default function AddNewRecordPage() {
   const db = SQLite.openDatabase('safespace.db');
@@ -52,7 +52,7 @@ export default function AddNewRecordPage() {
   const handleSubmit = () => {
     if (date && text.length > 0) {
       db.transaction((tx) => {
-        tx.executeSql('INSERT INTO abuse_documents (date, description, time_added) VALUES (?, ?, ?)', [date.toISOString(), text, time ? 1 : 0], 
+        tx.executeSql('INSERT INTO abuse_documents (date, description, time_added) VALUES (?, ?, ?)', [date.toISOString(), text, time ? 1 : 0],
         (txObj, resultSet) => {
           console.log('SUBMISSION COMPLETE');
           console.log(txObj);
@@ -83,7 +83,17 @@ export default function AddNewRecordPage() {
           </View>
         </View>
       </Modal>
-      <Text style={styles.title}>Add a New Record</Text>
+      <View style={styles.header}>
+        <Link href="/document-abuse" asChild>
+          <Pressable>
+            <Image
+              source={require("../../assets/images/Back.png")}
+              style={styles.backimage}
+            />
+          </Pressable>
+        </Link>
+        <Text style={styles.title}>Add a New Record</Text>
+      </View>
       <View style={styles.descriptionContainer}>
         <Text style={styles.subtitle}>What Happened?</Text>
         <TextInput
@@ -124,7 +134,7 @@ export default function AddNewRecordPage() {
         )}
       </View>
       <Pressable
-        style={{width: '100%', alignItems: 'center', marginBottom: 40}} 
+        style={{width: '100%', alignItems: 'center', marginBottom: 40}}
         onPress={() => setModalVisible(true)}
       >
         <View style={styles.button}>
@@ -148,15 +158,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginVertical: 20,
+    justifyContent: 'flex-start',
   },
   descriptionContainer: {
     width: '90%',
     marginBottom: 20,
+    marginTop: "10%",
   },
   subtitle: {
     marginBottom: 10,
@@ -213,5 +220,24 @@ const styles = StyleSheet.create({
     borderColor: '#420C5C',
     overflow: 'hidden',
     padding: 16,
-  }
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "95%",
+    marginTop: "20%",
+    marginBottom: "10%",
+  },
+  backimage: {
+    height: 30,
+    width: 30,
+    marginRight: "-10%",
+  },
+  title: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
 })

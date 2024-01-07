@@ -1,8 +1,8 @@
-import { StyleSheet, Button } from "react-native";
+import { router } from "expo-router";
+import { useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
 import { Text, View } from "../../components/Themed";
 import TicTacToePin from "../../components/TicTacToePin";
-import { useEffect, useState } from "react";
-import { router } from "expo-router";
 
 export default function Lockscreen() {
   const [buttonSequence, setButtonSequence] = useState('');
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'center',
     },
     title: {
         marginVertical: 20,
