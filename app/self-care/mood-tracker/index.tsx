@@ -3,63 +3,95 @@ import { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 
-
 export default function MoodTracker () {
-
+  const [selectedMood, setSelectedMood] = useState('');
   const [showMoreStrategyOne, setShowMoreStrategyOne] = useState(false);
   const [showMoreStrategyTwo, setShowMoreStrategyTwo] = useState(false);
   const [showMoreStrategyThree, setShowMoreStrategyThree] = useState(false);
   const [showMoreStrategyFour, setShowMoreStrategyFour] = useState(false);
   const [showMoreStrategyFive, setShowMoreStrategyFive] = useState(false);
 
+  const moods = ["happy", "sad", "angry", "nervous", "annoyed", "goofy", "surprised", "disappointed", "tired"];
+
+  const moodImagePaths = {
+    happy: require("../../../assets/images/happy.png"),
+    sad: require("../../../assets/images/sad.png"),
+    angry: require("../../../assets/images/angry.png"),
+    nervous: require("../../../assets/images/nervous.png"),
+    annoyed: require("../../../assets/images/annoyed.png"),
+    goofy: require("../../../assets/images/goofy.png"),
+    surprised: require("../../../assets/images/surprised.png"),
+    disappointed: require("../../../assets/images/disappointed.png"),
+    tired: require("../../../assets/images/tired.png"),
+  }
+
   return (
     <ScrollView>
       <View style={styles.container}>
-      <View style={styles.header}>
-        <Link href="/self-care" asChild>
+        <View style={styles.header}>
+          <Link href="/self-care" asChild>
+            <Pressable>
+              <Image
+                source={require("../../../assets/images/Back.png")}
+                style={styles.backimage}
+              />
+            </Pressable>
+          </Link>
+          <Text style={styles.title}>Mood Tracker</Text>
+        </View>
+        <Text>How are you feeling today?</Text>
+        <View style={styles.moodGrid}>
+          {moods.map((mood) => (
+            <View key={mood} style={styles.moodContainer}>
+              <Pressable>
+                <Image source={moodImagePaths[mood]} style={styles.moodImage}/>
+                <Text style={styles.moodText}>{mood.slice(0, 1).toUpperCase() + mood.slice(1)}</Text>
+              </Pressable>
+            </View>
+          ))}
+        </View>
+        <View>
           <Pressable>
-            <Image
-              source={require("../../../assets/images/Back.png")}
-              style={styles.backimage}
-            />
+            <Text>Save Mood</Text>
           </Pressable>
-        </Link>
-        <Text style={styles.title}>Mood Tracker</Text>
-      </View>
+          <Pressable>
+            <Text>View Mood Entries</Text>
+          </Pressable>
+        </View>
         <Text style={styles.description}>If you are not having a great day, it may help to use one of your self care strategies. If you need to, try one and see if it helps!</Text>
         <Text>Your Strategies</Text>
         <TouchableOpacity onPress={() => setShowMoreStrategyOne(!showMoreStrategyOne)}>
-        <View style={styles.dropDownButtonTop}>
-          <Text>
-          {showMoreStrategyOne ? 'Go for a walk' : 'Go for a walk'}
-          </Text>
+          <View style={styles.dropDownButtonTop}>
+            <Text>
+              {showMoreStrategyOne ? 'Go for a walk' : 'Go for a walk'}
+            </Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreStrategyTwo(!showMoreStrategyTwo)}>
-        <View style={styles.dropDownButtonMiddle}>
-          <Text>
-          {showMoreStrategyTwo ? 'Call a friend' : 'Call a friend'}
-          </Text>
-        </View>
+          <View style={styles.dropDownButtonMiddle}>
+            <Text>
+              {showMoreStrategyTwo ? 'Call a friend' : 'Call a friend'}
+            </Text>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreStrategyThree(!showMoreStrategyThree)}>
           <View style={styles.dropDownButtonMiddle}>
             <Text>
-            {showMoreStrategyThree ? 'Doodle, draw, or paint': 'Doodle, draw, or paint'}
+              {showMoreStrategyThree ? 'Doodle, draw, or paint': 'Doodle, draw, or paint'}
             </Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreStrategyFour(!showMoreStrategyFour)}>
           <View style={styles.dropDownButtonMiddle}>
             <Text>
-          {showMoreStrategyFour ? 'Play with or walk a pet' : 'Play with or walk a pet'}
+              {showMoreStrategyFour ? 'Play with or walk a pet' : 'Play with or walk a pet'}
             </Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreStrategyFive(!showMoreStrategyFive)}>
           <View style={styles.dropDownButtonMiddle}>
             <Text>
-            {showMoreStrategyFive ? 'Do a puzzle' : 'Do a puzzle'}
+              {showMoreStrategyFive ? 'Do a puzzle' : 'Do a puzzle'}
             </Text>
           </View>
         </TouchableOpacity>
