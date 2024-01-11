@@ -39,23 +39,21 @@ export default function MoodTracker () {
           </Link>
           <Text style={styles.title}>Mood Tracker</Text>
         </View>
-        <Text>How are you feeling today?</Text>
+        <Text style={styles.question}>How are you feeling today?</Text>
         <View style={styles.moodGrid}>
           {moods.map((mood) => (
-            <View key={mood} style={styles.moodContainer}>
-              <Pressable>
-                <Image source={moodImagePaths[mood]} style={styles.moodImage}/>
-                <Text style={styles.moodText}>{mood.slice(0, 1).toUpperCase() + mood.slice(1)}</Text>
-              </Pressable>
-            </View>
+            <Pressable key={mood} style={styles.moodContainer}>
+              <Image source={moodImagePaths[mood]}/>
+              <Text style={styles.moodText}>{mood.slice(0, 1).toUpperCase() + mood.slice(1)}</Text>
+            </Pressable>
           ))}
         </View>
-        <View>
-          <Pressable>
-            <Text>Save Mood</Text>
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.saveButton}>
+            <Text style={styles.saveButtonText}>Save Mood</Text>
           </Pressable>
-          <Pressable>
-            <Text>View Mood Entries</Text>
+          <Pressable style={styles.viewButton}>
+            <Text style={styles.viewButtonText}>View Mood Entries</Text>
           </Pressable>
         </View>
         <Text style={styles.description}>If you are not having a great day, it may help to use one of your self care strategies. If you need to, try one and see if it helps!</Text>
@@ -177,4 +175,72 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     marginRight: "auto",
   },
+  moodContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    border: "solid",
+    borderWidth: 1,
+    borderColor: "#420C5C",
+    borderRadius: 5,
+    padding: 5,
+    paddingHorizontal: 10,
+    backgroundColor: "#FFFFFF",
+    marginRight: 15,
+    marginBottom: 20
+  },
+  moodGrid: {
+    display: "flex",
+    flexWrap: "wrap",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 5,
+    paddingBottom: 5,
+  },
+  moodText: {
+    fontSize: 10,
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+  },
+  saveButton: {
+    backgroundColor: "#420C5C",
+    borderRadius: 25,
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 15,
+    paddingBottom: 15,
+    marginTop: 20
+  },
+  saveButtonText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+  },
+  viewButton: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 25,
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 15,
+    paddingBottom: 15,
+    borderWidth: 1,
+    borderColor: "#420C5C",
+    marginTop: 30,
+    marginBottom: 50
+  },
+  viewButtonText: {
+    color: "#420C5C",
+    fontSize: 18,
+  }
 });
