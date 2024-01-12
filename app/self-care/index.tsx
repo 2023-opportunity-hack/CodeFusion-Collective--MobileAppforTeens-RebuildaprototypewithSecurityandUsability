@@ -23,36 +23,44 @@ export default function SelfCare() {
       <Link href="/self-care/gratitude-journal" asChild>
         <Pressable style={styles.button}>
           <View style={styles.iconandtext}>
-          <Image source={require('../../assets/images/gratitude-journal.png')} style={styles.image} />
-          <Text style={styles.buttonText}>
-            Gratitude Journal </Text></View>
+            <Image source={require('../../assets/images/gratitude-journal.png')} style={styles.image} />
+            <Text style={styles.buttonText}>
+              Gratitude Journal
+            </Text>
+          </View>
           <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
         </Pressable>
       </Link>
       <Link href="/self-care/mood-tracker" asChild>
         <Pressable style={styles.button}>
           <View style={styles.iconandtext}>
-          <Image source={require('../../assets/images/mood-tracker.png')} style={styles.image} />
-          <Text style={styles.buttonText}>
-            Mood Tracker </Text></View>
+            <Image source={require('../../assets/images/mood-tracker.png')} style={styles.image} />
+            <Text style={styles.buttonText}>
+              Mood Tracker
+            </Text>
+          </View>
           <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
         </Pressable>
       </Link>
       <Link href="/self-care/my-strategies" asChild>
         <Pressable style={styles.button}>
           <View style={styles.iconandtext}>
-          <Image source={require('../../assets/images/my-strategies.png')} style={styles.image} />
-          <Text style={styles.buttonText}>
-            My Strategies </Text></View>
+            <Image source={require('../../assets/images/my-strategies.png')} style={styles.image} />
+            <Text style={styles.buttonText}>
+              My Strategies
+            </Text>
+          </View>
           <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
         </Pressable>
       </Link>
       <Link href="/self-care/resources" asChild>
         <Pressable style={styles.button}>
           <View style={styles.iconandtext}>
-          <Image source={require('../../assets/images/resources.png')} style={styles.image} />
-          <Text style={styles.buttonText}>
-            Resources </Text></View>
+            <Image source={require('../../assets/images/resources.png')} style={styles.image} />
+            <Text style={styles.buttonText}>
+              Resources
+            </Text>
+          </View>
           <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
         </Pressable>
       </Link>

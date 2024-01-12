@@ -112,10 +112,10 @@ export default function ContactProfessional() {
           <View>
             <Text style={styles.areatitle}>The dropdown menu provides a list of national hotlines you can text or call for information</Text>
             <SelectList
-            placeholder='Select a hotline'
-            setSelected={(val) => setSelected(val)}
-            data={data}
-            save="key"
+              placeholder='Select a hotline'
+              setSelected={(val) => setSelected(val)}
+              data={data}
+              save="key"
             />
           </View>
           <View>
@@ -124,69 +124,76 @@ export default function ContactProfessional() {
               <Text style={styles.remainingText}>{count} remaining</Text>
             </View>
             <TextInput
-            textAlignVertical='top'
-            multiline={true}
-            maxLength={160}
-            value={text}
-            onChangeText={handleTextChange}
-            style={styles.textinput}/>
+              textAlignVertical='top'
+              multiline={true}
+              maxLength={160}
+              value={text}
+              onChangeText={handleTextChange}
+              style={styles.textinput}
+            />
           </View>
           <View>
             <Text style={styles.areatitle}>Your Name</Text>
             <TextInput
-            multiline={false}
-            maxLength={20}
-            value={name}
-            onChangeText={handleNameChange}
-            placeholder='First and Last Name'
-            placeholderTextColor="gray"
-            style={styles.infoinput}/>
+              multiline={false}
+              maxLength={20}
+              value={name}
+              onChangeText={handleNameChange}
+              placeholder='First and Last Name'
+              placeholderTextColor="gray"
+              style={styles.infoinput}
+            />
           </View>
           <View>
             <Text style={styles.areatitle}>Your Phone Number</Text>
             <TextInput
-            multiline={false}
-            maxLength={20}
-            value={phone}
-            onChangeText={handlePhoneChange}
-            placeholder='+1'
-            placeholderTextColor="gray"
-            style={styles.infoinput}/>
+              multiline={false}
+              maxLength={20}
+              value={phone}
+              onChangeText={handlePhoneChange}
+              placeholder='+1'
+              placeholderTextColor="gray"
+              style={styles.infoinput}
+            />
           </View>
           <View>
             <Text style={styles.areatitle}>Your Email Address</Text>
             <TextInput
-            multiline={false}
-            maxLength={20}
-            value={email}
-            onChangeText={handleEmailChange}
-            placeholder='email address'
-            placeholderTextColor="gray"
-            style={styles.infoinput}/>
+              multiline={false}
+              maxLength={20}
+              value={email}
+              onChangeText={handleEmailChange}
+              placeholder='email address'
+              placeholderTextColor="gray"
+              style={styles.infoinput}
+            />
           </View>
           <View>
             <Text style={styles.areatitle}>Select contact preference</Text>
             <View style={styles.radio}>
-              <View style={styles.radiooption}><RadioButton.Android
-              value="Call"
-              status={ checked === 'Call' ? 'checked' : 'unchecked' }
-              onPress={() => setChecked('Call')}
-            />
-              <Text>Call/Voicemail</Text>
+              <View style={styles.radiooption}>
+                <RadioButton.Android
+                  value="Call"
+                  status={ checked === 'Call' ? 'checked' : 'unchecked' }
+                  onPress={() => setChecked('Call')}
+                />
+                <Text>Call/Voicemail</Text>
               </View>
-              <View style={styles.radiooption}><RadioButton.Android
-              value="Text"
-              status={ checked === 'Text' ? 'checked' : 'unchecked' }
-              onPress={() => setChecked('Text')}
-            />
-              <Text>Text</Text>
+              <View style={styles.radiooption}>
+                <RadioButton.Android
+                  value="Text"
+                  status={ checked === 'Text' ? 'checked' : 'unchecked' }
+                  onPress={() => setChecked('Text')}
+                />
+                <Text>Text</Text>
               </View>
-              <View style={styles.radiooption}><RadioButton.Android
-              value="Email"
-              status={ checked === 'Email' ? 'checked' : 'unchecked' }
-              onPress={() => setChecked('Email')}
-            />
-              <Text>Email</Text>
+              <View style={styles.radiooption}>
+                <RadioButton.Android
+                  value="Email"
+                  status={ checked === 'Email' ? 'checked' : 'unchecked' }
+                  onPress={() => setChecked('Email')}
+                />
+                <Text>Email</Text>
               </View>
             </View>
             {error === 0 ? <Text></Text> :

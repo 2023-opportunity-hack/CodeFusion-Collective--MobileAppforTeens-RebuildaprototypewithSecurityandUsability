@@ -39,7 +39,7 @@ export default function MoodTracker () {
           </Link>
           <Text style={styles.title}>Mood Tracker</Text>
         </View>
-        <Text style={styles.question}>How are you feeling today?</Text>
+        <Text>How are you feeling today?</Text>
         <View style={styles.moodGrid}>
           {moods.map((mood) => (
             <Pressable key={mood} style={styles.moodContainer}>
