@@ -12,10 +12,10 @@ const savedStrategies = [
 ]
 
 const MySavedStrategies = () => {
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState<number[]>([]);
   const [newStrategy, setNewStrategy] = useState("");
 
-  const handleSelect = (index) => {
+  const handleSelect = (index: number) => {
     if (selected.includes(index)) {
       setSelected(selected.filter((i) => i !== index));
     } else {
@@ -26,7 +26,7 @@ const MySavedStrategies = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Link href="/self-care" asChild>
+        <Link href="/self-care/my-strategies/" asChild>
           <Pressable>
             <Image
               source={require("../../../../assets/images/Back.png")}

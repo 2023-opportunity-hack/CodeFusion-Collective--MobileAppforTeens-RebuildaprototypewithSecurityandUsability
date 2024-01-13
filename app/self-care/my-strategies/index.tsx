@@ -23,9 +23,9 @@ const labelTitles = [
 ]
 
 const MyStrategies = () => {
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState<number[]>([]);
 
-  const handleSelect = (index) => {
+  const handleSelect = (index: number) => {
     if (selected.includes(index)) {
       setSelected(selected.filter((i) => i !== index));
     } else {
@@ -36,7 +36,7 @@ const MyStrategies = () => {
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ alignItems: "center" }}>
       <View style={styles.header}>
-        <Link href="/self-care/my-strategies/" asChild>
+        <Link href="/self-care" asChild>
           <Pressable>
             <Image
               source={require("../../../assets/images/Back.png")}
@@ -163,7 +163,8 @@ const styles = StyleSheet.create({
   listItemsSection: {
     width: "100%",
     backgroundColor: "#F0EDF1",
-    borderRadius: 10
+    borderRadius: 10,
+    marginTop: 20
   }
 })
 
