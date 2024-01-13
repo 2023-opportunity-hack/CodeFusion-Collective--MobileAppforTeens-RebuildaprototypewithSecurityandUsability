@@ -36,7 +36,7 @@ const MyStrategies = () => {
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ alignItems: "center" }}>
       <View style={styles.header}>
-        <Link href="/self-care" asChild>
+        <Link href="/self-care/my-strategies/" asChild>
           <Pressable>
             <Image
               source={require("../../../assets/images/Back.png")}
@@ -56,19 +56,21 @@ const MyStrategies = () => {
                   title={label.title}
                   titleStyle={{ fontSize: 15, }}
                   onPress={() => handleSelect(index)}
-                  left={() => <List.Icon icon={selected.includes(index) ? "checkbox-marked" : "checkbox-blank-outline"} style={{ paddingLeft: 15, }} color="#420C5C" />}/>))
+                  left={() => <List.Icon icon={selected.includes(index) ? "checkbox-marked" : "checkbox-blank-outline"} style={{ paddingLeft: 15, }} color="#420C5C" />}
+                  />))
               }
             </View>
           </List.Accordion>
       </List.Section>
-
       <View style={styles.buttonContainer}>
         <Pressable style={styles.saveButton}>
           <Text style={styles.saveButtonText}>Save My Strategies</Text>
         </Pressable>
-        <Pressable style={styles.viewButton}>
-          <Text style={styles.viewButtonText}>View My Strategies</Text>
-        </Pressable>
+        <Link href="/self-care/my-strategies/saved-strategies" asChild>
+          <Pressable style={styles.viewButton}>
+            <Text style={styles.viewButtonText}>View My Strategies</Text>
+          </Pressable>
+        </Link>
       </View>
     </ScrollView>
   )
@@ -121,6 +123,7 @@ const styles = StyleSheet.create({
   saveButtonText: {
     color: "#FFFFFF",
     fontSize: 18,
+    fontWeight: "bold",
   },
   viewButton: {
     backgroundColor: "#FFFFFF",
@@ -139,6 +142,7 @@ const styles = StyleSheet.create({
   viewButtonText: {
     color: "#420C5C",
     fontSize: 18,
+    fontWeight: "bold",
   },
   listItemsMainContainer: {
     width: "100%",
