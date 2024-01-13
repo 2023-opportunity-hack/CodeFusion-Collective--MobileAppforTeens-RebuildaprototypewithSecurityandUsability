@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     marginRight: "-10%",
   },
   title: {
+    fontFamily: "JakartaSemiBold",
     fontSize: 25,
     fontWeight: "bold",
     marginLeft: "auto",

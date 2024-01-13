@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
   iconandtext: {
     marginLeft: 15,
     flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#ffffff'
   },
   image: {

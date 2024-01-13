@@ -36,13 +36,13 @@ const MySavedStrategies = () => {
         </Link>
         <Text style={styles.title}>My Strategies</Text>
       </View>
-      <Text>My strategies for when I'm feeling stressed or anxious</Text>
+      <Text style={styles.pagedescription}>My strategies for when I'm feeling stressed or anxious</Text>
       <List.Section style={styles.listItemsSection}>
         {savedStrategies.map((strategy, index) => (
           <List.Item
             key={index}
             title={strategy.title}
-            titleStyle={{ fontSize: 15, }}
+            titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold" }}
             onPress={() => handleSelect(index)}
             left={() => <List.Icon icon={selected.includes(index) ? "checkbox-marked" : "checkbox-blank-outline"} style={{ paddingLeft: 15, }} color="#420C5C" />}
             />
@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     marginRight: "-10%",
   },
   title: {
+    fontFamily: "JakartaSemiBold",
     fontSize: 25,
     fontWeight: "bold",
     marginLeft: "auto",
@@ -101,6 +102,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   saveButtonText: {
+    fontFamily: "JakartaSemiBold",
     color: "#FFFFFF",
     fontSize: 18,
     fontWeight: "bold",
@@ -120,9 +122,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   addText: {
+    fontFamily: "JakartaSemiBold",
     marginTop: 30,
     marginBottom: 10,
   },
+  pagedescription: {
+    fontFamily: "JakartaSemiBold",
+  }
 })
 
 export default MySavedStrategies

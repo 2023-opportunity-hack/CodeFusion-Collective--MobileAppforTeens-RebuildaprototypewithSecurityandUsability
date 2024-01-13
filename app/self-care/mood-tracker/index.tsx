@@ -1,29 +1,32 @@
 import { Link } from 'expo-router';
 import { useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { List } from 'react-native-paper';
 
+const savedStrategies = [
+  {title: "Go for a walk"},
+  {title: "Call a friend"},
+  {title: "Doodle, draw, or paint"},
+  {title: "Play with or walk a pet"},
+  {title: "Do a puzzle"},
+]
+
+const moods = ["happy", "sad", "angry", "nervous", "annoyed", "goofy", "surprised", "disappointed", "tired"];
+
+const moodImagePaths = {
+  happy: require("../../../assets/images/happy.png"),
+  sad: require("../../../assets/images/sad.png"),
+  angry: require("../../../assets/images/angry.png"),
+  nervous: require("../../../assets/images/nervous.png"),
+  annoyed: require("../../../assets/images/annoyed.png"),
+  goofy: require("../../../assets/images/goofy.png"),
+  surprised: require("../../../assets/images/surprised.png"),
+  disappointed: require("../../../assets/images/disappointed.png"),
+  tired: require("../../../assets/images/tired.png"),
+}
 
 export default function MoodTracker () {
   const [selectedMood, setSelectedMood] = useState('');
-  const [showMoreStrategyOne, setShowMoreStrategyOne] = useState(false);
-  const [showMoreStrategyTwo, setShowMoreStrategyTwo] = useState(false);
-  const [showMoreStrategyThree, setShowMoreStrategyThree] = useState(false);
-  const [showMoreStrategyFour, setShowMoreStrategyFour] = useState(false);
-  const [showMoreStrategyFive, setShowMoreStrategyFive] = useState(false);
-
-  const moods = ["happy", "sad", "angry", "nervous", "annoyed", "goofy", "surprised", "disappointed", "tired"];
-
-  const moodImagePaths = {
-    happy: require("../../../assets/images/happy.png"),
-    sad: require("../../../assets/images/sad.png"),
-    angry: require("../../../assets/images/angry.png"),
-    nervous: require("../../../assets/images/nervous.png"),
-    annoyed: require("../../../assets/images/annoyed.png"),
-    goofy: require("../../../assets/images/goofy.png"),
-    surprised: require("../../../assets/images/surprised.png"),
-    disappointed: require("../../../assets/images/disappointed.png"),
-    tired: require("../../../assets/images/tired.png"),
-  }
 
   return (
     <ScrollView>
@@ -39,7 +42,7 @@ export default function MoodTracker () {
           </Link>
           <Text style={styles.title}>Mood Tracker</Text>
         </View>
-        <Text>How are you feeling today?</Text>
+        <Text style={{ fontFamily: "JakartaSemiBold" }}>How are you feeling today?</Text>
         <View style={styles.moodGrid}>
           {moods.map((mood) => (
             <Pressable key={mood} style={styles.moodContainer}>
@@ -57,42 +60,17 @@ export default function MoodTracker () {
           </Pressable>
         </View>
         <Text style={styles.description}>If you are not having a great day, it may help to use one of your self care strategies. If you need to, try one and see if it helps!</Text>
-        <Text>Your Strategies</Text>
-        <TouchableOpacity onPress={() => setShowMoreStrategyOne(!showMoreStrategyOne)}>
-          <View style={styles.dropDownButtonTop}>
-            <Text>
-              {showMoreStrategyOne ? 'Go for a walk' : 'Go for a walk'}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setShowMoreStrategyTwo(!showMoreStrategyTwo)}>
-          <View style={styles.dropDownButtonMiddle}>
-            <Text>
-              {showMoreStrategyTwo ? 'Call a friend' : 'Call a friend'}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setShowMoreStrategyThree(!showMoreStrategyThree)}>
-          <View style={styles.dropDownButtonMiddle}>
-            <Text>
-              {showMoreStrategyThree ? 'Doodle, draw, or paint': 'Doodle, draw, or paint'}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setShowMoreStrategyFour(!showMoreStrategyFour)}>
-          <View style={styles.dropDownButtonMiddle}>
-            <Text>
-              {showMoreStrategyFour ? 'Play with or walk a pet' : 'Play with or walk a pet'}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setShowMoreStrategyFive(!showMoreStrategyFive)}>
-          <View style={styles.dropDownButtonMiddle}>
-            <Text>
-              {showMoreStrategyFive ? 'Do a puzzle' : 'Do a puzzle'}
-            </Text>
-          </View>
-        </TouchableOpacity>
+        <Text style={{ fontFamily: "JakartaSemiBold" }}>Your Strategies</Text>
+        <List.Section style={styles.listItemsSection}>
+          {savedStrategies.map((strategy, index) => (
+            <List.Item
+              key={index}
+              title={strategy.title}
+              titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold", textAlign: "left" }}
+              style={[{ borderBottomWidth: 1, borderColor: "#420C5C" }, index === savedStrategies.length - 1 && { borderBottomWidth: 0 }]}
+              />
+          ))}
+        </List.Section>
       </View>
     </ScrollView>
   );
@@ -106,41 +84,8 @@ const styles = StyleSheet.create({
     paddingTop: 0
   },
   description: {
+    fontFamily: "JakartaSemiBold",
     marginBottom: 25,
-  },
-  dropDownButtonOne: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    marginTop: 10,
-    borderWidth: 1,
-    padding: '3%',
-    borderRadius: 5,
-    marginBottom: 30,
-  },
-  dropDownButtonTop: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    marginTop: 10,
-    borderWidth: 1,
-    padding: '3%',
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-  },
-  dropDownButtonMiddle: {
-    flexDirection: 'row',
-    borderTopWidth: 0,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    padding: '3%',
-  },
-  dropDownButtonBottom: {
-    flexDirection: 'row',
-    borderTopWidth: 0,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    padding: '3%',
-    borderBottomRightRadius: 5,
-    borderBottomLeftRadius: 5,
   },
   clearButton: {
     backgroundColor: 'white',
@@ -170,6 +115,7 @@ const styles = StyleSheet.create({
     marginRight: "-10%",
   },
   title: {
+    fontFamily: "JakartaSemiBold",
     fontSize: 25,
     fontWeight: "bold",
     marginLeft: "auto",
@@ -200,8 +146,8 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   moodText: {
+    fontFamily: "JakartaSemiBold",
     fontSize: 10,
-    fontWeight: "bold",
   },
   buttonContainer: {
     display: "flex",
@@ -222,6 +168,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   saveButtonText: {
+    fontFamily: "JakartaSemiBold",
     color: "#FFFFFF",
     fontSize: 18,
   },
@@ -240,7 +187,16 @@ const styles = StyleSheet.create({
     marginBottom: 50
   },
   viewButtonText: {
+    fontFamily: "JakartaSemiBold",
     color: "#420C5C",
     fontSize: 18,
+  },
+  listItemsSection: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#420C5C",
+    borderRadius: 5,
+    marginBottom: 20,
+    backgroundColor: "#FFFFFF",
   }
 });

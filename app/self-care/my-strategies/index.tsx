@@ -46,15 +46,15 @@ const MyStrategies = () => {
         </Link>
         <Text style={styles.title}>My Strategies</Text>
       </View>
-      <Text>Choose strategies that help you when you are feeling stressed or anxious</Text>
+      <Text style={styles.pagedescription}>Choose strategies that help you when you are feeling stressed or anxious</Text>
       <List.Section style={styles.listItemsSection}>
-          <List.Accordion title="Please select all that help" style={styles.listItemsMainContainer} titleStyle={{ color: "black" }} theme={{colors: {background: "#F0EDF1"}}}>
+          <List.Accordion title="Please select all that help" style={styles.listItemsMainContainer} titleStyle={{ color: "black", fontFamily: "JakartaSemiBold" }} theme={{colors: {background: "#F0EDF1"}}}>
             <View style={styles.listItemsSubContainer}>
               {labelTitles.map((label, index) => (
                 <List.Item
                   key={index}
                   title={label.title}
-                  titleStyle={{ fontSize: 15, }}
+                  titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold" }}
                   onPress={() => handleSelect(index)}
                   left={() => <List.Icon icon={selected.includes(index) ? "checkbox-marked" : "checkbox-blank-outline"} style={{ paddingLeft: 15, }} color="#420C5C" />}
                   />))
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     marginRight: "-10%",
   },
   title: {
+    fontFamily: "JakartaSemiBold",
     fontSize: 25,
     fontWeight: "bold",
     marginLeft: "auto",
@@ -121,6 +122,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   saveButtonText: {
+    fontFamily: "JakartaSemiBold",
     color: "#FFFFFF",
     fontSize: 18,
     fontWeight: "bold",
@@ -140,6 +142,7 @@ const styles = StyleSheet.create({
     marginBottom: 50
   },
   viewButtonText: {
+    fontFamily: "JakartaSemiBold",
     color: "#420C5C",
     fontSize: 18,
     fontWeight: "bold",
@@ -165,6 +168,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#F0EDF1",
     borderRadius: 10,
     marginTop: 20
+  },
+  pagedescription: {
+    fontFamily: "JakartaSemiBold",
+    width: "100%",
+    textAlign: "left"
   }
 })
 

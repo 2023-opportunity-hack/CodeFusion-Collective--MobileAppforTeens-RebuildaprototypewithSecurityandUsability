@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
   iconandtext: {
     marginLeft: 15,
     flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#ffffff'
   },
   image: {
@@ -110,6 +111,7 @@ const styles = StyleSheet.create({
     width: 200,
   },
   pagedescription: {
+    fontFamily: "JakartaSemiBold",
     width: '70%',
     marginBottom: 10,
     marginTop: "10%",
@@ -133,6 +135,7 @@ const styles = StyleSheet.create({
     marginRight: "-10%",
   },
   title: {
+    fontFamily: "JakartaSemiBold",
     fontSize: 25,
     fontWeight: "bold",
     marginLeft: "auto",
