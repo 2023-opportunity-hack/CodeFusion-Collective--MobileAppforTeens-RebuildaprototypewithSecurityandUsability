@@ -55,9 +55,11 @@ export default function MoodTracker () {
           <Pressable style={styles.saveButton}>
             <Text style={styles.saveButtonText}>Save Mood</Text>
           </Pressable>
-          <Pressable style={styles.viewButton}>
-            <Text style={styles.viewButtonText}>View Mood Entries</Text>
-          </Pressable>
+          <Link href="/self-care/mood-tracker/mood-entries" asChild>
+            <Pressable style={styles.viewButton}>
+              <Text style={styles.viewButtonText}>View Mood Entries</Text>
+            </Pressable>
+          </Link>
         </View>
         <Text style={styles.description}>If you are not having a great day, it may help to use one of your self care strategies. If you need to, try one and see if it helps!</Text>
         <Text style={{ fontFamily: "JakartaSemiBold" }}>Your Strategies</Text>
