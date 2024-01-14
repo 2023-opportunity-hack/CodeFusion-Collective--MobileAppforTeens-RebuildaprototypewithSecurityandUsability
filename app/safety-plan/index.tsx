@@ -18,59 +18,58 @@ const SafePlanHome = () => {
   };
 
   return (
-    <View style={styles.container}>
-       <View style={styles.header}>
-        <Link href="/homepage" asChild>
-          <Pressable>
-            <Image
-              source={require("../../assets/images/Back.png")}
-              style={styles.backimage}
-            />
-          </Pressable>
-        </Link>
-        <Text style={styles.title}>Safety Plan</Text>
-      </View>
-      <Text style={styles.statement}>{bank.Statement}</Text>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={[styles.container, styles.modalView]}>
-          <Image style={styles.buttonimages} source={icons[safetyCategory as keyof typeof icons]} />
-          <ScrollView>
-            {(bank[safetyCategory as keyof typeof bank] as []).map((tips: string, i: number) => { return <Text key={i} style={styles.modalText}>{`\u2022 ${tips}`}</Text> })}
-          </ScrollView>
-          <Pressable
-            style={styles.modalButton}
-            onPress={() => setModalVisible(!modalVisible)}>
-            <Text style={styles.modalBack}>Back</Text>
-          </Pressable>
-
+    <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
+        <View style={styles.header}>
+          <Link href="/homepage" asChild>
+            <Pressable>
+              <Image
+                source={require("../../assets/images/Back.png")}
+                style={styles.backimage}
+              />
+            </Pressable>
+          </Link>
+          <Text style={styles.title}>Safety Plan</Text>
         </View>
-      </Modal>
-      {bank.Categories.map((ele: string, i: number) => {
-        return <View key={'sp' + i} style={styles.button}>
-          <Pressable style={styles.pressArea}
-            onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
-            <View style={styles.insideButton}>
-              <Image style={styles.buttonimages} source={icons[ele as keyof typeof icons]} />
-              <Text style={styles.textStyle}>{ele}</Text>
-            </View>
-          </Pressable>
-          <Image style={styles.backArrow} source={require('../../assets/images/Back.png')} />
-        </View>
-      })}
-    </View>
+        <Text style={styles.statement}>{bank.Statement}</Text>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={[styles.container, styles.modalView]}>
+            <Image style={styles.buttonimages} source={icons[safetyCategory as keyof typeof icons]} />
+            <ScrollView>
+              {(bank[safetyCategory as keyof typeof bank] as []).map((tips: string, i: number) => { return <Text key={i} style={styles.modalText}>{`\u2022 ${tips}`}</Text> })}
+            </ScrollView>
+            <Pressable
+              style={styles.modalButton}
+              onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={styles.modalBack}>Back</Text>
+            </Pressable>
+          </View>
+        </Modal>
+        {bank.Categories.map((ele: string, i: number) => {
+          return <View key={'sp' + i} style={styles.button}>
+            <Pressable style={styles.pressArea}
+              onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
+              <View style={styles.insideButton}>
+                <Image style={styles.buttonimages} source={icons[ele as keyof typeof icons]} />
+                <Text style={styles.textStyle}>{ele}</Text>
+              </View>
+            </Pressable>
+            <Image style={styles.backArrow} source={require('../../assets/images/Back.png')} />
+          </View>
+        })}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   title: {
+    fontFamily: "JakartaSemiBold",
     fontSize: 20,
-    fontWeight: "bold",
     marginLeft: "auto",
     marginRight: "auto",
   },
@@ -83,20 +82,19 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    width: "95%",
-    marginTop: "5%",
-    marginBottom: "5%",
+    width: "90%",
+    marginBottom: "10%",
+    marginTop: "15%",
   },
   container: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   statement: {
+    fontFamily: 'JakartaSemiBold',
     marginHorizontal: '10%',
     marginBottom: '6%',
-    fontSize: 15,
+    fontSize: 12,
   },
   pressArea: {
     width: '90%',
@@ -111,16 +109,16 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: -1 }],
   },
   button: {
-    width: '70%',
-    height: '5%',
+    width: '80%',
     flexDirection: 'row',
     alignItems: 'center',
     borderColor: '#683D7D',
-    borderWidth: 2,
-    borderRadius: 10,
+    borderWidth: 1,
+    borderRadius: 5,
     marginBottom: 15,
     justifyContent: 'space-between',
     backgroundColor: '#ffffff',
+    padding: 10
   },
   buttonimages: {
     height: 30,
@@ -130,9 +128,12 @@ const styles = StyleSheet.create({
     color: '#683D7D',
     fontWeight: 'bold',
     textAlign: 'left',
+    marginLeft: 20,
+    fontSize: 18,
   },
   modalView: {
     alignSelf: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
     width: '70%',
     marginTop: '30%',

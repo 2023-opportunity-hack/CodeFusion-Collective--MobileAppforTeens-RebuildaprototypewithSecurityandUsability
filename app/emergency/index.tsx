@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     gap: 25,
   },
   text: {
+    fontFamily: "JakartaSemiBold",
     color: "#683d7d",
     fontSize: 15,
   },
@@ -107,14 +108,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 5,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: "#683d7d",
     borderStyle: "solid",
     width: "85%",
-    height: 40,
     position: "relative",
     backgroundColor: "#ffffff",
+    paddingTop: 15,
+    paddingBottom: 15,
   },
   image: {
     height: 25,
@@ -152,6 +154,7 @@ const styles = StyleSheet.create({
     marginRight: "-10%",
   },
   title: {
+    fontFamily: "JakartaSemiBold",
     fontSize: 25,
     fontWeight: "bold",
     marginLeft: "auto",

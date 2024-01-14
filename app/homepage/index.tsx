@@ -74,15 +74,18 @@ const styles = StyleSheet.create({
     transform: [{scaleX: -1}],
   },
   button: {
-    width: '75%',
+    width: '85%',
     flexDirection: 'row',
     alignItems: 'center',
     borderColor: '#420C5C',
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 10,
-    marginBottom: 15,
+    marginBottom: 20,
     justifyContent: 'space-between',
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 10,
   },
   buttonText: {
     fontSize: 20,

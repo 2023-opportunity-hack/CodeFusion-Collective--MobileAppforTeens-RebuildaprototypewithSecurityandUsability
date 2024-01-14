@@ -68,7 +68,8 @@ const styles = StyleSheet.create({
     height: 100,
   },
   description: {
-    fontSize: 20,
+    fontFamily: "JakartaSemiBold",
+    fontSize: 18,
     paddingHorizontal: 20,
     marginVertical: 20,
     paddingTop: "10%"
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   buttonText: {
+    fontFamily: "JakartaSemiBold",
     marginVertical: 10,
     fontSize: 20,
   },
@@ -99,8 +101,8 @@ const styles = StyleSheet.create({
     marginRight: "-10%",
   },
   title: {
+    fontFamily: "JakartaSemiBold",
     fontSize: 25,
-    fontWeight: "bold",
     marginLeft: "auto",
     marginRight: "auto",
   },

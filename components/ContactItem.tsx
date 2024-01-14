@@ -116,11 +116,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   name: {
+    fontFamily: "JakartaSemiBold",
     color: "#683d7d",
     marginRight: "auto",
     maxWidth: 150,
   },
   number: {
+    fontFamily: "JakartaSemiBold",
     color: "#683d7d",
   },
   isEmergencyIcon: {

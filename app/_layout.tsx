@@ -28,6 +28,8 @@ export default function RootLayout() {
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     JakartaSemiBold: require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
     JakartaLight: require("../assets/fonts/PlusJakartaSans-Light.ttf"),
+    JakartaLightItalic: require("../assets/fonts/PlusJakartaSans-LightItalic.ttf"),
+    JakartaMed: require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
     ...FontAwesome.font,
   });
 

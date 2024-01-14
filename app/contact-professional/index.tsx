@@ -112,10 +112,13 @@ export default function ContactProfessional() {
           <View>
             <Text style={styles.areatitle}>The dropdown menu provides a list of national hotlines you can text or call for information</Text>
             <SelectList
-              placeholder='Select a hotline'
+              placeholder='Please select'
               setSelected={(val) => setSelected(val)}
               data={data}
               save="key"
+              boxStyles={{borderColor: '#420C5C', borderWidth: 1, borderRadius: 10}}
+              dropdownStyles={{borderColor: '#420C5C', borderWidth: 1, borderRadius: 10}}
+              dropdownTextStyles={{ fontFamily: 'JakartaSemiBold' }}
             />
           </View>
           <View>
@@ -169,7 +172,7 @@ export default function ContactProfessional() {
             />
           </View>
           <View>
-            <Text style={styles.areatitle}>Select contact preference</Text>
+            <Text style={styles.areatitle}>Choose how you want to be contacted</Text>
             <View style={styles.radio}>
               <View style={styles.radiooption}>
                 <RadioButton.Android
@@ -216,22 +219,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#F0EDF1',
-    paddingTop: 20
+    paddingTop: 15
   },
   form: {
-    width: '70%',
+    width: '90%',
     height: '90%',
     flexDirection: 'column',
   },
   areatitle: {
+    fontFamily: 'JakartaSemiBold',
+    fontSize: 12,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: 5,
+    marginTop: 15,
     marginBottom: 5
   },
   infoinput: {
+    fontFamily: 'JakartaLightItalic',
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#420C5C',
     borderRadius: 5,
     padding: 10,
     backgroundColor: 'white'
@@ -243,7 +249,7 @@ const styles = StyleSheet.create({
   },
   textinput: {
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#420C5C',
     borderRadius: 5,
     padding: 10,
     backgroundColor: 'white',
@@ -253,6 +259,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   radiooption: {
+    fontFamily: 'JakartaSemiBold',
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -265,6 +272,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#420C5C',
   },
   submittext: {
+    fontFamily: 'JakartaSemiBold',
+    fontSize: 20,
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
@@ -273,7 +282,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     width: "95%",
-    marginTop: "20%",
+    marginTop: "15%",
     marginBottom: "5%",
   },
   backimage: {
@@ -282,12 +291,14 @@ const styles = StyleSheet.create({
     marginRight: "-10%",
   },
   title: {
+    fontFamily: "JakartaSemiBold",
     fontSize: 25,
-    fontWeight: "bold",
     marginLeft: "auto",
     marginRight: "auto",
   },
   remainingText: {
-    fontSize: 12
+    fontSize: 12,
+    fontFamily: "JakartaSemiBold",
+    color: "gray",
   }
 })
