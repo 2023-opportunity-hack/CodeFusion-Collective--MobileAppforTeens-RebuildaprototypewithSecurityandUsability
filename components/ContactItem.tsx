@@ -109,11 +109,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 12,
+    padding: 15,
     borderWidth: 1,
     borderColor: "#683d7d",
     borderRadius: 5,
     backgroundColor: "#ffffff",
+    marginBottom: 5,
   },
   name: {
     fontFamily: "JakartaSemiBold",

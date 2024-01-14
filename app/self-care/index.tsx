@@ -1,12 +1,12 @@
 import { Link } from 'expo-router';
-import { Image, Pressable, StyleSheet, useColorScheme } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, useColorScheme } from 'react-native';
 import { Text, View } from '../../components/Themed';
 
 export default function SelfCare() {
   const colorScheme = useColorScheme();
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
       <View style={styles.header}>
         <Link href="/homepage" asChild>
           <Pressable>
@@ -64,7 +64,7 @@ export default function SelfCare() {
           <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
         </Pressable>
       </Link>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -75,15 +75,17 @@ const styles = StyleSheet.create({
     transform: [{scaleX: -1}],
   },
   button: {
-    width: '70%',
+    width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
     borderColor: '#420C5C',
-    borderWidth: 2,
-    borderRadius: 10,
+    borderWidth: 1,
+    borderRadius: 5,
     marginBottom: 15,
     justifyContent: 'space-between',
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   buttonText: {
     fontSize: 20,
@@ -93,8 +95,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    backgroundColor: '#F0EDF1',
   },
   iconandtext: {
     marginLeft: 15,
@@ -112,9 +113,9 @@ const styles = StyleSheet.create({
   },
   pagedescription: {
     fontFamily: "JakartaSemiBold",
-    width: '70%',
-    marginBottom: 10,
-    marginTop: "10%",
+    width: '90%',
+    marginBottom: "10%",
+    marginTop: "5%",
   },
   separator: {
     marginVertical: 30,

@@ -111,7 +111,7 @@ export default function AddNewRecordPage() {
           onPress={showDatePicker}
         >
           <View style={styles.dateContainer}>
-            <Text>{date?.toLocaleDateString() ? date.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select Date'}</Text>
+            <Text style={{ fontFamily: "JakartaMed"}}>{date?.toLocaleDateString() ? date.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select Date'}</Text>
             {/* ADD CALENDAR ICON */}
           </View>
         </Pressable>
@@ -120,7 +120,7 @@ export default function AddNewRecordPage() {
           onPress={showTimePicker}
         >
           <View style={styles.dateContainer}>
-            <Text>{time?.toLocaleTimeString() ? time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Select Time'}</Text>
+            <Text style={{ fontFamily: "JakartaMed"}}>{time?.toLocaleTimeString() ? time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Select Time'}</Text>
             {/* ADD CLOCK ICON */}
           </View>
         </Pressable>
@@ -166,10 +166,12 @@ const styles = StyleSheet.create({
     marginTop: "10%",
   },
   subtitle: {
+    fontFamily: "JakartaSemiBold",
     marginBottom: 10,
     fontWeight: 'bold',
   },
   textbox: {
+    fontFamily: "JakartaSemiBold",
     width: '100%',
     height: 120,
     backgroundColor: 'white',
@@ -191,15 +193,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   button: {
-    width: '80%',
+    width: '90%',
     borderWidth: 1,
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#420C5C',
+    padding: 5,
   },
   buttonText: {
+    fontFamily: 'JakartaSemiBold',
     marginVertical: 10,
     fontSize: 20,
     color: '#fff',
@@ -214,7 +218,6 @@ const styles = StyleSheet.create({
   modalContents: {
     width: '90%',
     height: '50%',
-    // margin: 20,
     borderWidth: 1,
     borderRadius: 16,
     borderColor: '#420C5C',
@@ -235,8 +238,8 @@ const styles = StyleSheet.create({
     marginRight: "-10%",
   },
   title: {
+    fontFamily: "JakartaSemiBold",
     fontSize: 25,
-    fontWeight: "bold",
     marginLeft: "auto",
     marginRight: "auto",
   },

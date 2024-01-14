@@ -1,10 +1,10 @@
 import { Link } from "expo-router";
-import { Image, Pressable, StyleSheet } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet } from "react-native";
 import { Text, View } from "../../components/Themed";
 
 export default function DocumentAbusePage() {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
       <View style={styles.header}>
         <Link href="/homepage" asChild>
           <Pressable>
@@ -43,7 +43,7 @@ export default function DocumentAbusePage() {
           </View>
         </Pressable>
       </Link>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -51,8 +51,7 @@ const styles = StyleSheet.create({
   container: {
       flex: 1,
       flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
+      backgroundColor: "#F0EDF1"
   },
   logoContainer: {
     width: 125,
@@ -75,12 +74,13 @@ const styles = StyleSheet.create({
     paddingTop: "10%"
   },
   button: {
-    width: '80%',
+    width: '90%',
     borderWidth: 1,
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
+    padding: 5
   },
   buttonText: {
     fontFamily: "JakartaSemiBold",
