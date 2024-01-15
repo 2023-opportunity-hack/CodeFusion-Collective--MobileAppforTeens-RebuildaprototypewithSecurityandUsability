@@ -77,7 +77,7 @@ const MoodEntries = () => {
       </View>
       <List.Section style={styles.listGroupContainer}>
         <View style={styles.listGroup}>
-          {pastMoods.map((day, ind) => (
+          {pastMoods.map((day) => (
             <List.Accordion
               id={day.date}
               title={day.date}
