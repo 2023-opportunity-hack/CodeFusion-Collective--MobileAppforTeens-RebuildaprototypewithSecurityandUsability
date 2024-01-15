@@ -48,7 +48,12 @@ const MyStrategies = () => {
       </View>
       <Text style={styles.pagedescription}>Choose strategies that help you when you are feeling stressed or anxious</Text>
       <List.Section style={styles.listItemsSection}>
-          <List.Accordion title="Please select all that help" style={styles.listItemsMainContainer} titleStyle={{ color: "black", fontFamily: "JakartaSemiBold" }} theme={{colors: {background: "#F0EDF1"}}}>
+          <List.Accordion
+            title="Please select all that help"
+            style={styles.listItemsMainContainer}
+            titleStyle={{ color: "black", fontFamily: "JakartaSemiBold" }}
+            theme={{colors: {background: "#F0EDF1"}}}
+            >
             <View style={styles.listItemsSubContainer}>
               {labelTitles.map((label, index) => (
                 <List.Item
@@ -56,9 +61,13 @@ const MyStrategies = () => {
                   title={label.title}
                   titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold" }}
                   onPress={() => handleSelect(index)}
-                  left={() => <List.Icon icon={selected.includes(index) ? "checkbox-marked" : "checkbox-blank-outline"} style={{ paddingLeft: 15, }} color="#420C5C" />}
-                  />))
-              }
+                  left={() => <List.Icon
+                                icon={selected.includes(index) ? "checkbox-marked" : "checkbox-blank-outline"}
+                                style={{ paddingLeft: 15, }}
+                                color="#420C5C"
+                                 />}
+                  />
+                ))}
             </View>
           </List.Accordion>
       </List.Section>

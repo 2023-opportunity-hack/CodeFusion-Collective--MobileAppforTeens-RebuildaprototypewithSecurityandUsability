@@ -23,7 +23,7 @@ const moodImagePaths = {
   surprised: require("../../../assets/images/surprised.png"),
   disappointed: require("../../../assets/images/disappointed.png"),
   tired: require("../../../assets/images/tired.png"),
-}
+};
 
 export default function MoodTracker () {
   const [selectedMood, setSelectedMood] = useState('');
