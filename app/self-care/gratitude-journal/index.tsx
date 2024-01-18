@@ -84,17 +84,22 @@ export default function GratitiudeJournal() {
           style={styles.textinput}/>
         <View>
           <Text style={styles.areatitle}>Or, choose a journal prompt below</Text>
-          <DropDownPicker
-            items={items}
-            open={isOpen}
-            setOpen={() => setIsOpen(!isOpen)}
-            value={currentValue}
-            setValue={(val) => setCurrentValue(val)}
-            dropDownContainerStyle={{
-              top: 0,
-              maxHeight: 150,
-            }}
-          />
+          <View style={{ borderRadius: 10, marginTop: 10, zIndex: 3}}>
+            <DropDownPicker
+              items={items}
+              open={isOpen}
+              setOpen={() => setIsOpen(!isOpen)}
+              value={currentValue}
+              setValue={(val) => setCurrentValue(val)}
+              dropDownContainerStyle={{ maxHeight: 150, borderColor: "#420C5C", borderRadius: 10 }}
+              listItemLabelStyle={{ fontFamily: 'JakartaMed', }}
+              listItemContainerStyle={{ marginVertical: 5, borderRadius: 10}}
+              containerStyle={{ borderRadius: 10 }}
+              selectedItemLabelStyle={{ color: "#420C5C", fontFamily: 'JakartaSemiBold' }}
+              labelStyle={{ fontFamily: 'JakartaSemiBold', color: "#420C5C" }}
+              style={{ borderColor: '#420C5C', borderBottomEndRadius: 0, borderBottomStartRadius: 0, borderRadius: 5}}
+            />
+          </View>
           <TextInput
             multiline={true}
             numberOfLines={10}
@@ -103,16 +108,16 @@ export default function GratitiudeJournal() {
             onChangeText={handlePromptChange}
             placeholder='Write your response here.'
             placeholderTextColor={'gray'}
-            style={styles.textinput}
-            />
+            style={[styles.textinput, {marginTop: 0, borderTopWidth: 0, borderTopStartRadius: 0, borderTopEndRadius: 0, height: 180}]}
+          />
         </View>
         <TouchableOpacity style={styles.submitbutton} onPress={handleSubmit}>
           <Text style={styles.submittext}>Save Journal Entry</Text>
         </TouchableOpacity>
         {submitJournal === true ? <Text>Submitted!</Text> : <Text></Text>}
         <Link href="/self-care/gratitude-journal/journal-entries" asChild>
-          <TouchableOpacity style={styles.submitbutton}>
-            <Text style={styles.submittext}>
+          <TouchableOpacity style={styles.viewButton}>
+            <Text style={styles.viewText}>
              View Entries
             </Text>
           </TouchableOpacity>
@@ -125,6 +130,7 @@ export default function GratitiudeJournal() {
 const styles = StyleSheet.create({
   areatitle: {
     marginTop: 10,
+    fontFamily: "JakartaMed",
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
@@ -136,28 +142,48 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0EDF1'
   },
   form: {
-    width: '70%',
+    width: '90%',
     height: '90%',
     flexDirection: 'column',
   },
   textinput: {
+    fontFamily: "JakartaMed",
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#420C5C',
     borderRadius: 5,
     padding: 10,
+    height: 150,
+    marginTop: 10,
+    marginBottom: 20,
     backgroundColor: 'white'
   },
   submitbutton: {
-    marginTop: 10,
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 25,
     alignItems: 'center',
     padding: 10,
     backgroundColor: '#420C5C',
+    marginVertical: 20
   },
   submittext: {
     color: '#FFFFFF',
+    fontSize: 20,
     fontWeight: 'bold',
+    fontFamily: 'JakartaSemiBold',
+  },
+  viewButton: {
+    borderWidth: 1,
+    borderRadius: 25,
+    borderColor: '#420C5C',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#FFFFFF',
+  },
+  viewText: {
+    color: '#420C5C',
+    fontSize: 20,
+    fontWeight: 'bold',
+    fontFamily: 'JakartaSemiBold',
   },
   header: {
     display: "flex",
@@ -174,7 +200,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    fontWeight: "bold",
+    fontFamily: "JakartaSemiBold",
     marginLeft: "auto",
     marginRight: "auto",
   },
