@@ -1,8 +1,8 @@
-import { Pressable, StyleSheet, useColorScheme, Image, View, Text, TouchableOpacity } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { useState, useEffect, useMemo } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
+import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
+import { useEffect, useState } from 'react';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 
 export default function JournalEntries() {
@@ -30,8 +30,18 @@ export default function JournalEntries() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.form}>
+      <View style={styles.header}>
+        <Link href="/self-care/gratitude-journal/" asChild>
+          <Pressable>
+            <Image
+              source={require("../../../../assets/images/Back.png")}
+              style={styles.backimage}
+            />
+          </Pressable>
+        </Link>
         <Text style={styles.title}>Journal Entries</Text>
+      </View>
+      <View style={styles.form}>
         <View>
           <DropDownPicker
             items={items}
@@ -43,7 +53,7 @@ export default function JournalEntries() {
               alignSelf: 'center',
               position: 'relative',
               top: 0,
-          }}
+            }}
           />
         </View>
         <Text style={styles.entry}>{currentValue}</Text>
@@ -52,17 +62,6 @@ export default function JournalEntries() {
   );
 }
 
-// return (
-// <View style={styles.container}>
-//   <View style={styles.form}>
-//     <Text style={styles.title}>Journal Entries</Text>
-//     {allEntries.map((entry) => (
-//       <div key={entry.id}>
-//         <Text>Date: {entry.date}</Text>
-//         <Text>{entry.gratefulEntry}</Text>
-//         <Text>{entry.promptEntry}</Text>
-//       </div>
-//     ))}
 
 const styles = StyleSheet.create({
   areatitle: {
@@ -76,12 +75,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#F0EDF1',
+    width: "100%",
+    paddingTop: 30
   },
   entry: {
     marginTop: 10,
   },
   form: {
-    width: '70%',
+    width: '90%',
     height: '90%',
     flexDirection: 'column',
   },
@@ -104,8 +105,23 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "95%",
+    marginTop: "20%",
+    marginBottom: "10%",
+  },
+  backimage: {
+    height: 30,
+    width: 30,
+    marginRight: "-10%",
+  },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 25,
+    fontFamily: "JakartaSemiBold",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 })
