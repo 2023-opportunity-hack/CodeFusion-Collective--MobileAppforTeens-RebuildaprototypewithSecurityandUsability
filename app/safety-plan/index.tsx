@@ -40,8 +40,13 @@ const SafePlanHome = () => {
           }}>
           <View style={[styles.container, styles.modalView]}>
             <Image style={styles.buttonimages} source={icons[safetyCategory as keyof typeof icons]} />
-            <ScrollView>
-              {(bank[safetyCategory as keyof typeof bank] as []).map((tips: string, i: number) => { return <Text key={i} style={styles.modalText}>{`\u2022 ${tips}`}</Text> })}
+            <ScrollView contentContainerStyle={{ paddingBottom: 25 }}>
+              {(bank[safetyCategory as keyof typeof bank] as []).map((tips: string, i: number) => (
+                <View key={i} style={{ flexDirection: "row", maxWidth: "95%", padding: 5, marginBottom: 10 }}>
+                  <Text style={{ fontWeight: "bold", fontSize: 20 }}>{"\u2022"}</Text>
+                  <Text style={styles.modalText}>{tips}</Text>
+                </View>
+                ))}
             </ScrollView>
             <Pressable
               style={styles.modalButton}
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: '#683D7D',
-    fontWeight: 'bold',
+    fontFamily: 'JakartaSemiBold',
     textAlign: 'left',
     marginLeft: 20,
     fontSize: 18,
@@ -164,8 +169,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   modalText: {
-    marginBottom: 15,
+    fontFamily: "JakartaMed",
+    marginLeft: 5,
+    paddingTop: 3,
     fontSize: 15,
+    flexWrap: 'wrap',
     textAlign: 'left',
   },
 });
