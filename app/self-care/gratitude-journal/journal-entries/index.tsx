@@ -4,6 +4,33 @@ import { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
+const journalEntries = [
+  {
+    prompt: "Today I am grateful for...",
+    entry: "The trees, the grass and the sky."
+  },
+  {
+    prompt: "What talent or skill do you have that you are grateful for?",
+    entry: "My JavaScript coding skills."
+  },
+  {
+    prompt: "Write about a book, movie, or song that has inspired you.",
+    entry: "The movie Harry Potter was a deeply inspirational movie for me because of how well it teaches the importance of friendship and camaraderie."
+  },
+  {
+    prompt: "Today I am grateful for...",
+    entry: "The fish and the sea and the air that we breathe."
+  },
+  {
+    prompt: "List 10 things that you are grateful for in your life right now.",
+    entry: "The animals, the flowers, the people, the nature, the environment, the music, the books, the movies, video games and family."
+  },
+  {
+    prompt: "Write down a happy memory",
+    entry: "I remember when I was a child, we went to a place called Bear Lake where me and my siblings rode Banana Bikes for the first time. It was a long time ago but I still remember how much fun I had at the time."
+  },
+]
+
 
 export default function JournalEntries() {
   const db = SQLite.openDatabase('safespace.db');
@@ -13,19 +40,19 @@ export default function JournalEntries() {
     {label: 'Placeholder 1', value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '}, {label: 'Placeholder 2', value: 'The quick brown fox jumped over the lazy moon'}, {label: 'Placeholder 3', value: 'She sells seashells down by the seashore.'}
     ];
 
-    useEffect(() => {
-  db.transaction((tx) => {
-    tx.executeSql('SELECT * FROM journal_entries', undefined,
-    (txObj, resultSet) => {
-      console.log(resultSet.rows);
-      // const bigObj = resultSet.rows;
-      // for (var key in bigObj) {
-      //   allEntries.push(bigObj[key])
-      //   console.log(allEntries);
-      // }
+  useEffect(() => {
+    db.transaction((tx) => {
+      tx.executeSql('SELECT * FROM journal_entries', undefined,
+      (txObj, resultSet) => {
+        console.log(resultSet.rows);
+        // const bigObj = resultSet.rows;
+        // for (var key in bigObj) {
+        //   allEntries.push(bigObj[key])
+        //   console.log(allEntries);
+        // }
+      })
     })
   })
-})
 
 
   return (
