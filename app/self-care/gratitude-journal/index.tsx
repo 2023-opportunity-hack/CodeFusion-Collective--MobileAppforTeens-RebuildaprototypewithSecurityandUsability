@@ -53,10 +53,13 @@ export default function GratitiudeJournal() {
     }
   };
 
-  const items: {label: string; value: string}[] = [
-    {label: 'List 10 things that you are grateful for in your life right now.', value: 'List 10 things that you are grateful for in your life right now.'}, {label: 'What talent or skill do you have that you are grateful for?', value: 'What talent or skill do you have that you are grateful for?'}, {label: 'Write about a book, movie, or song that has inspired you.', value: 'Write about a book, movie, or song that has inspired you.'},
-     {label: 'List three things that you are looking forward to in the future.', value: 'List three things that you are looking forward to in the future.'}, {label: 'Write down a happy memory.', value: 'Write down a happy memory.'}
-    ];
+  const items = [
+    {label: 'List 10 things that you are grateful for in your life right now.', value: 'List 10 things that you are grateful for in your life right now.'},
+    {label: 'What talent or skill do you have that you are grateful for?', value: 'What talent or skill do you have that you are grateful for?'},
+    {label: 'Write about a book, movie, or song that has inspired you.', value: 'Write about a book, movie, or song that has inspired you.'},
+    {label: 'List three things that you are looking forward to in the future.', value: 'List three things that you are looking forward to in the future.'},
+    {label: 'Write down a happy memory.', value: 'Write down a happy memory.'}
+  ];
 
   return (
     <View style={styles.container}>
