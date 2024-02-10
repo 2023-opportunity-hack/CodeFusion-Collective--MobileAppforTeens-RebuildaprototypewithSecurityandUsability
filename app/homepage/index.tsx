@@ -1,6 +1,5 @@
 import { Link } from 'expo-router';
-import { Image, Pressable, StyleSheet, useColorScheme } from 'react-native';
-import { Text, View } from '../../components/Themed';
+import { Image, Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
 
 export default function Homepage() {
   const colorScheme = useColorScheme();

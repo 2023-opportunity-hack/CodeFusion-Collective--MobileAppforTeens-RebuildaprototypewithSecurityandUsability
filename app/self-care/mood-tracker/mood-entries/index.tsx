@@ -79,6 +79,7 @@ const MoodEntries = () => {
         <View style={styles.listGroup}>
           {pastMoods.map((day) => (
             <List.Accordion
+              key={day.date}
               id={day.date}
               title={day.date}
               theme={{ colors: { background: "#FFFFFF" } }}

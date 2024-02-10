@@ -1,6 +1,5 @@
 import { Link } from "expo-router";
-import { Image, Pressable, ScrollView, StyleSheet } from "react-native";
-import { Text, View } from "../../components/Themed";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function DocumentAbusePage() {
   return (
@@ -49,9 +48,9 @@ export default function DocumentAbusePage() {
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      flexDirection: 'column',
-      backgroundColor: "#F0EDF1"
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: "#F0EDF1"
   },
   logoContainer: {
     width: 125,

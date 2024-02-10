@@ -2,9 +2,8 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 import { Link, router } from "expo-router";
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from "react";
-import { Image, Modal, Pressable, StyleSheet, TextInput } from "react-native";
+import { Image, Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import MediaUploadModal from "../../components/MediaUploadModal";
-import { Text, View } from "../../components/Themed";
 
 export default function AddNewRecordPage() {
   const db = SQLite.openDatabase('safespace.db');

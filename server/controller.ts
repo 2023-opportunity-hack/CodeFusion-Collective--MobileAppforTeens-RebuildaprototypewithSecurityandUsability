@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-const gmail = require('./helper.tsx');
+const gmail = require('./helper.ts');
 
 module.exports = {
   sendEmail: (req: Request, res: Response) => {
