@@ -12,7 +12,7 @@ import EmergencyContactContextProvider from "../context/contactContext";
 
 export {
   // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
+  ErrorBoundary
 } from "expo-router";
 
 export const unstable_settings = {
@@ -26,6 +26,10 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    JakartaSemiBold: require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
+    JakartaLight: require("../assets/fonts/PlusJakartaSans-Light.ttf"),
+    JakartaLightItalic: require("../assets/fonts/PlusJakartaSans-LightItalic.ttf"),
+    JakartaMed: require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
     ...FontAwesome.font,
   });
 

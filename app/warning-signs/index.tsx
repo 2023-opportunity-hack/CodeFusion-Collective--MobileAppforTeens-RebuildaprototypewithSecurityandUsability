@@ -40,16 +40,16 @@ export default function WarningSigns () {
         <Text style={styles.description}>It is not always obvious when someone you care about has been affected by sexual violence. Learning the warning signs for children, teens, and college-age adults can help you learn when to act.</Text>
         <TouchableOpacity onPress={() => setShowMoreDomesticViolence(!showMoreDomesticViolence)}>
           <View style={styles.dropDownButtonOne}>
-            <Text>
+            <Text style={{ fontFamily: "JakartaSemiBold"}}>
               {showMoreDomesticViolence ? <DomesticViolenceText/> : 'What is domestic violence?'}
             </Text>
             <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
           </View>
         </TouchableOpacity>
-        <Text>Types of abuse</Text>
+        <Text style={{ fontFamily: "JakartaSemiBold"}}>Types of abuse</Text>
         <TouchableOpacity onPress={() => setShowMoreEmotionalAbuse(!showMoreEmotionalAbuse)}>
           <View style={styles.dropDownButtonTop}>
-            <Text>
+            <Text style={{ fontFamily: "JakartaSemiBold"}}>
               {showMoreEmotionalAbuse ? <EmotionalAbuseText/> : 'Emotional abuse'}
             </Text>
             <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
@@ -57,7 +57,7 @@ export default function WarningSigns () {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreGaslighting(!showMoreGaslighting)}>
           <View style={styles.dropDownButtonMiddle}>
-            <Text>
+            <Text style={{ fontFamily: "JakartaSemiBold"}}>
               {showMoreGaslighting ? <GaslightingText/> : 'Gaslighting'}
             </Text>
             <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
@@ -65,7 +65,7 @@ export default function WarningSigns () {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreReproductiveCoersion(!showMoreReproductiveCoersion)}>
           <View style={styles.dropDownButtonMiddle}>
-            <Text>
+            <Text style={{ fontFamily: "JakartaSemiBold"}}>
               {showMoreReproductiveCoersion ? <ReproductiveCoercionText/> : 'Reproductive coercion'}
             </Text>
             <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
@@ -73,7 +73,7 @@ export default function WarningSigns () {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMorePhysicalAbuse(!showMorePhysicalAbuse)}>
           <View style={styles.dropDownButtonMiddle}>
-            <Text>
+            <Text style={{ fontFamily: "JakartaSemiBold"}}>
               {showMorePhysicalAbuse ? <PhysicalAbuseText/> : 'Physical abuse'}
             </Text>
             <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
@@ -81,7 +81,7 @@ export default function WarningSigns () {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreSexualAbuse(!showMoreSexualAbuse)}>
           <View style={styles.dropDownButtonMiddle}>
-            <Text>
+            <Text style={{ fontFamily: "JakartaSemiBold"}}>
               {showMoreSexualAbuse ? <SexualAbuseText/> : 'Sexual abuse'}
             </Text>
             <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
@@ -89,7 +89,7 @@ export default function WarningSigns () {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreEconomicAbuse  (!showMoreEconomicAbuse)}>
           <View style={{...styles.dropDownButtonMiddle}}>
-            <Text>
+            <Text style={{ fontFamily: "JakartaSemiBold"}}>
               {showMoreEconomicAbuse ? <EconomicAbuseText/> : 'Economic abuse'}
             </Text>
             <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
@@ -97,7 +97,7 @@ export default function WarningSigns () {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setShowMoreTechnologicalAssistedAbuse(!showMoreTechnologicalAssistedAbuse)}>
           <View style={styles.dropDownButtonBottom}>
-            <Text>
+            <Text style={{ fontFamily: "JakartaSemiBold"}}>
               {showMoreTechnologicalAssistedAbuse ? <TechnologicalAssistedAbuseText/> : 'Technological-assisted abuse'}
             </Text>
             <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   description: {
+    fontFamily: "JakartaSemiBold",
     marginBottom: 25,
   },
   dropDownButtonOne: {
@@ -175,8 +176,8 @@ const styles = StyleSheet.create({
     marginRight: "-10%",
   },
   title: {
+    fontFamily: "JakartaSemiBold",
     fontSize: 25,
-    fontWeight: "bold",
     marginLeft: "auto",
     marginRight: "auto",
   }

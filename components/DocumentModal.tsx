@@ -1,5 +1,4 @@
-import { View, Text } from "./Themed"
-import { StyleSheet, Pressable } from "react-native"
+import { Pressable, StyleSheet, Text, View } from "react-native"
 
 interface modalProps {
   text: string | undefined,
@@ -17,7 +16,7 @@ export default function DocumentModal({text, time, date, closeModal}: modalProps
       <Text style={styles.details}>{time && date ? new Date(date).toLocaleTimeString(undefined, {hour: '2-digit', minute:'2-digit'}) : 'N/A'}</Text>
       <Text style={styles.subtitle}>Description</Text>
       <Text style={styles.details}>{text}</Text>
-      <Pressable 
+      <Pressable
         onPress={closeModal}
         style={styles.pressable}
       >

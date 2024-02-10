@@ -1,11 +1,20 @@
-import { StyleSheet, Image, Pressable } from "react-native";
-import { View, Text } from "../../components/Themed";
 import { Link } from "expo-router";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function DocumentAbusePage() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Document Abuse</Text>
+    <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
+      <View style={styles.header}>
+        <Link href="/homepage" asChild>
+          <Pressable>
+            <Image
+              source={require("../../assets/images/Back.png")}
+              style={styles.backimage}
+            />
+          </Pressable>
+        </Link>
+        <Text style={styles.title}>Document Abuse</Text>
+      </View>
       <View style={styles.logoContainer}>
         <Image
           source={require('../../assets/images/1F4C3_color.png')}
@@ -15,9 +24,9 @@ export default function DocumentAbusePage() {
       <Text style={styles.description}>
         Select Add a New Record to document a new abuse incident or select View Records to see previous incidents
       </Text>
-      <Link 
-        href="/document-abuse/add-new-record" 
-        asChild 
+      <Link
+        href="/document-abuse/add-new-record"
+        asChild
         style={{width: '100%', alignItems: 'center', marginVertical: 40}}
       >
         <Pressable>
@@ -33,20 +42,15 @@ export default function DocumentAbusePage() {
           </View>
         </Pressable>
       </Link>
-    </View>
-  ) 
+    </ScrollView>
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      flexDirection: 'column',
-      alignItems: 'center',
-  },
-  title: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    marginVertical: 20,
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: "#F0EDF1"
   },
   logoContainer: {
     width: 125,
@@ -55,26 +59,50 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
+    marginTop: '10%',
   },
   logoImage: {
     width: 80,
     height: 100,
   },
   description: {
-    fontSize: 20,
+    fontFamily: "JakartaSemiBold",
+    fontSize: 18,
     paddingHorizontal: 20,
     marginVertical: 20,
+    paddingTop: "10%"
   },
   button: {
-    width: '80%',
+    width: '90%',
     borderWidth: 1,
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
+    padding: 5
   },
   buttonText: {
+    fontFamily: "JakartaSemiBold",
     marginVertical: 10,
     fontSize: 20,
-  }
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "95%",
+    marginTop: "20%",
+    marginBottom: "10%",
+  },
+  backimage: {
+    height: 30,
+    width: 30,
+    marginRight: "-10%",
+  },
+  title: {
+    fontFamily: "JakartaSemiBold",
+    fontSize: 25,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
 });

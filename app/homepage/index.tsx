@@ -1,6 +1,5 @@
 import { Link } from 'expo-router';
-import { Image, Pressable, StyleSheet, useColorScheme } from 'react-native';
-import { Text, View } from '../../components/Themed';
+import { Image, Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
 
 export default function Homepage() {
   const colorScheme = useColorScheme();
@@ -74,15 +73,18 @@ const styles = StyleSheet.create({
     transform: [{scaleX: -1}],
   },
   button: {
-    width: '75%',
+    width: '85%',
     flexDirection: 'row',
     alignItems: 'center',
     borderColor: '#420C5C',
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 10,
-    marginBottom: 15,
+    marginBottom: 20,
     justifyContent: 'space-between',
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 10,
   },
   buttonText: {
     fontSize: 20,
@@ -98,6 +100,7 @@ const styles = StyleSheet.create({
   iconandtext: {
     marginLeft: 15,
     flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#ffffff'
   },
   image: {

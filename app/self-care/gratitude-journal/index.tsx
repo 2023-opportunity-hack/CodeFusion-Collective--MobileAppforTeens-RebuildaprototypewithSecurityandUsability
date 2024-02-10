@@ -1,9 +1,9 @@
-import { Pressable, StyleSheet, useColorScheme, Image, View, Text, TouchableOpacity } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { useState, useEffect, useMemo } from 'react';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
+import { useEffect, useState } from 'react';
+import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { TextInput } from 'react-native-gesture-handler';
 
 
 export default function GratitiudeJournal() {
@@ -53,57 +53,76 @@ export default function GratitiudeJournal() {
     }
   };
 
-  const items: {label: string; value: string}[] = [
-    {label: 'List 10 things that you are grateful for in your life right now.', value: 'List 10 things that you are grateful for in your life right now.'}, {label: 'What talent or skill do you have that you are grateful for?', value: 'What talent or skill do you have that you are grateful for?'}, {label: 'Write about a book, movie, or song that has inspired you.', value: 'Write about a book, movie, or song that has inspired you.'},
-     {label: 'List three things that you are looking forward to in the future.', value: 'List three things that you are looking forward to in the future.'}, {label: 'Write down a happy memory.', value: 'Write down a happy memory.'}
-    ];
+  const items = [
+    {label: 'List 10 things that you are grateful for in your life right now.', value: 'List 10 things that you are grateful for in your life right now.'},
+    {label: 'What talent or skill do you have that you are grateful for?', value: 'What talent or skill do you have that you are grateful for?'},
+    {label: 'Write about a book, movie, or song that has inspired you.', value: 'Write about a book, movie, or song that has inspired you.'},
+    {label: 'List three things that you are looking forward to in the future.', value: 'List three things that you are looking forward to in the future.'},
+    {label: 'Write down a happy memory.', value: 'Write down a happy memory.'}
+  ];
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Gratitude Journal</Text>
+      <View style={styles.header}>
+        <Link href="/self-care" asChild>
+          <Pressable>
+            <Image
+              source={require("../../../assets/images/Back.png")}
+              style={styles.backimage}
+            />
+          </Pressable>
+        </Link>
+        <Text style={styles.title}>Gratitude Journal</Text>
+      </View>
       <View style={styles.form}>
-      <Text style={styles.areatitle}>Today I am grateful for...</Text>
+        <Text style={styles.areatitle}>Today I am grateful for...</Text>
         <TextInput
-              multiline={true}
-              numberOfLines={10}
-              maxLength={480}
-              value={gratefulEntry}
-              onChangeText={handleGratefulChange}
-              placeholder='Try to list three things that went well today and why you are grateful for them.'
-              placeholderTextColor={'gray'}
-              style={styles.textinput}/>
+          multiline={true}
+          numberOfLines={10}
+          maxLength={480}
+          value={gratefulEntry}
+          onChangeText={handleGratefulChange}
+          placeholder='Try to list three things that went well today and why you are grateful for them.'
+          placeholderTextColor={'gray'}
+          style={styles.textinput}/>
         <View>
           <Text style={styles.areatitle}>Or, choose a journal prompt below</Text>
-          <DropDownPicker
-            items={items}
-            open={isOpen}
-            setOpen={() => setIsOpen(!isOpen)}
-            value={currentValue}
-            setValue={(val) => setCurrentValue(val)}
-            dropDownContainerStyle={{
-              top: 0,
-              maxHeight: 150,
-          }}
-          />
+          <View style={{ borderRadius: 10, marginTop: 10, zIndex: 3}}>
+            <DropDownPicker
+              items={items}
+              open={isOpen}
+              setOpen={() => setIsOpen(!isOpen)}
+              value={currentValue}
+              setValue={(val) => setCurrentValue(val)}
+              dropDownContainerStyle={{ maxHeight: 150, borderColor: "#420C5C", borderRadius: 10 }}
+              listItemLabelStyle={{ fontFamily: 'JakartaMed', }}
+              listItemContainerStyle={{ marginVertical: 5, borderRadius: 10}}
+              containerStyle={{ borderRadius: 10 }}
+              selectedItemLabelStyle={{ color: "#420C5C", fontFamily: 'JakartaSemiBold' }}
+              labelStyle={{ fontFamily: 'JakartaSemiBold', color: "#420C5C" }}
+              style={styles.dropDown}
+            />
+          </View>
           <TextInput
-              multiline={true}
-              numberOfLines={10}
-              maxLength={480}
-              value={promptEntry}
-              onChangeText={handlePromptChange}
-              placeholder='Write your response here.'
-              placeholderTextColor={'gray'}
-              style={styles.textinput}
-              />
+            multiline={true}
+            numberOfLines={10}
+            maxLength={480}
+            value={promptEntry}
+            onChangeText={handlePromptChange}
+            placeholder='Write your response here.'
+            placeholderTextColor={'gray'}
+            style={[styles.textinput, {marginTop: 0, borderTopWidth: 0, borderTopStartRadius: 0, borderTopEndRadius: 0, height: 180}]}
+          />
         </View>
         <TouchableOpacity style={styles.submitbutton} onPress={handleSubmit}>
-            <Text style={styles.submittext}>Save Journal Entry</Text>
+          <Text style={styles.submittext}>Save Journal Entry</Text>
         </TouchableOpacity>
         {submitJournal === true ? <Text>Submitted!</Text> : <Text></Text>}
         <Link href="/self-care/gratitude-journal/journal-entries" asChild>
-          <TouchableOpacity style={styles.submitbutton}>
-            <Text style={styles.submittext}>
-              View Entries </Text>
+          <TouchableOpacity style={styles.viewButton}>
+            <Text style={styles.viewText}>
+             View Entries
+            </Text>
           </TouchableOpacity>
         </Link>
       </View>
@@ -114,6 +133,7 @@ export default function GratitiudeJournal() {
 const styles = StyleSheet.create({
   areatitle: {
     marginTop: 10,
+    fontFamily: "JakartaMed",
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
@@ -121,35 +141,76 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#F0EDF1'
   },
   form: {
-    width: '70%',
+    width: '90%',
     height: '90%',
     flexDirection: 'column',
   },
+  dropDown: {
+    borderColor: '#420C5C',
+    borderBottomEndRadius: 0,
+    borderBottomStartRadius: 0,
+    borderRadius: 5
+  },
   textinput: {
+    fontFamily: "JakartaMed",
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#420C5C',
     borderRadius: 5,
     padding: 10,
+    height: 150,
+    marginTop: 10,
+    marginBottom: 20,
     backgroundColor: 'white'
   },
   submitbutton: {
-    marginTop: 10,
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 25,
     alignItems: 'center',
     padding: 10,
     backgroundColor: '#420C5C',
+    marginVertical: 20
   },
   submittext: {
     color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
-  title: {
     fontSize: 20,
     fontWeight: 'bold',
+    fontFamily: 'JakartaSemiBold',
+  },
+  viewButton: {
+    borderWidth: 1,
+    borderRadius: 25,
+    borderColor: '#420C5C',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#FFFFFF',
+  },
+  viewText: {
+    color: '#420C5C',
+    fontSize: 20,
+    fontWeight: 'bold',
+    fontFamily: 'JakartaSemiBold',
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "95%",
+    marginTop: "20%",
+    marginBottom: "10%",
+  },
+  backimage: {
+    height: 30,
+    width: 30,
+    marginRight: "-10%",
+  },
+  title: {
+    fontSize: 25,
+    fontFamily: "JakartaSemiBold",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 })

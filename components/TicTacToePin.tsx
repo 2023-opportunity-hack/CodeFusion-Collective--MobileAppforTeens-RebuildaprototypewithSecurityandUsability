@@ -1,5 +1,4 @@
-import { Pressable, StyleSheet } from "react-native";
-import { Text, View } from "./Themed";
+import { Pressable, StyleSheet, View } from "react-native";
 
 interface functionProps{
   checkButtonPress: (button: string) => void;

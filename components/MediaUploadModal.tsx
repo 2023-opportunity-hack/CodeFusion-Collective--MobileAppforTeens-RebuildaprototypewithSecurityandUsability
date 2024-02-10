@@ -1,6 +1,5 @@
-import { Pressable, StyleSheet } from "react-native";
-import { View, Text } from "./Themed";
 import { A } from '@expo/html-elements';
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 interface functionProps {
   closeModal: () => void;

@@ -1,5 +1,5 @@
 import { Link } from 'expo-router';
-import { Image, StyleSheet, Text, Pressable, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const Onboarding = () => {
 
@@ -8,7 +8,7 @@ const Onboarding = () => {
       <Image style={styles.logo} source={require(`../../assets/images/onboard1.png`)} />
       <Link style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} href="/onboarding/index2" asChild>
         <Pressable>
-          <View style={styles.button}><Text style={styles.buttontext}>How it Works </Text></View>
+          <View style={styles.button}><Text style={styles.buttontext}>See how it Works </Text></View>
         </Pressable>
       </Link>
     </View>
@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   logo: {
     height: '70%',

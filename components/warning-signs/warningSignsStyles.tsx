@@ -6,11 +6,13 @@ const warningSignsStyles = StyleSheet.create({
   },
   title: {
     marginBottom: 10,
+    fontFamily: 'JakartaSemiBold',
   },
   descriptionContainer: {
     width: 300,
   },
   description: {
+    fontFamily: 'JakartaLight',
     fontSize: 16,
     width: 280,
   },

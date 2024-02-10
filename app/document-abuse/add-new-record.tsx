@@ -1,10 +1,9 @@
-import { Pressable, StyleSheet, TextInput, Modal } from "react-native"
-import { View, Text } from "../../components/Themed";
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { useEffect, useState } from "react";
-import MediaUploadModal from "../../components/MediaUploadModal";
+import { Link, router } from "expo-router";
 import * as SQLite from 'expo-sqlite';
-import { router } from "expo-router";
+import { useEffect, useState } from "react";
+import { Image, Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import MediaUploadModal from "../../components/MediaUploadModal";
 
 export default function AddNewRecordPage() {
   const db = SQLite.openDatabase('safespace.db');
@@ -52,7 +51,7 @@ export default function AddNewRecordPage() {
   const handleSubmit = () => {
     if (date && text.length > 0) {
       db.transaction((tx) => {
-        tx.executeSql('INSERT INTO abuse_documents (date, description, time_added) VALUES (?, ?, ?)', [date.toISOString(), text, time ? 1 : 0], 
+        tx.executeSql('INSERT INTO abuse_documents (date, description, time_added) VALUES (?, ?, ?)', [date.toISOString(), text, time ? 1 : 0],
         (txObj, resultSet) => {
           console.log('SUBMISSION COMPLETE');
           console.log(txObj);
@@ -83,7 +82,17 @@ export default function AddNewRecordPage() {
           </View>
         </View>
       </Modal>
-      <Text style={styles.title}>Add a New Record</Text>
+      <View style={styles.header}>
+        <Link href="/document-abuse" asChild>
+          <Pressable>
+            <Image
+              source={require("../../assets/images/Back.png")}
+              style={styles.backimage}
+            />
+          </Pressable>
+        </Link>
+        <Text style={styles.title}>Add a New Record</Text>
+      </View>
       <View style={styles.descriptionContainer}>
         <Text style={styles.subtitle}>What Happened?</Text>
         <TextInput
@@ -101,7 +110,7 @@ export default function AddNewRecordPage() {
           onPress={showDatePicker}
         >
           <View style={styles.dateContainer}>
-            <Text>{date?.toLocaleDateString() ? date.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select Date'}</Text>
+            <Text style={{ fontFamily: "JakartaMed"}}>{date?.toLocaleDateString() ? date.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select Date'}</Text>
             {/* ADD CALENDAR ICON */}
           </View>
         </Pressable>
@@ -110,7 +119,7 @@ export default function AddNewRecordPage() {
           onPress={showTimePicker}
         >
           <View style={styles.dateContainer}>
-            <Text>{time?.toLocaleTimeString() ? time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Select Time'}</Text>
+            <Text style={{ fontFamily: "JakartaMed"}}>{time?.toLocaleTimeString() ? time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Select Time'}</Text>
             {/* ADD CLOCK ICON */}
           </View>
         </Pressable>
@@ -124,7 +133,7 @@ export default function AddNewRecordPage() {
         )}
       </View>
       <Pressable
-        style={{width: '100%', alignItems: 'center', marginBottom: 40}} 
+        style={{width: '100%', alignItems: 'center', marginBottom: 40}}
         onPress={() => setModalVisible(true)}
       >
         <View style={styles.button}>
@@ -148,21 +157,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginVertical: 20,
+    justifyContent: 'flex-start',
   },
   descriptionContainer: {
     width: '90%',
     marginBottom: 20,
+    marginTop: "10%",
   },
   subtitle: {
+    fontFamily: "JakartaSemiBold",
     marginBottom: 10,
     fontWeight: 'bold',
   },
   textbox: {
+    fontFamily: "JakartaSemiBold",
     width: '100%',
     height: 120,
     backgroundColor: 'white',
@@ -184,15 +192,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   button: {
-    width: '80%',
+    width: '90%',
     borderWidth: 1,
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#420C5C',
+    padding: 5,
   },
   buttonText: {
+    fontFamily: 'JakartaSemiBold',
     marginVertical: 10,
     fontSize: 20,
     color: '#fff',
@@ -207,11 +217,29 @@ const styles = StyleSheet.create({
   modalContents: {
     width: '90%',
     height: '50%',
-    // margin: 20,
     borderWidth: 1,
     borderRadius: 16,
     borderColor: '#420C5C',
     overflow: 'hidden',
     padding: 16,
-  }
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "95%",
+    marginTop: "20%",
+    marginBottom: "10%",
+  },
+  backimage: {
+    height: 30,
+    width: 30,
+    marginRight: "-10%",
+  },
+  title: {
+    fontFamily: "JakartaSemiBold",
+    fontSize: 25,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
 })
