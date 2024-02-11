@@ -2,15 +2,13 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 import { Link, router } from "expo-router";
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from "react";
-import { Image, Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import MediaUploadModal from "../../components/MediaUploadModal";
 
 export default function AddNewRecordPage() {
   const db = SQLite.openDatabase('safespace.db');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [date, setDate] = useState<Date>();
-  const [time, setTime] = useState<Date>();
-  const [mode, setMode] = useState<string>('date');
   const [show, setShow] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
 
@@ -22,26 +20,16 @@ export default function AddNewRecordPage() {
 
   const onChange = (event: DateTimePickerEvent, selectedDate: Date) => {
     const currentDate = selectedDate;
-    setShow(false);
-
-    if (mode === 'time') {
-      setTime(currentDate);
-    } else if (mode === 'date') {
-      setDate(currentDate);
-    }
+    setDate(currentDate);
   }
 
   const showMode = (currentMode: string) => {
+    setDate(new Date());
     setShow(true);
-    setMode(currentMode);
   }
 
   const showDatePicker = () => {
     showMode('date');
-  }
-
-  const showTimePicker = () => {
-    showMode('time');
   }
 
   const closeModal = () => {
@@ -69,7 +57,7 @@ export default function AddNewRecordPage() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'flex-start'}}>
       <Modal
         animationType="fade"
         transparent={true}
@@ -105,48 +93,55 @@ export default function AddNewRecordPage() {
         />
       </View>
       <View style={styles.descriptionContainer}>
-        <Text style={styles.subtitle}>Date</Text>
+        <Text style={styles.subtitle}>Date of Event</Text>
         <Pressable onPress={showDatePicker}>
           <View style={styles.dateContainer}>
             <Text style={{ fontFamily: "JakartaMed"}}>{date?.toLocaleDateString() ? date.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select Date'}</Text>
-            {/* ADD CALENDAR ICON */}
-          </View>
-        </Pressable>
-        <Text style={styles.subtitle}>Time {'(Optional)'}</Text>
-        <Pressable
-          onPress={showTimePicker}
-        >
-          <View style={styles.dateContainer}>
-            <Text style={{ fontFamily: "JakartaMed"}}>{time?.toLocaleTimeString() ? time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Select Time'}</Text>
-            {/* ADD CLOCK ICON */}
           </View>
         </Pressable>
         {show && (
-          <DateTimePicker
-          value={new Date()}
-          mode={mode}
-          onChange={onChange}
-          maximumDate={new Date()}
-          />
+          <>
+            <DateTimePicker
+              value={date}
+              mode={"date"}
+              display='spinner'
+              onChange={onChange}
+              maximumDate={new Date()}
+            />
+            <Pressable
+              onPress={() => {
+                setShow(false);
+              }}
+              style={{width: '100%', alignItems: 'center', marginTop: 20}}
+            >
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Done</Text>
+              </View>
+            </Pressable>
+          </>
         )}
       </View>
       <Pressable
-        style={{width: '100%', alignItems: 'center', marginBottom: 40}}
+        style={{width: '100%', alignItems: 'center', marginBottom: 40, marginTop: 60}}
         onPress={() => setModalVisible(true)}
       >
-        <View style={styles.button}>
+        {({ pressed }) => (
+          <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
             <Text style={styles.buttonText}>Secure your photos & videos</Text>
           </View>
+        )}
       </Pressable>
       <Pressable
         onPress={handleSubmit}
         style={{width: '100%', alignItems: 'center'}}
       >
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>Done</Text>
-        </View>
+        {({ pressed }) => (
+          <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+            <Text style={styles.buttonText}>Save</Text>
+          </View>
+        )}
       </Pressable>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -154,13 +149,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    backgroundColor: '#F0EDF1',
   },
   descriptionContainer: {
     width: '90%',
     marginBottom: 20,
-    marginTop: "10%",
+    marginTop: "5%",
   },
   subtitle: {
     fontFamily: "JakartaSemiBold",
@@ -170,7 +164,7 @@ const styles = StyleSheet.create({
   textbox: {
     fontFamily: "JakartaSemiBold",
     width: '100%',
-    height: 120,
+    height: 170,
     backgroundColor: 'white',
     borderWidth: 1,
     borderColor: '#420C5C',

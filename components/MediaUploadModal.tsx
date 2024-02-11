@@ -15,9 +15,11 @@ export default function MediaUploadModal({closeModal = () => {}}: functionProps)
         onPress={closeModal}
         style={styles.pressable}
       >
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>Close</Text>
-        </View>
+        {({ pressed }) => (
+          <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+            <Text style={styles.buttonText}>Close</Text>
+          </View>
+        )}
       </Pressable>
     </View>
   )
@@ -29,6 +31,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     alignItems: 'center',
+    backgroundColor: '#F0EDF1',
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#420C5C',
+    padding: 20,
   },
   pressable: {
     position: 'absolute',
@@ -46,7 +53,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#420C5C',
   },
   buttonText: {
-    marginVertical: 5,
+    marginVertical: 10,
     fontSize: 20,
     color: '#fff',
   },
