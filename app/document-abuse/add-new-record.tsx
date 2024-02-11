@@ -106,9 +106,7 @@ export default function AddNewRecordPage() {
       </View>
       <View style={styles.descriptionContainer}>
         <Text style={styles.subtitle}>Date</Text>
-        <Pressable
-          onPress={showDatePicker}
-        >
+        <Pressable onPress={showDatePicker}>
           <View style={styles.dateContainer}>
             <Text style={{ fontFamily: "JakartaMed"}}>{date?.toLocaleDateString() ? date.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select Date'}</Text>
             {/* ADD CALENDAR ICON */}
