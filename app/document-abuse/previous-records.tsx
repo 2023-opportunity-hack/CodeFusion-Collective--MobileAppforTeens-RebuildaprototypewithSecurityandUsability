@@ -1,8 +1,9 @@
 import { Link } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { List } from 'react-native-paper';
 
-const recordEntries = [
+const testRecordEntries = [
   {
     date: '1625882400000',
     records: [
@@ -64,23 +65,29 @@ const recordEntries = [
       },
     ]
   },
-]
+];
+
+const options: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+};
 
 const RecordEntry = ({ description, date }: { description: string, date: string}) => {
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  };
+
 
   const formattedDate = new Date(parseInt(date)).toLocaleString('en-US', options);
 
   return (
-    <View>
-      <Text>What Happened?</Text>
-      <Text>{description}</Text>
-      <Text>When did it happen?</Text>
-      <Text>{formattedDate}</Text>
+    <View style={styles.recordEntryContainer}>
+      <View style={{ marginBottom: 12 }}>
+        <Text style={styles.prompt}>What Happened?</Text>
+        <Text style={styles.entrytext}>{description}</Text>
+      </View>
+      <View>
+        <Text style={styles.prompt}>When did it happen?</Text>
+        <Text style={styles.entrytext}>{formattedDate}</Text>
+      </View>
     </View>
   )
 }
@@ -101,7 +108,15 @@ export default function NewRecordPage() {
   //     );
   //   });
   // }, [])
+  const [recordEntries, setRecordEntries] = useState([]);
 
+  useEffect(() => {
+    const sortedRecords = testRecordEntries.sort((a, b) => parseInt(b.date) - parseInt(a.date));
+    sortedRecords.forEach((day) => {
+      day.records.sort((a, b) => parseInt(b.date) - parseInt(a.date));
+    })
+    setRecordEntries(sortedRecords);
+  }, [])
 
 
 
@@ -123,7 +138,7 @@ export default function NewRecordPage() {
           {recordEntries.map((day) => (
             <List.Accordion
               key={day.date}
-              title={day.date}
+              title={new Date(parseInt(day.date)).toLocaleString('en-US', options)}
               theme={{ colors: { background: "#FFFFFF" } }}
             >
               {day.records.map((entry) => (
@@ -178,4 +193,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#420C5C"
   },
+  recordEntryContainer: {
+    display: "flex",
+    width: "100%",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "center",
+  },
+  prompt: {
+    fontFamily: "JakartaSemiBold",
+    fontSize: 15,
+    marginBottom: 5
+  },
+  entrytext: {
+    fontFamily: "JakartaLight",
+    fontSize: 15
+  }
 })
