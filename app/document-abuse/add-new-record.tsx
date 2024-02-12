@@ -14,8 +14,14 @@ export default function AddNewRecordPage() {
 
   useEffect(() => {
     db.transaction((tx) => {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS abuse_documents (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, description TEXT, time_added BOOLEAN)');
-    })
+      tx.executeSql('CREATE TABLE IF NOT EXISTS records (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT)');
+    });
+
+    db.transaction(tx => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS record_details (id INTEGER PRIMARY KEY AUTOINCREMENT, record_id INTEGER, description TEXT, date TEXT, FOREIGN KEY (record_id) REFERENCES Records(id))'
+      );
+    });
   }, []);
 
   const onChange = (event: DateTimePickerEvent, selectedDate: Date) => {
@@ -37,22 +43,22 @@ export default function AddNewRecordPage() {
   }
 
   const handleSubmit = () => {
+    const currentDate = new Date();
+
     if (date && text.length > 0) {
       db.transaction((tx) => {
-        tx.executeSql('INSERT INTO abuse_documents (date, description, time_added) VALUES (?, ?, ?)', [date.toISOString(), text, time ? 1 : 0],
+        tx.executeSql('INSERT INTO records (date) VALUES (?)', [currentDate.toISOString()],
         (txObj, resultSet) => {
-          console.log('SUBMISSION COMPLETE');
-          console.log(txObj);
-          console.log(resultSet);
-          router.back();
+          const recordId = resultSet.insertId;
+
+          tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString()],
+          (txObjDetails, resultSetDetails) => {
+            console.log('SUBMISSION COMPLETE');
+            router.back();
+          })
         },
-        // (txObj, error) => {console.log('SUBMISSION FAILED: ', error)}
         );
       });
-    } else if (!date) {
-      console.error('PLEASE SELECT A DATE');
-    } else if (text.length === 0) {
-      console.error('PLEASE FILL OUT FORM');
     }
   }
 
@@ -81,7 +87,7 @@ export default function AddNewRecordPage() {
         </Link>
         <Text style={styles.title}>Add a New Record</Text>
       </View>
-      <View style={styles.descriptionContainer}>
+      <View style={[styles.descriptionContainer, { marginBottom: 40 }]}>
         <Text style={styles.subtitle}>What Happened?</Text>
         <TextInput
           style={styles.textbox}
@@ -114,9 +120,11 @@ export default function AddNewRecordPage() {
               }}
               style={{width: '100%', alignItems: 'center', marginTop: 20}}
             >
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Done</Text>
-              </View>
+              {({ pressed }) => (
+                <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+                  <Text style={styles.buttonText}>Done</Text>
+                </View>
+              )}
             </Pressable>
           </>
         )}
@@ -134,6 +142,7 @@ export default function AddNewRecordPage() {
       <Pressable
         onPress={handleSubmit}
         style={{width: '100%', alignItems: 'center'}}
+        disabled={text.length === 0 || !date}
       >
         {({ pressed }) => (
           <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
