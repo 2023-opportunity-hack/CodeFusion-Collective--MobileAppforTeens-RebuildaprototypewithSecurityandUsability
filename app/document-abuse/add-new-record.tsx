@@ -14,13 +14,15 @@ export default function AddNewRecordPage() {
 
   useEffect(() => {
     db.transaction((tx) => {
+      // tx.executeSql('DROP TABLE IF EXISTS records');
+      // tx.executeSql('DROP TABLE IF EXISTS record_details');
       tx.executeSql('CREATE TABLE IF NOT EXISTS records (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT)');
-    });
-
-    db.transaction(tx => {
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS record_details (id INTEGER PRIMARY KEY AUTOINCREMENT, record_id INTEGER, description TEXT, date TEXT, FOREIGN KEY (record_id) REFERENCES Records(id))'
       );
+    });
+
+    db.transaction((tx) => {
     });
   }, []);
 
@@ -43,21 +45,35 @@ export default function AddNewRecordPage() {
   }
 
   const handleSubmit = () => {
-    const currentDate = new Date();
+    const newDate = new Date();
+    const currentDate = newDate.toISOString().slice(0, 10);
 
     if (date && text.length > 0) {
       db.transaction((tx) => {
-        tx.executeSql('INSERT INTO records (date) VALUES (?)', [currentDate.toISOString()],
-        (txObj, resultSet) => {
-          const recordId = resultSet.insertId;
+        tx.executeSql('SELECT id FROM records WHERE date = ?;', [currentDate], (_, resultSet) => {
+          if (resultSet.rows.length > 0) {
+            const recordId = resultSet.rows.item(0).id;
 
-          tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString()],
-          (txObjDetails, resultSetDetails) => {
-            console.log('SUBMISSION COMPLETE');
-            router.back();
-          })
-        },
-        );
+            tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, text, date.toISOString()], (_, resultSetDetails) => {
+              console.log("SUBMISSION SUCCESSFUL");
+              console.log("Day did already exist: ", resultSetDetails)
+              router.back();
+            })
+          } else {
+            tx.executeSql('INSERT INTO records (date) VALUES (?)', [currentDate],
+            (_, resultSet) => {
+              const recordId = resultSet.insertId;
+
+              tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString()],
+              (_, resultSetDetails) => {
+                console.log('SUBMISSION COMPLETE');
+                console.log("Day did not already exist: ", resultSetDetails)
+                router.back();
+              })
+            },
+            );
+          }
+        });
       });
     }
   }

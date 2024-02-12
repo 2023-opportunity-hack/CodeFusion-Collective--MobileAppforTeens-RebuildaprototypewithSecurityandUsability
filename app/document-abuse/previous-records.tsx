@@ -1,4 +1,5 @@
 import { Link } from 'expo-router';
+import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { List } from 'react-native-paper';
@@ -94,29 +95,43 @@ const RecordEntry = ({ description, date }: { description: string, date: string}
 
 
 export default function NewRecordPage() {
-  //const db = SQLite.openDatabase('safespace.db');
-
-  // useEffect(() => {
-  //   db.transaction((tx) => {
-  //     tx.executeSql('SELECT * FROM abuse_documents', undefined,
-  //     (txObj, resultSet) => {
-  //       console.log('SUCCESS READING DATABASE');
-  //       console.log(resultSet.rows);
-  //       setDocuments(resultSet.rows._array);
-  //     },
-  //     // (txObj, error) => console.log(error)
-  //     );
-  //   });
-  // }, [])
+  const db = SQLite.openDatabase('safespace.db');
   const [recordEntries, setRecordEntries] = useState([]);
 
+  const sqlQuery = `SELECT
+                      r.id AS record_id,
+                      r.date AS record_date,
+                      '[' || GROUP_CONCAT(
+                          '{"detail_id": ' || rd.id || ', "event_date": "' || rd.date || '", "description": "' || rd.description || '"}'
+                      ) || ']' AS records
+                    FROM
+                      records r
+                    LEFT JOIN
+                      record_details rd ON r.id = rd.record_id
+                    GROUP BY
+                      r.id;
+                    `;
+
   useEffect(() => {
-    const sortedRecords = testRecordEntries.sort((a, b) => parseInt(b.date) - parseInt(a.date));
-    sortedRecords.forEach((day) => {
-      day.records.sort((a, b) => parseInt(b.date) - parseInt(a.date));
-    })
-    setRecordEntries(sortedRecords);
+    db.transaction((tx) => {
+      tx.executeSql(sqlQuery, undefined,
+      (txObj, resultSet) => {
+        console.log('SUCCESS READING DATABASE');
+        console.log(resultSet.rows._array);
+        setRecordEntries(resultSet.rows._array);
+      },
+      (txObj, error) => console.log(error)
+      );
+    });
   }, [])
+
+  // useEffect(() => {
+  //   const sortedRecords = testRecordEntries.sort((a, b) => parseInt(b.date) - parseInt(a.date));
+  //   sortedRecords.forEach((day) => {
+  //     day.records.sort((a, b) => parseInt(b.date) - parseInt(a.date));
+  //   })
+  //   setRecordEntries(sortedRecords);
+  // }, [])
 
 
 
