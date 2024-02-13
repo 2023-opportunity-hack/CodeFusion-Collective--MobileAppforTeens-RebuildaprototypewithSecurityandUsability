@@ -77,7 +77,7 @@ const options: Intl.DateTimeFormatOptions = {
 const RecordEntry = ({ description, date }: { description: string, date: string}) => {
 
 
-  const formattedDate = new Date(parseInt(date)).toLocaleString('en-US', options);
+  const formattedDate = new Date(date).toLocaleString('en-US', options);
 
   return (
     <View style={styles.recordEntryContainer}>
@@ -97,6 +97,7 @@ const RecordEntry = ({ description, date }: { description: string, date: string}
 export default function NewRecordPage() {
   const db = SQLite.openDatabase('safespace.db');
   const [recordEntries, setRecordEntries] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const sqlQuery = `SELECT
                       r.id AS record_id,
@@ -113,26 +114,24 @@ export default function NewRecordPage() {
                     `;
 
   useEffect(() => {
+    setLoading(true);
     db.transaction((tx) => {
       tx.executeSql(sqlQuery, undefined,
       (txObj, resultSet) => {
-        console.log('SUCCESS READING DATABASE');
-        console.log(resultSet.rows._array);
-        setRecordEntries(resultSet.rows._array);
+        resultSet.rows._array.forEach((day) => {
+          day.records = JSON.parse(day.records);
+        })
+        const sortedRecords = resultSet.rows._array.sort((a, b) => new Date(b.record_date) - new Date(a.record_date));
+        sortedRecords.forEach((day) => {
+          day.records.sort((a, b) => new Date(b.event_date) - new Date(a.event_date));
+        })
+        setRecordEntries(sortedRecords);
+        setLoading(false);
       },
       (txObj, error) => console.log(error)
       );
     });
   }, [])
-
-  // useEffect(() => {
-  //   const sortedRecords = testRecordEntries.sort((a, b) => parseInt(b.date) - parseInt(a.date));
-  //   sortedRecords.forEach((day) => {
-  //     day.records.sort((a, b) => parseInt(b.date) - parseInt(a.date));
-  //   })
-  //   setRecordEntries(sortedRecords);
-  // }, [])
-
 
 
   return (
@@ -150,20 +149,26 @@ export default function NewRecordPage() {
       </View>
       <List.Section style={styles.listGroupContainer}>
         <View style={styles.listGroup}>
-          {recordEntries.map((day) => (
-            <List.Accordion
-              key={day.date}
-              title={new Date(parseInt(day.date)).toLocaleString('en-US', options)}
-              theme={{ colors: { background: "#FFFFFF" } }}
-            >
-              {day.records.map((entry) => (
-                <List.Item
-                  key={entry.date}
-                  title={<RecordEntry description={entry.description} date={entry.date} />}
-                />
-              ))}
-            </List.Accordion>
-          ))}
+          {!loading ? (
+            recordEntries.map((day) => (
+              <List.Accordion
+                key={day.record_id}
+                title={new Date(`${day.record_date}T07:00:00Z`).toLocaleString('en-US', options)}
+                theme={{ colors: { background: "#FFFFFF" } }}
+              >
+                {day.records.map((entry) => (
+                  <List.Item
+                    key={entry.event_date}
+                    title={<RecordEntry description={entry.description} date={entry.event_date} />}
+                  />
+                ))}
+              </List.Accordion>
+            ))
+          ): (
+            <List.Item
+              title="No Previous Records"
+            />
+          )}
         </View>
       </List.Section>
     </ScrollView>

@@ -55,8 +55,6 @@ export default function AddNewRecordPage() {
             const recordId = resultSet.rows.item(0).id;
 
             tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, text, date.toISOString()], (_, resultSetDetails) => {
-              console.log("SUBMISSION SUCCESSFUL");
-              console.log("Day did already exist: ", resultSetDetails)
               router.back();
             })
           } else {
@@ -66,8 +64,6 @@ export default function AddNewRecordPage() {
 
               tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString()],
               (_, resultSetDetails) => {
-                console.log('SUBMISSION COMPLETE');
-                console.log("Day did not already exist: ", resultSetDetails)
                 router.back();
               })
             },
@@ -161,7 +157,7 @@ export default function AddNewRecordPage() {
         disabled={text.length === 0 || !date}
       >
         {({ pressed }) => (
-          <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+          <View style={[styles.button, { opacity: pressed || text.length === 0 || !date ? 0.5 : 1 }]}>
             <Text style={styles.buttonText}>Save</Text>
           </View>
         )}
