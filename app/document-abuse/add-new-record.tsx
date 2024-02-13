@@ -142,7 +142,7 @@ export default function AddNewRecordPage() {
         )}
       </View>
       <Pressable
-        style={{width: '100%', alignItems: 'center', marginBottom: 40, marginTop: 60}}
+        style={styles.buttonWrapper}
         onPress={() => setModalVisible(true)}
       >
         {({ pressed }) => (
@@ -203,6 +203,12 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
+  },
+  buttonWrapper: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 40,
+    marginTop: 60
   },
   button: {
     width: '90%',
