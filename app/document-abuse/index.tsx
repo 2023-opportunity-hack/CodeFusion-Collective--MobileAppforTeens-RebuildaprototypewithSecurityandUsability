@@ -30,16 +30,24 @@ export default function DocumentAbusePage() {
         style={{width: '100%', alignItems: 'center', marginVertical: 40}}
       >
         <Pressable>
-          <View style={[styles.button, {backgroundColor: '#420C5C'}]}>
-            <Text style={[styles.buttonText, {color: '#fff', fontWeight: 'bold'}]}>Add a New Record</Text>
-          </View>
+          {({ pressed }) => (
+            <View style={[styles.button, { backgroundColor: '#420C5C', opacity: pressed ? 0.5 : 1 }]}>
+              <Text style={[styles.buttonText, {color: '#fff', fontWeight: 'bold'}]}>Add a New Record</Text>
+            </View>
+          )}
         </Pressable>
       </Link>
-      <Link href="/document-abuse/previous-records" asChild style={{width: '100%', alignItems: 'center'}}>
+      <Link
+        href="/document-abuse/previous-records"
+        asChild
+        style={{width: '100%', alignItems: 'center'}}
+        >
         <Pressable>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>View Previous Records</Text>
-          </View>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <Text style={styles.buttonText}>View Previous Records</Text>
+            </View>
+          )}
         </Pressable>
       </Link>
     </ScrollView>
