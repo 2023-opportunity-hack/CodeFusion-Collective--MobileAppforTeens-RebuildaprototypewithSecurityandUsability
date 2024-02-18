@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
 
 
@@ -39,7 +39,17 @@ export default function JournalEntries() {
   const db = SQLite.openDatabase('safespace.db');
 
   const [journalEntries, setJournalEntries] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const deleteAllJournalEntries = () => {
+    db.transaction((tx) => {
+      tx.executeSql('DELETE FROM journal_entries;');
+      tx.executeSql('DELETE FROM journal_details;');
+      setJournalEntries([]);
+      setShowModal(false);
+    })
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -65,6 +75,34 @@ export default function JournalEntries() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'flex-start'}}>
+      <Modal
+        animationType='fade'
+        transparent={true}
+        visible={showModal}
+        onRequestClose={() => setShowModal(false)}
+        >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContents}>
+            <Text>Are you sure you want to delete all journal entries?</Text>
+            <View style={styles.modalButtons}>
+              <Pressable style={styles.modalButtonWrapper} onPress={deleteAllJournalEntries}>
+                {({ pressed }) => (
+                  <View style={[styles.modalButton, { backgroundColor: '#D22F27', opacity: pressed ? 0.5 : 1}]}>
+                    <Text style={styles.modalButtonText}>Yes</Text>
+                  </View>
+                )}
+              </Pressable>
+              <Pressable style={styles.modalButtonWrapper} onPress={() => setShowModal(false)}>
+                {({ pressed }) => (
+                  <View style={[styles.modalButton, { backgroundColor: 'green', opacity: pressed ? 0.5 : 1}]}>
+                    <Text style={styles.modalButtonText}>No</Text>
+                  </View>
+                )}
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.header}>
         <Link href="/self-care/gratitude-journal/" asChild>
           <Pressable>
@@ -98,6 +136,15 @@ export default function JournalEntries() {
           )}
         </View>
       </List.Section>
+      {journalEntries.length > 0 ?
+        <Pressable onPress={() => setShowModal(true)} style={styles.buttonWrapper}>
+          {({ pressed }) => (
+            <View style={[styles.deleteButton, { opacity: pressed ? 0.5 : 1 }]}>
+              <Text style={styles.buttonText}>Delete Journal Entries</Text>
+            </View>
+          )}
+        </Pressable>
+        : null}
     </ScrollView>
   );
 }
@@ -170,5 +217,71 @@ const styles = StyleSheet.create({
   entrytext: {
     fontFamily: "JakartaLight",
     fontSize: 15
-  }
+  },
+  modalContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.85)'
+  },
+  modalContents: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    width: '90%',
+    height: '30%',
+    borderWidth: 1,
+    borderRadius: 16,
+    borderColor: '#420C5C',
+    overflow: 'hidden',
+    padding: 16,
+    backgroundColor: '#F0EDF1'
+  },
+  modalButtons: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    width: "100%"
+  },
+  modalButtonWrapper: {
+    alignItems: 'center',
+  },
+  modalButton: {
+    width: "80%",
+    borderWidth: 1,
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    padding: 5,
+  },
+  modalButtonText: {
+    fontFamily: 'JakartaSemiBold',
+    marginVertical: 10,
+    fontSize: 20,
+    color: 'white',
+  },
+  buttonWrapper: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  deleteButton: {
+    width: '95%',
+    borderWidth: 1,
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: '#D22F27',
+    padding: 5,
+    marginVertical: 30
+  },
+  buttonText: {
+    fontFamily: 'JakartaSemiBold',
+    marginVertical: 10,
+    fontSize: 20,
+    color: 'white',
+  },
 })
