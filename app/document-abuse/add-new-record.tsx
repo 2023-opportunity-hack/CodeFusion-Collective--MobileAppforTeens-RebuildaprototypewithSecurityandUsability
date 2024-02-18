@@ -21,9 +21,6 @@ export default function AddNewRecordPage() {
         'CREATE TABLE IF NOT EXISTS record_details (id INTEGER PRIMARY KEY AUTOINCREMENT, record_id INTEGER, description TEXT, date TEXT, FOREIGN KEY (record_id) REFERENCES Records(id))'
       );
     });
-
-    db.transaction((tx) => {
-    });
   }, []);
 
   const onChange = (event: DateTimePickerEvent, selectedDate: Date) => {
@@ -31,13 +28,9 @@ export default function AddNewRecordPage() {
     setDate(currentDate);
   }
 
-  const showMode = (currentMode: string) => {
+  const showDatePicker = () => {
     setDate(new Date());
     setShow(true);
-  }
-
-  const showDatePicker = () => {
-    showMode('date');
   }
 
   const closeModal = () => {

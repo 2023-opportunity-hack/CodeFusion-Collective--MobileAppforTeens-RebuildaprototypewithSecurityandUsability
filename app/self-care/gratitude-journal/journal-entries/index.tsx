@@ -4,86 +4,26 @@ import { useEffect, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
 
-const journalEntries = [
-  {
-    date: "8/12/2023",
-    entries: [
-      {
-        prompt: "Today I am grateful for...",
-        entry: "The trees, the grass and the sky."
-      },
-      {
-        prompt: "Write down a happy memory",
-        entry: "When I was a teenager I went to my first homecoming with someone I had known since childhood."
-      }
-    ],
-  },
-  {
-    date: "10/20/2023",
-    entries: [
-      {
-        prompt: "What talent or skill do you have that you are grateful for?",
-        entry: "My JavaScript coding skills."
-      },
-      {
-        prompt: "Today I am grateful for...",
-        entry: "Restaurant bars, the fact their food and drinks are so good keeps me away from regular restaurants."
-      },
-      {
-        prompt: "Write about a book, movie, or song that has inspired you.",
-        entry: "The movie The Hulk inspired me to become as shredded as possible."
-      }
-    ],
-  },
-  {
-    date: "9/8/2023",
-    entries: [
-      {
-        prompt: "Write about a book, movie, or song that has inspired you.",
-        entry: "The movie Harry Potter was a deeply inspirational movie for me because of how well it teaches the importance of friendship and camaraderie."
-      },
-      {
-        prompt: "List 10 things that you are grateful for in your life right now.",
-        entry: "My dog, my house, my clothes, food, my family, my friends, technology, my mind, my spirit and my body."
-      },
-      {
-        prompt: "Today I am grateful for...",
-        entry: "The fact that my dog is the cutest dog in the whole entire world"
-      }
-    ],
-  },
-  {
-    date: "10/10/2023",
-    entries: [
-      {
-        prompt: "Today I am grateful for...",
-        entry: "The fish and the sea and the air that we breathe."
-      },
-    ],
-  },
-  {
-    date: "4/4/2023",
-    entries: [
-      {
-        prompt: "List 10 things that you are grateful for in your life right now.",
-        entry: "The animals, the flowers, the people, the nature, the environment, the music, the books, the movies, video games and family."
-      },
-    ],
-  },
-  {
-    date: "2/10/2023",
-    entries: [
-      {
-        prompt: "Write down a happy memory",
-        entry: "I remember when I was a child, we went to a place called Bear Lake where me and my siblings rode Banana Bikes for the first time. It was a long time ago but I still remember how much fun I had at the time."
-      },
-      {
-        prompt: "List three things that you are looking forward to in the future.",
-        entry: "Getting a SWE job, getting a new car, and getting a new house."
-      }
-    ]
-  },
-]
+
+const sqlQuery = `SELECT
+                    je.id AS date_id,
+                    je.date AS date,
+                    '[' || GROUP_CONCAT(
+                        '{"entry_id": ' || jd.id || ', "prompt": "' || jd.prompt || '", "entry": "' || jd.description || '"}'
+                    ) || ']' AS entries
+                    FROM
+                      journal_entries je
+                    LEFT JOIN
+                      journal_details jd ON je.id = jd.journal_id
+                    GROUP BY
+                      je.id;
+                          `;
+
+const options: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+};
 
 const JournalEntry = ({ entry, prompt }: { entry: string, prompt: string }) => {
 
@@ -95,25 +35,32 @@ const JournalEntry = ({ entry, prompt }: { entry: string, prompt: string }) => {
   )
 }
 
-
 export default function JournalEntries() {
   const db = SQLite.openDatabase('safespace.db');
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentValue, setCurrentValue] = useState('');
+
+  const [journalEntries, setJournalEntries] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     db.transaction((tx) => {
-      tx.executeSql('SELECT * FROM journal_entries', undefined,
+      tx.executeSql(sqlQuery, undefined,
       (txObj, resultSet) => {
-        console.log(resultSet.rows);
-        // const bigObj = resultSet.rows;
-        // for (var key in bigObj) {
-        //   allEntries.push(bigObj[key])
-        //   console.log(allEntries);
-        // }
+        console.log("Made it into first resultset: ", resultSet)
+        resultSet.rows._array.forEach((day) => {
+          day.entries = JSON.parse(day.entries);
+        });
+        console.log("parsed results: ", resultSet.rows._array)
+        const sortedEntries = resultSet.rows._array.sort((a, b) => new Date(b.date) - new Date(a.date));
+        console.log("sorted results: ", sortedEntries)
+        setJournalEntries(sortedEntries);
+        setLoading(false);
+      }, (txObj, error) => {
+        setLoading(false);
+        console.log('Error in Journal Entries: ' + error)
       })
     })
-  })
+  }, []);
 
 
   return (
@@ -131,20 +78,24 @@ export default function JournalEntries() {
       </View>
       <List.Section style={styles.listGroupContainer}>
         <View style={styles.listGroup}>
-          {journalEntries.map((day) => (
-            <List.Accordion
-              key={day.date}
-              title={day.date}
-              theme={{ colors: { background: "#FFFFFF" } }}
-            >
-              {day.entries.map((entry) => (
-                <List.Item
-                  key={entry.entry}
-                  title={<JournalEntry entry={entry.entry} prompt={entry.prompt} />}
-                />
-              ))}
-            </List.Accordion>
-          ))}
+          {!loading && journalEntries.length > 0 ? (
+            journalEntries.map((day) => (
+              <List.Accordion
+                key={day.date}
+                title={new Date(`${day.date}T07:00:00Z`).toLocaleDateString('en-US', options)}
+                theme={{ colors: { background: "#FFFFFF" } }}
+                >
+                {day.entries.map((entry) => (
+                  <List.Item
+                    key={entry.entry}
+                    title={<JournalEntry entry={entry.entry} prompt={entry.prompt} />}
+                  />
+                ))}
+             </List.Accordion>
+            ))
+          ) : (
+            <List.Item title={"No saved journal entries"} />
+          )}
         </View>
       </List.Section>
     </ScrollView>
