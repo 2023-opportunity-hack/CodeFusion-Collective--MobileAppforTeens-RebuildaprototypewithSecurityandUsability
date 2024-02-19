@@ -1,30 +1,57 @@
-import { Link } from "expo-router"
-import { useState } from "react"
-import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native"
-import { List } from "react-native-paper"
+import { Link } from "expo-router";
+import * as SQLite from 'expo-sqlite';
+import { useEffect, useState } from "react";
+import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, List } from "react-native-paper";
 
-const savedStrategies = [
-  {title: "Go for a walk"},
-  {title: "Call a friend"},
-  {title: "Doodle, draw, or paint"},
-  {title: "Play with or walk a pet"},
-  {title: "Do a puzzle"},
-]
+
+const sqlQuery = `SELECT
+                    '[' || GROUP_CONCAT('"' || strategy || '"') || ']' AS strategies
+                  FROM
+                    strategies;
+                  `;
 
 const MySavedStrategies = () => {
-  const [selected, setSelected] = useState<number[]>([]);
-  const [newStrategy, setNewStrategy] = useState("");
+  const db = SQLite.openDatabase('safespace.db');
 
-  const handleSelect = (index: number) => {
-    if (selected.includes(index)) {
-      setSelected(selected.filter((i) => i !== index));
-    } else {
-      setSelected([...selected, index]);
-    }
+  const [selected, setSelected] = useState<string[]>([]);
+  const [newStrategy, setNewStrategy] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleDeselect = (label: string) => {
+    setSelected(selected.filter((title) => title !== label));
+    db.transaction((tx) => {
+      tx.executeSql('DELETE FROM strategies WHERE strategy = ?', [label]);
+    })
   }
 
+  const saveCustomStrategy = () => {
+    setLoading(true);
+    setSelected([...selected, newStrategy]);
+    setNewStrategy("");
+    db.transaction((tx) => {
+      tx.executeSql('INSERT INTO strategies (strategy) VALUES (?)', [newStrategy]);
+    })
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    db.transaction((tx) => {
+      tx.executeSql(sqlQuery, [], (_, resultSet) => {
+        const parsedStrategies = JSON.parse(resultSet.rows._array[0].strategies);
+        if (!parsedStrategies) {
+          setSelected([]);
+        } else {
+          setSelected(parsedStrategies);
+        }
+      })
+    })
+    setLoading(false);
+  }, []);
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Link href="/self-care/my-strategies/" asChild>
           <Pressable>
@@ -38,15 +65,29 @@ const MySavedStrategies = () => {
       </View>
       <Text style={styles.pagedescription}>My strategies for when I'm feeling stressed or anxious</Text>
       <List.Section style={styles.listItemsSection}>
-        {savedStrategies.map((strategy, index) => (
-          <List.Item
-            key={index}
-            title={strategy.title}
-            titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold" }}
-            onPress={() => handleSelect(index)}
-            left={() => <List.Icon icon={selected.includes(index) ? "checkbox-marked" : "checkbox-blank-outline"} style={{ paddingLeft: 15, }} color="#420C5C" />}
-            />
-        ))}
+        {!loading
+          ? selected.length > 0
+            ? selected.map((strategy, index) => (
+              <List.Item
+                key={index}
+                title={strategy}
+                titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold" }}
+                onPress={() => handleDeselect(strategy)}
+                left={() => <List.Icon
+                              icon={selected.includes(strategy) ? "checkbox-marked" : "checkbox-blank-outline"}
+                              style={{ paddingLeft: 15, }}
+                              color="#420C5C"
+                              />}
+                />
+              )) : (
+                <List.Item title="No strategies saved" />
+              )
+            : (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#420C5C" />
+              </View>
+            )
+          }
       </List.Section>
       <Text style={styles.addText}>Add another strategy not on the list</Text>
       <TextInput
@@ -55,10 +96,14 @@ const MySavedStrategies = () => {
         onChangeText={setNewStrategy}
         style={styles.textInput}
         />
-      <Pressable style={styles.saveButton}>
-          <Text style={styles.saveButtonText}>Save My Strategies</Text>
+      <Pressable style={styles.saveButtonWrapper} disabled={!newStrategy} onPress={saveCustomStrategy}>
+        {({ pressed }) => (
+          <View style={[styles.saveButton, { opacity: pressed || !newStrategy ? 0.5 : 1 }]}>
+            <Text style={styles.saveButtonText}>Save</Text>
+          </View>
+        )}
       </Pressable>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -89,6 +134,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: "auto",
     marginRight: "auto",
+  },
+  saveButtonWrapper: {
+    width: "100%",
+    alignItems: "center",
   },
   saveButton: {
     backgroundColor: "#420C5C",
@@ -128,6 +177,11 @@ const styles = StyleSheet.create({
   },
   pagedescription: {
     fontFamily: "JakartaSemiBold",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   }
 })
 

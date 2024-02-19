@@ -12,16 +12,6 @@ export default function AddNewRecordPage() {
   const [show, setShow] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
 
-  useEffect(() => {
-    db.transaction((tx) => {
-      // tx.executeSql('DROP TABLE IF EXISTS records');
-      // tx.executeSql('DROP TABLE IF EXISTS record_details');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS records (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT)');
-      tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS record_details (id INTEGER PRIMARY KEY AUTOINCREMENT, record_id INTEGER, description TEXT, date TEXT, FOREIGN KEY (record_id) REFERENCES Records(id))'
-      );
-    });
-  }, []);
 
   const onChange = (event: DateTimePickerEvent, selectedDate: Date) => {
     const currentDate = selectedDate;
@@ -66,6 +56,17 @@ export default function AddNewRecordPage() {
       });
     }
   }
+
+  useEffect(() => {
+    db.transaction((tx) => {
+      // tx.executeSql('DROP TABLE IF EXISTS records');
+      // tx.executeSql('DROP TABLE IF EXISTS record_details');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS records (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT)');
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS record_details (id INTEGER PRIMARY KEY AUTOINCREMENT, record_id INTEGER, description TEXT, date TEXT, FOREIGN KEY (record_id) REFERENCES Records(id))'
+      );
+    });
+  }, []);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'flex-start'}}>
