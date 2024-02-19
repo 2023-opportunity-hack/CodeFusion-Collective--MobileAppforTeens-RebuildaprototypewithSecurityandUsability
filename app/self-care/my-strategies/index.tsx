@@ -1,8 +1,8 @@
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { List } from "react-native-paper";
+import { ActivityIndicator, List } from "react-native-paper";
 
 const labelTitles = [
   {title: "Listen to your favorite artist"},
@@ -27,6 +27,8 @@ const MyStrategies = () => {
   const db = SQLite.openDatabase('safespace.db');
 
   const [selected, setSelected] = useState<string[]>([]);
+  const [showList, setShowList] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSelect = (label: string) => {
     if (selected.includes(label)) {
@@ -38,15 +40,25 @@ const MyStrategies = () => {
   }
 
   const saveStrategies = () => {
+    setLoading(true);
     db.transaction((tx) => {
       selected.forEach((label) => {
-        tx.executeSql('INSERT INTO strategies (strategy) VALUES (?)', [label], () => {
-          setSelected([]);
-          console.log('Strategy saved');
-          router.back();
-        });
+        tx.executeSql('SELECT id FROM strategies WHERE strategy = ?', [label], (_, resultSet) => {
+          if (resultSet.rows.length > 0) {
+            console.log('Strategy already exists');
+            setSelected([]);
+            setShowList(false);
+          } else {
+            tx.executeSql('INSERT INTO strategies (strategy) VALUES (?)', [label], () => {
+              setSelected([]);
+              console.log('Strategy saved');
+              setShowList(false);
+            });
+          }
+        })
       })
-    })
+    });
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -57,6 +69,12 @@ const MyStrategies = () => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ alignItems: "center" }}>
+      {loading
+        ? <View>
+            <ActivityIndicator size="large" color="#420C5C" />
+          </View>
+        : null
+        }
       <View style={styles.header}>
         <Link href="/self-care" asChild>
           <Pressable>
@@ -75,6 +93,8 @@ const MyStrategies = () => {
             style={styles.listItemsMainContainer}
             titleStyle={{ color: "black", fontFamily: "JakartaSemiBold" }}
             theme={{colors: {background: "#F0EDF1"}}}
+            expanded={showList}
+            onPress={() => setShowList(!showList)}
             >
             <View style={styles.listItemsSubContainer}>
               {labelTitles.map((label, index) => (
@@ -94,9 +114,9 @@ const MyStrategies = () => {
           </List.Accordion>
       </List.Section>
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.saveButtonWrapper} onPress={saveStrategies}>
+        <Pressable style={styles.saveButtonWrapper} onPress={saveStrategies} disabled={selected.length === 0}>
           {({ pressed }) => (
-            <View style={[styles.saveButton, { opacity: pressed ? 0.5 : 1 }]}>
+            <View style={[styles.saveButton, { opacity: pressed || selected.length === 0 ? 0.5 : 1 }]}>
               <Text style={styles.saveButtonText}>Save My Strategies</Text>
             </View>
           )}
@@ -220,6 +240,15 @@ const styles = StyleSheet.create({
     fontFamily: "JakartaSemiBold",
     width: "100%",
     textAlign: "left"
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
+    transitionProperty: "opacity, visibility",
+    transitionDuration: "0.75s",
+    zIndex: 1,
   }
 })
 

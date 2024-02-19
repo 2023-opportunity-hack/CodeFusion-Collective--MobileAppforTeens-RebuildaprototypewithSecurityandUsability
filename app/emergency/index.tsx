@@ -45,7 +45,7 @@ export default function Emergency() {
     <ScrollView contentContainerStyle={styles.container}>
         {isLoading && (
           <View style={styles.overlay}>
-            <ActivityIndicator size="large" color="#683d7d" />
+            <ActivityIndicator size="large" color="#420C5C" />
           </View>
         )}
         <View style={styles.header}>
