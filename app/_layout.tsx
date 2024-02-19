@@ -30,6 +30,7 @@ export default function RootLayout() {
     JakartaLight: require("../assets/fonts/PlusJakartaSans-Light.ttf"),
     JakartaLightItalic: require("../assets/fonts/PlusJakartaSans-LightItalic.ttf"),
     JakartaMed: require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
+    JakartaBold: require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
     ...FontAwesome.font,
   });
 
