@@ -1,7 +1,8 @@
-import { Link } from "expo-router"
-import { useState } from "react"
-import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native"
-import { List } from "react-native-paper"
+import { Link } from "expo-router";
+import * as SQLite from 'expo-sqlite';
+import { useState } from "react";
+import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { List } from "react-native-paper";
 
 const savedStrategies = [
   {title: "Go for a walk"},
@@ -12,19 +13,21 @@ const savedStrategies = [
 ]
 
 const MySavedStrategies = () => {
-  const [selected, setSelected] = useState<number[]>([]);
+  const db = SQLite.openDatabase('safespace.db');
+
+  const [selected, setSelected] = useState<string[]>([]);
   const [newStrategy, setNewStrategy] = useState("");
 
-  const handleSelect = (index: number) => {
-    if (selected.includes(index)) {
-      setSelected(selected.filter((i) => i !== index));
+  const handleSelect = (label: string) => {
+    if (selected.includes(label)) {
+      setSelected(selected.filter((title) => title !== label));
     } else {
-      setSelected([...selected, index]);
+      setSelected([...selected, label]);
     }
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Link href="/self-care/my-strategies/" asChild>
           <Pressable>
@@ -43,8 +46,8 @@ const MySavedStrategies = () => {
             key={index}
             title={strategy.title}
             titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold" }}
-            onPress={() => handleSelect(index)}
-            left={() => <List.Icon icon={selected.includes(index) ? "checkbox-marked" : "checkbox-blank-outline"} style={{ paddingLeft: 15, }} color="#420C5C" />}
+            onPress={() => handleSelect(strategy.title)}
+            left={() => <List.Icon icon={selected.includes(strategy.title) ? "checkbox-marked" : "checkbox-blank-outline"} style={{ paddingLeft: 15, }} color="#420C5C" />}
             />
         ))}
       </List.Section>
@@ -55,10 +58,14 @@ const MySavedStrategies = () => {
         onChangeText={setNewStrategy}
         style={styles.textInput}
         />
-      <Pressable style={styles.saveButton}>
-          <Text style={styles.saveButtonText}>Save My Strategies</Text>
+      <Pressable style={styles.saveButtonWrapper}>
+        {({ pressed }) => (
+          <View style={[styles.saveButton, { opacity: pressed ? 0.5 : 1 }]}>
+            <Text style={styles.saveButtonText}>Save</Text>
+          </View>
+        )}
       </Pressable>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -89,6 +96,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: "auto",
     marginRight: "auto",
+  },
+  saveButtonWrapper: {
+    width: "100%",
+    alignItems: "center",
   },
   saveButton: {
     backgroundColor: "#420C5C",
