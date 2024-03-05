@@ -1,4 +1,4 @@
-import { Link, router } from 'expo-router';
+import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { Alert, Image, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -48,32 +48,18 @@ export default function GratitiudeJournal() {
           if (resultSet.rows.length > 0) {
             const journalId = resultSet.rows.item(0).id;
 
-            tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, gratefulEntry, promptValue], (_, resultSetDetails) => {
-              console.log('SUBMISSION COMPLETE');
-              console.log('Number of affected rows: ', resultSet.rowsAffected);
-              console.log("Result set: ", resultSetDetails);
-              router.back();
-            }, (_, error) => {
+            tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, gratefulEntry, promptValue], (_, error) => {
               console.log("Error in first inner query: " ,error);
             })
           } else {
             tx.executeSql('INSERT INTO journal_entries (date) VALUES (?)', [currentDate], (_, resultSet) => {
               const journalId = resultSet.insertId;
 
-              tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, gratefulEntry, journalEntryLabel], (_, resultSetDetails) => {
-                console.log('SUBMISSION COMPLETE');
-                console.log('Number of affected rows: ', resultSet.rowsAffected);
-                console.log("Result set: ", resultSetDetails);
-                router.back();
-              }, (_, error) => {
+              tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, gratefulEntry, journalEntryLabel], (_, error) => {
                 console.log("Error in third inner inner query: " ,error);
               })
-            }, (_, error) => {
-              console.log("Error in second inner query: " ,error);
             })
           }
-        }, (_, error) => {
-          console.log("Error in first query: " ,error);
         })
       })
     } else if (activeInput === 'promptEntry' && promptEntry.length > 0 && journalEntryLabel.length > 0) {
@@ -83,22 +69,12 @@ export default function GratitiudeJournal() {
           if (resultSet.rows.length > 0) {
             const journalId = resultSet.rows.item(0).id;
 
-            tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, promptEntry, promptValue], (_, resultSetDetails) => {
-              console.log('SUBMISSION COMPLETE');
-              console.log('Number of affected rows: ', resultSet.rowsAffected);
-              console.log("Result set: ", resultSetDetails);
-              router.back();
-            })
+            tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, promptEntry, promptValue])
           } else {
             tx.executeSql('INSERT INTO journal_entries (date) VALUES (?)', [currentDate], (_, resultSet) => {
               const journalId = resultSet.insertId;
 
-              tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, promptEntry, journalEntryLabel], (_, resultSetDetails) => {
-                console.log('SUBMISSION COMPLETE');
-                console.log('Number of affected rows: ', resultSet.rowsAffected);
-                console.log("Result set: ", resultSetDetails);
-                router.back();
-              })
+              tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, promptEntry, journalEntryLabel])
             })
           }
         })
@@ -111,6 +87,12 @@ export default function GratitiudeJournal() {
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ])
     };
+
+    setIsOpen(false);
+    setActiveInput('');
+    setGratefulEntry('');
+    setPromptEntry('');
+    setJournalEntryLabel('');
   };
 
   useEffect(() => {

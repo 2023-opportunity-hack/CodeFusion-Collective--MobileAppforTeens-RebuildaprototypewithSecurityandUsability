@@ -62,7 +62,7 @@ export default function JournalEntries() {
         });
         console.log("parsed results: ", resultSet.rows._array)
         const sortedEntries = resultSet.rows._array.sort((a, b) => new Date(b.date) - new Date(a.date));
-        console.log("sorted results: ", sortedEntries)
+        console.log("sorted results: ", sortedEntries[0].entries)
         setJournalEntries(sortedEntries);
         setLoading(false);
       }, (txObj, error) => {
