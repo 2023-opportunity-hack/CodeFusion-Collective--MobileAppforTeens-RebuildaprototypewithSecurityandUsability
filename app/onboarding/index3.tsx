@@ -1,3 +1,4 @@
+import { FontAwesome } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -5,16 +6,19 @@ const Onboarding3 = () => {
 
   return (
     <View style={styles.container}>
-
-      <Image style={styles.logo} source={require(`../../assets/images/onboard3.png`)} />
-      <Text style={styles.title}>How it works</Text>
+      <Image style={styles.logo} source={require(`../../assets/images/onboard3.png`)} resizeMode="stretch" />
+      <Text style={styles.title}>How to Login</Text>
       <Text style={styles.description}>Tapping any one square three times in a row reveals the real application</Text>
       <Link style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} href="/lockscreen" asChild>
         <Pressable>
-          <View style={styles.button}><Text style={styles.buttontext}>Get Started</Text></View>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <Text style={styles.buttontext}>Enter</Text>
+              <FontAwesome name="long-arrow-right" size={35} color="white" />
+            </View>
+          )}
         </Pressable>
       </Link>
-
     </View>
   )
 }
@@ -24,31 +28,34 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor: 'white'
   },
   logo: {
-    width: '50%',
-    height: '40%',
+    width: '100%',
+    height: '60%',
   },
   title: {
     marginVertical: 20,
     fontSize: 40,
-    fontWeight: 'bold',
+    fontFamily: 'JakartaBold',
     alignItems: 'center',
     justifyContent: 'center',
   },
   description: {
-    fontWeight: 'bold',
+    fontFamily: 'JakartaMed',
     fontSize: 24,
     color: `#676767`,
     marginTop: 10,
+    width: '90%',
     marginBottom: 30,
     marginHorizontal: 30,
     textAlign: 'center',
   },
   button: {
     display: 'flex',
-    width: '80%',
+    flexDirection: 'row',
+    width: '90%',
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
@@ -56,9 +63,10 @@ const styles = StyleSheet.create({
   },
   buttontext: {
     color: '#fff',
-    fontWeight: 'bold',
+    fontFamily: 'JakartaBold',
     marginVertical: 10,
-    fontSize: 20,
+    fontSize: 25,
+    marginRight: 10
   },
 });
 

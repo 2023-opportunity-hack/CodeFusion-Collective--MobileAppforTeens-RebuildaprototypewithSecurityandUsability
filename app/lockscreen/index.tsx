@@ -41,7 +41,7 @@ export default function Lockscreen() {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>TIC TAC TOE</Text>
-            <View style={styles.separator} lightColor="#000" darkColor="rgba(255,255,255,0.1)" />
+            <View style={styles.separator} darkColor="rgba(255,255,255,0.1)" />
             <View style={styles.scoreboard}>
               <Text style={[{color: '#683D7D'}, styles.score]}>0</Text>
               <Text style={styles.score}> : </Text>
@@ -60,27 +60,27 @@ export default function Lockscreen() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
+      flex: 1,
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '##F0EDF1'
     },
     title: {
-        marginVertical: 20,
-        fontSize: 40,
-        fontWeight: 'bold',
-        alignItems: 'center',
-        justifyContent: 'center',
+      marginVertical: 20,
+      fontSize: 40,
+      fontWeight: 'bold',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     separator: {
-        marginBottom: 20,
-        width: '80%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderStyle: 'solid',
-        backgroundColor: 'f0edf1',
-        borderBottomWidth: 1,
-
+      marginBottom: 20,
+      width: '80%',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderStyle: 'solid',
+      backgroundColor: 'f0edf1',
+      borderBottomWidth: 1,
     },
     scoreboard: {
       flexDirection: 'row',
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     score: {
-        fontSize: 60,
+      fontSize: 60,
     },
     button: {
       width: '80%',
