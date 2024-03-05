@@ -1,15 +1,22 @@
 import { Link } from 'expo-router';
-import { useState } from 'react';
+import * as SQLite from 'expo-sqlite';
+import { useEffect, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
 
-const savedStrategies = [
-  {title: "Go for a walk"},
-  {title: "Call a friend"},
-  {title: "Doodle, draw, or paint"},
-  {title: "Play with or walk a pet"},
-  {title: "Do a puzzle"},
-]
+const sqlQuery = `SELECT
+                    '[' || GROUP_CONCAT('"' || strategy || '"') || ']' AS strategies
+                  FROM
+                    strategies;
+                  `;
+
+// const savedStrategies = [
+//   {title: "Go for a walk"},
+//   {title: "Call a friend"},
+//   {title: "Doodle, draw, or paint"},
+//   {title: "Play with or walk a pet"},
+//   {title: "Do a puzzle"},
+// ]
 
 const moods = ["happy", "sad", "angry", "nervous", "annoyed", "goofy", "surprised", "disappointed", "tired"];
 
@@ -26,7 +33,22 @@ const moodImagePaths = {
 };
 
 export default function MoodTracker () {
+  const db = SQLite.openDatabase('safespace.db');
   const [selectedMood, setSelectedMood] = useState('');
+  const [savedStrategies, setSavedStrategies] = useState([]);
+
+  useEffect(() => {
+    db.transaction((tx) => {
+      tx.executeSql(sqlQuery, [], (_, resultSet) => {
+        const parsedStrategies = JSON.parse(resultSet.rows._array[0].strategies);
+        if (!parsedStrategies) {
+          setSavedStrategies([]);
+        } else {
+          setSavedStrategies(parsedStrategies);
+        }
+      })
+    })
+  }, []);
 
   return (
     <ScrollView>
@@ -52,12 +74,20 @@ export default function MoodTracker () {
           ))}
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable style={styles.saveButton}>
-            <Text style={styles.saveButtonText}>Save Mood</Text>
+          <Pressable style={{ width: "100%", justifyContent: "center", alignItems: "center" }}>
+            {({ pressed }) => (
+              <View style={[styles.saveButton, { opacity: pressed ? 0.5 : 1 }]}>
+                <Text style={styles.saveButtonText}>Save Mood</Text>
+              </View>
+            )}
           </Pressable>
           <Link href="/self-care/mood-tracker/mood-entries" asChild>
-            <Pressable style={styles.viewButton}>
-              <Text style={styles.viewButtonText}>View Mood Entries</Text>
+            <Pressable style={{ width: "100%", justifyContent: "center", alignItems: "center" }}>
+              {({ pressed }) => (
+                <View style={[styles.viewButton, { opacity: pressed ? 0.5 : 1 }]}>
+                  <Text style={styles.viewButtonText}>View Mood Entries</Text>
+                </View>
+              )}
             </Pressable>
           </Link>
         </View>
@@ -67,7 +97,7 @@ export default function MoodTracker () {
           {savedStrategies.map((strategy, index) => (
             <List.Item
               key={index}
-              title={strategy.title}
+              title={strategy}
               titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold", textAlign: "left" }}
               style={[{ borderBottomWidth: 1, borderColor: "#420C5C" }, index === savedStrategies.length - 1 && { borderBottomWidth: 0 }]}
               />
