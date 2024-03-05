@@ -11,7 +11,7 @@ export default function TabOneScreen() {
   const componentDidMount = async () => {
     try {
       const firstTime = await AsyncStorage.getItem("isFirstTime")
-      if (firstTime == null) {
+      if (firstTime !== null) {
         router.replace('/lockscreen')
       } else {
         router.replace('/onboarding/')
