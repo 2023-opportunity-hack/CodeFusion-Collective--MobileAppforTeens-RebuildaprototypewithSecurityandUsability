@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   board: {
-    width: 300,
+    width: '85%',
     aspectRatio: 1,
   },
   row: {

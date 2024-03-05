@@ -1,3 +1,4 @@
+import { FontAwesome } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -5,10 +6,19 @@ const Onboarding = () => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.logo} source={require(`../../assets/images/onboard1.png`)} />
+      <Image
+        style={styles.logo}
+        source={require(`../../assets/images/onboard1.png`)}
+        resizeMode="contain"
+        />
       <Link style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} href="/onboarding/index2" asChild>
         <Pressable>
-          <View style={styles.button}><Text style={styles.buttontext}>See how it Works </Text></View>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <Text style={styles.buttontext}>How it works </Text>
+              <FontAwesome name="long-arrow-right" size={35} color="white" />
+            </View>
+          )}
         </Pressable>
       </Link>
     </View>
@@ -18,35 +28,30 @@ const Onboarding = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor: 'white'
   },
   logo: {
-    height: '70%',
-    width: '70%',
-    margin: 10,
-  },
-  title: {
-    marginVertical: 20,
-    fontSize: 40,
-    fontWeight: 'bold',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: "80%",
+    width: '100%',
   },
   button: {
     display: 'flex',
-    width: '80%',
+    flexDirection: 'row',
+    width: '90%',
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#420C5C',
+    marginTop: "10%",
   },
   buttontext: {
     color: '#fff',
-    fontWeight: 'bold',
+    fontFamily: 'JakartaBold',
     marginVertical: 10,
-    fontSize: 20,
+    fontSize: 25,
+    marginRight: 10
   },
 });
 

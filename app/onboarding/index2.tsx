@@ -1,3 +1,4 @@
+import { FontAwesome } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -5,12 +6,21 @@ const Onboarding2 = () => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.logo} source={require(`../../assets/images/onboard2.png`)} />
+      <Image
+        style={styles.logo}
+        source={require(`../../assets/images/onboard2.png`)}
+        resizeMode="stretch"
+        />
       <Text style={styles.title}>How it works</Text>
       <Text style={styles.description}>The app is disguised as a game to offer a layer of confidentiality and protection</Text>
       <Link style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} href="/onboarding/index3" asChild>
         <Pressable>
-          <View style={styles.button}><Text style={styles.buttontext}>Continue</Text></View>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <Text style={styles.buttontext}>How to Login</Text>
+              <FontAwesome name="long-arrow-right" size={35} color="white" />
+            </View>
+          )}
         </Pressable>
       </Link>
     </View>
@@ -20,23 +30,24 @@ const Onboarding2 = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor: 'white'
   },
   logo: {
-    width: '50%',
-    height: '40%',
+    width: '100%',
+    height: '60%',
   },
   title: {
     marginVertical: 20,
     fontSize: 40,
-    fontWeight: 'bold',
+    fontFamily: 'JakartaBold',
     alignItems: 'center',
     justifyContent: 'center',
   },
   description: {
-    fontWeight: 'bold',
+    fontFamily: 'JakartaMed',
+    width: '90%',
     fontSize: 24,
     color: `#676767`,
     marginTop: 10,
@@ -46,7 +57,8 @@ const styles = StyleSheet.create({
   },
   button: {
     display: 'flex',
-    width: '80%',
+    flexDirection: 'row',
+    width: '90%',
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
@@ -54,9 +66,10 @@ const styles = StyleSheet.create({
   },
   buttontext: {
     color: '#fff',
-    fontWeight: 'bold',
+    fontFamily: 'JakartaBold',
     marginVertical: 10,
-    fontSize: 20,
+    fontSize: 25,
+    marginRight: 10
   },
 });
 
