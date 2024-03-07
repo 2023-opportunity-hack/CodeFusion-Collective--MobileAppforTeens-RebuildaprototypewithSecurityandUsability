@@ -56,13 +56,10 @@ export default function JournalEntries() {
     db.transaction((tx) => {
       tx.executeSql(sqlQuery, undefined,
       (txObj, resultSet) => {
-        console.log("Made it into first resultset: ", resultSet)
         resultSet.rows._array.forEach((day) => {
           day.entries = JSON.parse(day.entries);
         });
-        console.log("parsed results: ", resultSet.rows._array)
         const sortedEntries = resultSet.rows._array.sort((a, b) => new Date(b.date) - new Date(a.date));
-        console.log("sorted results: ", sortedEntries[0].entries)
         setJournalEntries(sortedEntries);
         setLoading(false);
       }, (txObj, error) => {
@@ -123,7 +120,7 @@ export default function JournalEntries() {
                 title={new Date(`${day.date}T07:00:00Z`).toLocaleDateString('en-US', options)}
                 theme={{ colors: { background: "#FFFFFF" } }}
                 >
-                {day.entries.map((entry) => (
+                {day.entries && day.entries.map((entry) => (
                   <List.Item
                     key={entry.entry}
                     title={<JournalEntry entry={entry.entry} prompt={entry.prompt} />}

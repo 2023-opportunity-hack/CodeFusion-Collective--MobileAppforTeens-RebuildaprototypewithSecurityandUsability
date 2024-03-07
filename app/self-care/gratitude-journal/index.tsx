@@ -1,9 +1,9 @@
 import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
-import { Alert, Image, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { TextInput } from 'react-native-gesture-handler';
+//import { TextInput } from 'react-native-gesture-handler';
 import { Button } from 'react-native-paper';
 
 
@@ -48,16 +48,12 @@ export default function GratitiudeJournal() {
           if (resultSet.rows.length > 0) {
             const journalId = resultSet.rows.item(0).id;
 
-            tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, gratefulEntry, promptValue], (_, error) => {
-              console.log("Error in first inner query: " ,error);
-            })
+            tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, gratefulEntry, promptValue])
           } else {
             tx.executeSql('INSERT INTO journal_entries (date) VALUES (?)', [currentDate], (_, resultSet) => {
               const journalId = resultSet.insertId;
 
-              tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, gratefulEntry, journalEntryLabel], (_, error) => {
-                console.log("Error in third inner inner query: " ,error);
-              })
+              tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, gratefulEntry, promptValue])
             })
           }
         })
@@ -143,6 +139,9 @@ export default function GratitiudeJournal() {
           onChangeText={handleGratefulChange}
           placeholder='Try to list three things that went well today and why you are grateful for them.'
           placeholderTextColor={'gray'}
+          returnKeyType='done'
+          blurOnSubmit={true}
+          onSubmitEditing={() => Keyboard.dismiss()}
           style={styles.textinput}
           />
         <View>
@@ -172,6 +171,9 @@ export default function GratitiudeJournal() {
             onChangeText={handlePromptChange}
             placeholder='Write your response here.'
             placeholderTextColor={'gray'}
+            returnKeyType='done'
+            blurOnSubmit={true}
+            onSubmitEditing={() => Keyboard.dismiss()}
             style={[styles.textinput, {marginTop: 0, borderTopWidth: 0, borderTopStartRadius: 0, borderTopEndRadius: 0, height: 180}]}
           />
         </View>
