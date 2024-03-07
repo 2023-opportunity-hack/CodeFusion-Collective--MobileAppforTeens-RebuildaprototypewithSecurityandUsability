@@ -110,6 +110,16 @@ export default function ContactsPage() {
     getContacts();
   }, []);
 
+  const nonEmergencyContacts = [...contactList]
+  .filter(contact => !contact.emergency)
+  .sort((a, b) => a.name.localeCompare(b.name));
+
+  // Filter emergency contacts
+  const emergencyContacts = contactList.filter(contact => contact.emergency);
+
+  // Concatenate emergency contacts at the beginning of the sorted list
+  const sortedContactList = [...emergencyContacts, ...nonEmergencyContacts];
+
   return (
     <ScrollView style={styles.container}>
       {isLoading && (
@@ -128,7 +138,7 @@ export default function ContactsPage() {
         </Link>
         <Text style={styles.title}>Contacts</Text>
       </View>
-      {contactList.map((contact, index) => (
+      {sortedContactList.map((contact, index) => (
         <ContactItem
           name={contact.name}
           phoneNumbers={contact.phoneNumbers}
