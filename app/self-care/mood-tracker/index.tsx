@@ -10,14 +10,6 @@ const sqlQuery = `SELECT
                     strategies;
                   `;
 
-// const savedStrategies = [
-//   {title: "Go for a walk"},
-//   {title: "Call a friend"},
-//   {title: "Doodle, draw, or paint"},
-//   {title: "Play with or walk a pet"},
-//   {title: "Do a puzzle"},
-// ]
-
 const moods = ["happy", "sad", "angry", "nervous", "annoyed", "goofy", "surprised", "disappointed", "tired"];
 
 const moodImagePaths = {
@@ -36,6 +28,10 @@ export default function MoodTracker () {
   const db = SQLite.openDatabase('safespace.db');
   const [selectedMood, setSelectedMood] = useState('');
   const [savedStrategies, setSavedStrategies] = useState([]);
+
+  const saveMoodEntry = () => {
+    console.log("Saved entry: " + selectedMood);
+  }
 
   useEffect(() => {
     db.transaction((tx) => {
@@ -67,16 +63,24 @@ export default function MoodTracker () {
         <Text style={{ fontFamily: "JakartaSemiBold" }}>How are you feeling today?</Text>
         <View style={styles.moodGrid}>
           {moods.map((mood) => (
-            <Pressable key={mood} style={styles.moodContainer}>
+            <Pressable
+              key={mood}
+              style={[styles.moodContainer, { backgroundColor: selectedMood === mood ? "#B39EBE" : "white" }]}
+              onPress={() => setSelectedMood(mood)}
+              >
               <Image source={moodImagePaths[mood]}/>
               <Text style={styles.moodText}>{mood.slice(0, 1).toUpperCase() + mood.slice(1)}</Text>
             </Pressable>
           ))}
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable style={{ width: "100%", justifyContent: "center", alignItems: "center" }}>
+          <Pressable
+            style={{ width: "100%", justifyContent: "center", alignItems: "center" }}
+            disabled={selectedMood === ""}
+            onPress={saveMoodEntry}
+            >
             {({ pressed }) => (
-              <View style={[styles.saveButton, { opacity: pressed ? 0.5 : 1 }]}>
+              <View style={[styles.saveButton, { opacity: pressed || selectedMood === "" ? 0.5 : 1 }]}>
                 <Text style={styles.saveButtonText}>Save Mood</Text>
               </View>
             )}
@@ -164,9 +168,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     paddingHorizontal: 10,
-    backgroundColor: "#FFFFFF",
-    marginRight: 15,
-    marginBottom: 20
+    width: `${(100 / 3) - 4}%`,
+    marginRight: 12,
+    marginBottom: 12
   },
   moodGrid: {
     display: "flex",
