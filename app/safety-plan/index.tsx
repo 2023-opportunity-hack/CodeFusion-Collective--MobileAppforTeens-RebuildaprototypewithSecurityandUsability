@@ -48,24 +48,29 @@ const SafePlanHome = () => {
                 </View>
                 ))}
             </ScrollView>
-            <Pressable
-              style={styles.modalButton}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.modalBack}>Back</Text>
+            <Pressable style={{ width: "100%", justifyContent: "center", alignItems: "center", height: "15%" }} onPress={() => setModalVisible(!modalVisible)}>
+              {({ pressed }) => (
+                <View style={[styles.modalButton, { opacity: pressed ? 0.5 : 1 }]}>
+                  <Text style={styles.modalBack}>Back</Text>
+                </View>
+              )}
             </Pressable>
           </View>
         </Modal>
         {bank.Categories.map((ele: string, i: number) => {
-          return <View key={'sp' + i} style={styles.button}>
-            <Pressable style={styles.pressArea}
-              onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
-              <View style={styles.insideButton}>
-                <Image style={styles.buttonimages} source={icons[ele as keyof typeof icons]} />
-                <Text style={styles.textStyle}>{ele}</Text>
-              </View>
-            </Pressable>
-            <Image style={styles.backArrow} source={require('../../assets/images/Back.png')} />
-          </View>
+          return (
+            <Pressable key={'sp' + i} style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
+                {({ pressed }) => (
+                <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+                  <View style={styles.insideButton}>
+                    <Image style={styles.buttonimages} source={icons[ele as keyof typeof icons]} />
+                    <Text style={styles.textStyle}>{ele}</Text>
+                    <Image style={styles.backArrow} source={require('../../assets/images/Back.png')} />
+                  </View>
+                </View>
+                )}
+              </Pressable>
+          )
         })}
     </ScrollView>
   );
@@ -101,10 +106,8 @@ const styles = StyleSheet.create({
     marginBottom: '6%',
     fontSize: 12,
   },
-  pressArea: {
-    width: '90%',
-  },
   insideButton: {
+    width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -112,6 +115,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     transform: [{ scaleX: -1 }],
+    marginLeft: "auto"
   },
   button: {
     width: '80%',
@@ -156,17 +160,17 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalButton: {
-    height: '5%',
+    height: '30%',
     width: '80%',
     borderRadius: 20,
     backgroundColor: '#683D7D',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10,
   },
   modalBack: {
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'JakartaSemiBold',
+    fontSize: 15,
   },
   modalText: {
     fontFamily: "JakartaMed",
