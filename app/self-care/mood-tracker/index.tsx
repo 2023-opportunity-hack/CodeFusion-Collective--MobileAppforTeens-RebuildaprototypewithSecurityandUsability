@@ -43,6 +43,13 @@ export default function MoodTracker () {
           setSavedStrategies(parsedStrategies);
         }
       })
+    });
+
+    db.transaction((tx) => {
+      tx.executeSql('CREATE TABLE IF NOT EXISTS mood_entries (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT)');
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS mood_details (id INTEGER PRIMARY KEY AUTOINCREMENT, mood_id INTEGER, mood TEXT, time TEXT, FOREIGN KEY (mood_id) REFERENCES mood_entries(id))'
+      );
     })
   }, []);
 
