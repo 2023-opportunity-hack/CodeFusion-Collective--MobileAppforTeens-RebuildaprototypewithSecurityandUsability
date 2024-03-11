@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from "react";
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Image, Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { ActivityIndicator, List } from "react-native-paper";
 
 
@@ -94,6 +94,9 @@ const MySavedStrategies = () => {
         placeholder="Write your strategy here..."
         value={newStrategy}
         onChangeText={setNewStrategy}
+        returnKeyType="done"
+        blurOnSubmit={true}
+        onSubmitEditing={() => Keyboard.dismiss()}
         style={styles.textInput}
         />
       <Pressable style={styles.saveButtonWrapper} disabled={!newStrategy} onPress={saveCustomStrategy}>

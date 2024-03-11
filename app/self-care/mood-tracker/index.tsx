@@ -1,15 +1,14 @@
 import { Link } from 'expo-router';
-import { useState } from 'react';
+import * as SQLite from 'expo-sqlite';
+import { useEffect, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
 
-const savedStrategies = [
-  {title: "Go for a walk"},
-  {title: "Call a friend"},
-  {title: "Doodle, draw, or paint"},
-  {title: "Play with or walk a pet"},
-  {title: "Do a puzzle"},
-]
+const sqlQuery = `SELECT
+                    '[' || GROUP_CONCAT('"' || strategy || '"') || ']' AS strategies
+                  FROM
+                    strategies;
+                  `;
 
 const moods = ["happy", "sad", "angry", "nervous", "annoyed", "goofy", "surprised", "disappointed", "tired"];
 
@@ -26,7 +25,56 @@ const moodImagePaths = {
 };
 
 export default function MoodTracker () {
+  const db = SQLite.openDatabase('safespace.db');
   const [selectedMood, setSelectedMood] = useState('');
+  const [savedStrategies, setSavedStrategies] = useState([]);
+
+  const saveMoodEntry = () => {
+    const newDate = new Date();
+    const currentDate = newDate.toISOString().slice(0, 10);
+    const currentTime = newDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    console.log("type of: ", typeof selectedMood);
+
+    db.transaction((tx) => {
+      tx.executeSql('SELECT id FROM mood_entries WHERE date = ?', [currentDate], (_, resultSet) => {
+        if (resultSet.rows.length > 0) {
+          const moodId = resultSet.rows.item(0).id;
+
+          tx.executeSql('INSERT INTO mood_details (mood_id, mood, time) VALUES (?, ?, ?)', [moodId, selectedMood, currentTime]);
+        } else {
+          tx.executeSql('INSERT INTO mood_entries (date) VALUES (?)', [currentDate], (_, resultSet) => {
+            const moodId = resultSet.insertId;
+
+            tx.executeSql('INSERT INTO mood_details (mood_id, mood, time) VALUES (?, ?, ?)', [moodId!, selectedMood, currentTime]);
+          })
+        }
+      })
+    });
+
+    setSelectedMood('');
+  }
+
+  useEffect(() => {
+    db.transaction((tx) => {
+      // tx.executeSql('DROP TABLE IF EXISTS mood_entries');
+      // tx.executeSql('DROP TABLE IF EXISTS mood_details');
+      tx.executeSql(sqlQuery, [], (_, resultSet) => {
+        const parsedStrategies = JSON.parse(resultSet.rows._array[0].strategies);
+        if (!parsedStrategies) {
+          setSavedStrategies([]);
+        } else {
+          setSavedStrategies(parsedStrategies);
+        }
+      })
+    });
+
+    db.transaction((tx) => {
+      tx.executeSql('CREATE TABLE IF NOT EXISTS mood_entries (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT)');
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS mood_details (id INTEGER PRIMARY KEY AUTOINCREMENT, mood_id INTEGER, mood TEXT, time TEXT, FOREIGN KEY (mood_id) REFERENCES mood_entries(id))'
+      );
+    })
+  }, []);
 
   return (
     <ScrollView>
@@ -45,19 +93,35 @@ export default function MoodTracker () {
         <Text style={{ fontFamily: "JakartaSemiBold" }}>How are you feeling today?</Text>
         <View style={styles.moodGrid}>
           {moods.map((mood) => (
-            <Pressable key={mood} style={styles.moodContainer}>
+            <Pressable
+              key={mood}
+              style={[styles.moodContainer, { backgroundColor: selectedMood === mood ? "#B39EBE" : "white" }]}
+              onPress={() => setSelectedMood(mood)}
+              >
               <Image source={moodImagePaths[mood]}/>
               <Text style={styles.moodText}>{mood.slice(0, 1).toUpperCase() + mood.slice(1)}</Text>
             </Pressable>
           ))}
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable style={styles.saveButton}>
-            <Text style={styles.saveButtonText}>Save Mood</Text>
+          <Pressable
+            style={{ width: "100%", justifyContent: "center", alignItems: "center" }}
+            disabled={selectedMood === ""}
+            onPress={saveMoodEntry}
+            >
+            {({ pressed }) => (
+              <View style={[styles.saveButton, { opacity: pressed || selectedMood === "" ? 0.5 : 1 }]}>
+                <Text style={styles.saveButtonText}>Save Mood</Text>
+              </View>
+            )}
           </Pressable>
           <Link href="/self-care/mood-tracker/mood-entries" asChild>
-            <Pressable style={styles.viewButton}>
-              <Text style={styles.viewButtonText}>View Mood Entries</Text>
+            <Pressable style={{ width: "100%", justifyContent: "center", alignItems: "center" }}>
+              {({ pressed }) => (
+                <View style={[styles.viewButton, { opacity: pressed ? 0.5 : 1 }]}>
+                  <Text style={styles.viewButtonText}>View Mood Entries</Text>
+                </View>
+              )}
             </Pressable>
           </Link>
         </View>
@@ -67,7 +131,7 @@ export default function MoodTracker () {
           {savedStrategies.map((strategy, index) => (
             <List.Item
               key={index}
-              title={strategy.title}
+              title={strategy}
               titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold", textAlign: "left" }}
               style={[{ borderBottomWidth: 1, borderColor: "#420C5C" }, index === savedStrategies.length - 1 && { borderBottomWidth: 0 }]}
               />
@@ -134,9 +198,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     paddingHorizontal: 10,
-    backgroundColor: "#FFFFFF",
-    marginRight: 15,
-    marginBottom: 20
+    width: `${(100 / 3) - 4}%`,
+    marginRight: 12,
+    marginBottom: 12
   },
   moodGrid: {
     display: "flex",

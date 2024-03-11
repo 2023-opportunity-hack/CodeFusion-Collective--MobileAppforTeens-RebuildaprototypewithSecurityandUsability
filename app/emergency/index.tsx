@@ -59,33 +59,45 @@ export default function Emergency() {
           </Link>
           <Text style={styles.title}>Emergency</Text>
         </View>
-        <Pressable style={styles.button} onPress={callEmergencyNum}>
-          <Image
-            style={styles.image}
-            source={require("../../assets/images/telephone.png")}
-          />
-          <Text style={styles.text}>Call 911</Text>
+        <Pressable style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} onPress={callEmergencyNum}>
+            {({ pressed }) => (
+              <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+                <Image
+                  style={styles.image}
+                  source={require("../../assets/images/telephone.png")}
+                />
+                <Text style={styles.text}>Call 911</Text>
+              </View>
+            )}
         </Pressable>
         <Pressable
-          style={styles.button}
+          style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}
           onPress={() => {
             setIsLoading(true);
             checkPermission(setIsLoading, emerContacts);
           }}
         >
-          <Image
-            style={styles.image}
-            source={require("../../assets/images/location.png")}
-          />
-          <Text style={styles.text}>Send location to contacts</Text>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <Image
+                style={styles.image}
+                source={require("../../assets/images/location.png")}
+              />
+              <Text style={styles.text}>Send location to contacts</Text>
+            </View>
+          )}
         </Pressable>
-        <Link href="/emergency/contactsPage" style={styles.link} asChild>
-          <Pressable style={styles.button}>
-            <Image
-              style={styles.image}
-              source={require("../../assets/images/friends.png")}
-            />
-            <Text style={styles.text}>Call a friend</Text>
+        <Link href="/emergency/contactsPage" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
+          <Pressable>
+            {({ pressed }) => (
+              <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+                <Image
+                  style={styles.image}
+                  source={require("../../assets/images/friends.png")}
+                />
+                <Text style={styles.text}>Call a friend</Text>
+              </View>
+            )}
           </Pressable>
         </Link>
     </ScrollView>

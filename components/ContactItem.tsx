@@ -1,6 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
-import { Image, Linking, Pressable, StyleSheet, Text } from "react-native";
+import { Image, Linking, Pressable, StyleSheet, Text, View } from "react-native";
 import { useEmergencyContactContext } from "../context/contactContext";
 import { ContactItemProps } from "../lib/types";
 
@@ -83,22 +83,26 @@ export default function ContactItem({
   }, [emergency]);
 
   return (
-    <Pressable style={styles.container} onPress={callContact}>
-      <Text style={styles.name}>{name}</Text>
-      <Text style={styles.number}>{number}</Text>
-      <Pressable
-        onPress={() =>
-          isEmergency ? removeEmergencyContact() : setEmergencyContact()
-        }
-        style={{ marginLeft: 45 }}
-      >
-        <Image
-          style={
-            isEmergency ? styles.isEmergencyIcon : styles.isNotEmergencyIcon
-          }
-          source={require("../assets/images/star-icon.png")}
-        />
-      </Pressable>
+    <Pressable style={{ width: '100%' }} onPress={callContact}>
+      {({ pressed }) => (
+        <View style={[styles.container, { opacity: pressed ? 0.5 : 1 }]}>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.number}>{number}</Text>
+          <Pressable
+            onPress={() =>
+              isEmergency ? removeEmergencyContact() : setEmergencyContact()
+            }
+            style={{ marginLeft: 45 }}
+          >
+            <Image
+              style={
+                isEmergency ? styles.isEmergencyIcon : styles.isNotEmergencyIcon
+              }
+              source={require("../assets/images/star-icon.png")}
+            />
+          </Pressable>
+        </View>
+      )}
     </Pressable>
   );
 }

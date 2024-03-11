@@ -8,58 +8,82 @@ export default function Homepage() {
     <View style={styles.container}>
       <Text style={styles.title}>Home</Text>
       <Image source={require('../../assets/images/safe-space-logo.png')} style={styles.logo} resizeMode='contain'/>
-      <Link href="/emergency" asChild>
-        <Pressable style={styles.button}>
-          <View style={styles.iconandtext}>
-            <Image source={require('../../assets/images/SOS.png')} style={styles.image} />
-            <Text style={styles.buttonText}> Emergency </Text>
-          </View>
-          <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+      <Link href="/emergency" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
+        <Pressable>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <View style={styles.iconandtext}>
+                <Image source={require('../../assets/images/SOS.png')} style={styles.image} />
+                <Text style={styles.buttonText}> Emergency </Text>
+              </View>
+              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+            </View>
+          )}
         </Pressable>
       </Link>
-      <Link href="/contact-professional" asChild>
-        <Pressable style={styles.button}>
-          <View style={styles.iconandtext}>
-            <Image source={require('../../assets/images/contact-professional.png')} style={styles.image} />
-            <Text style={styles.buttonText}> Contact Professional </Text>
-          </View>
-          <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+      <Link href="/contact-professional" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
+        <Pressable>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <View style={styles.iconandtext}>
+                <Image source={require('../../assets/images/contact-professional.png')} style={styles.image} />
+                <Text style={styles.buttonText}> Contact Professional </Text>
+              </View>
+              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+            </View>
+          )}
         </Pressable>
       </Link>
-      <Link href="/document-abuse" asChild>
-        <Pressable style={styles.button}>
-          <View style={styles.iconandtext}>
-            <Image source={require('../../assets/images/document-abuse.png')} style={styles.image} />
-            <Text style={styles.buttonText}> Document Abuse </Text>
-          </View>
-          <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+      <Link href="/document-abuse" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
+        <Pressable>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <View style={styles.iconandtext}>
+                <Image source={require('../../assets/images/document-abuse.png')} style={styles.image} />
+                <Text style={styles.buttonText}> Document Abuse </Text>
+              </View>
+              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+            </View>
+          )}
         </Pressable>
       </Link>
-      <Link href="/safety-plan" asChild>
-        <Pressable style={styles.button}>
-          <View style={styles.iconandtext}>
-            <Image source={require('../../assets/images/safety-plan.png')} style={styles.image} />
-            <Text style={styles.buttonText}> Safety Plan </Text>
-          </View>
-          <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+      <Link href="/safety-plan" asChild style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <Pressable>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <View style={styles.iconandtext}>
+                <Image source={require('../../assets/images/safety-plan.png')} style={styles.image} />
+                <Text style={styles.buttonText}> Safety Plan </Text>
+              </View>
+              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+            </View>
+          )}
         </Pressable>
       </Link>
-      <Link href="/self-care" asChild>
-        <Pressable style={styles.button}>
-          <View style={styles.iconandtext}>
-            <Image source={require('../../assets/images/self-care.png')} style={styles.image} />
-            <Text style={styles.buttonText}> Self Care </Text>
-          </View>
-          <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+      <Link href="/self-care" asChild style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <Pressable>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <View style={styles.iconandtext}>
+                <Image source={require('../../assets/images/self-care.png')} style={styles.image} />
+                <Text style={styles.buttonText}> Self Care </Text>
+              </View>
+              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+            </View>
+          )}
         </Pressable>
       </Link>
-      <Link href="/warning-signs" asChild>
-        <Pressable style={styles.button}>
-          <View style={styles.iconandtext}>
-            <Image source={require('../../assets/images/warning-sign.png')} style={styles.image} />
-            <Text style={styles.buttonText}> Warning Signs </Text>
-          </View>
-          <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+      <Link href="/warning-signs" asChild style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <Pressable>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <View style={styles.iconandtext}>
+                <Image source={require('../../assets/images/warning-sign.png')} style={styles.image} />
+                <Text style={styles.buttonText}> Warning Signs </Text>
+              </View>
+              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+            </View>
+          )}
         </Pressable>
       </Link>
     </View>

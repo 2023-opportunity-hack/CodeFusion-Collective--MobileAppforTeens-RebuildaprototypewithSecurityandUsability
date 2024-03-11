@@ -19,48 +19,64 @@ export default function SelfCare() {
       </View>
       <Image source={require('../../assets/images/self-care.png')} style={styles.logo} resizeMode='contain'/>
       <Text style={styles.pagedescription}>Self care means taking time to do good things for yourself. Even small acts of self care in your daily life can have a big impact. Self care looks different for everyone. You may try different things before discovering what works best for you. </Text>
-      <Link href="/self-care/gratitude-journal" asChild>
-        <Pressable style={styles.button}>
-          <View style={styles.iconandtext}>
-            <Image source={require('../../assets/images/gratitude-journal.png')} style={styles.image} />
-            <Text style={styles.buttonText}>
-              Gratitude Journal
-            </Text>
-          </View>
-          <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+      <Link href="/self-care/gratitude-journal" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
+        <Pressable>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <View style={styles.iconandtext}>
+                <Image source={require('../../assets/images/gratitude-journal.png')} style={styles.image} />
+                <Text style={styles.buttonText}>
+                  Gratitude Journal
+                </Text>
+              </View>
+              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+            </View>
+          )}
         </Pressable>
       </Link>
-      <Link href="/self-care/mood-tracker" asChild>
-        <Pressable style={styles.button}>
-          <View style={styles.iconandtext}>
-            <Image source={require('../../assets/images/mood-tracker.png')} style={styles.image} />
-            <Text style={styles.buttonText}>
-              Mood Tracker
-            </Text>
-          </View>
-          <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+      <Link href="/self-care/mood-tracker" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
+        <Pressable>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <View style={styles.iconandtext}>
+                <Image source={require('../../assets/images/mood-tracker.png')} style={styles.image} />
+                <Text style={styles.buttonText}>
+                  Mood Tracker
+                </Text>
+              </View>
+              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+            </View>
+          )}
         </Pressable>
       </Link>
-      <Link href="/self-care/my-strategies" asChild>
-        <Pressable style={styles.button}>
-          <View style={styles.iconandtext}>
-            <Image source={require('../../assets/images/my-strategies.png')} style={styles.image} />
-            <Text style={styles.buttonText}>
-              My Strategies
-            </Text>
-          </View>
-          <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+      <Link href="/self-care/my-strategies" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
+        <Pressable>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <View style={styles.iconandtext}>
+                <Image source={require('../../assets/images/my-strategies.png')} style={styles.image} />
+                <Text style={styles.buttonText}>
+                  My Strategies
+                </Text>
+              </View>
+              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+            </View>
+          )}
         </Pressable>
       </Link>
-      <Link href="/self-care/resources" asChild>
-        <Pressable style={styles.button}>
-          <View style={styles.iconandtext}>
-            <Image source={require('../../assets/images/resources.png')} style={styles.image} />
-            <Text style={styles.buttonText}>
-              Resources
-            </Text>
-          </View>
-          <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+      <Link href="/self-care/resources" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
+        <Pressable>
+          {({ pressed }) => (
+            <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+              <View style={styles.iconandtext}>
+                <Image source={require('../../assets/images/resources.png')} style={styles.image} />
+                <Text style={styles.buttonText}>
+                  Resources
+                </Text>
+              </View>
+              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+            </View>
+          )}
         </Pressable>
       </Link>
     </ScrollView>
