@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
 
 // const pastMoods = [
@@ -79,8 +79,19 @@ const MoodEntry = ({mood, time}: {mood: string, time: string}) => {
 
 const MoodEntries = () => {
   const db = SQLite.openDatabase('safespace.db');
+
   const [pastMoods, setPastMoods] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const deleteAllMoodEntries = () => {
+    db.transaction((tx) => {
+      tx.executeSql('DELETE FROM mood_entries;');
+      tx.executeSql('DELETE FROM mood_details;');
+      setPastMoods([]);
+      setShowModal(false);
+    })
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -104,6 +115,34 @@ const MoodEntries = () => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Modal
+        animationType='fade'
+        transparent={true}
+        visible={showModal}
+        onRequestClose={() => setShowModal(false)}
+        >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContents}>
+            <Text>Are you sure you want to delete all mood entries?</Text>
+            <View style={styles.modalButtons}>
+              <Pressable style={styles.modalButtonWrapper} onPress={deleteAllMoodEntries}>
+                {({ pressed }) => (
+                  <View style={[styles.modalButton, { backgroundColor: '#D22F27', opacity: pressed ? 0.5 : 1}]}>
+                    <Text style={styles.modalButtonText}>Yes</Text>
+                  </View>
+                )}
+              </Pressable>
+              <Pressable style={styles.modalButtonWrapper} onPress={() => setShowModal(false)}>
+                {({ pressed }) => (
+                  <View style={[styles.modalButton, { backgroundColor: 'green', opacity: pressed ? 0.5 : 1}]}>
+                    <Text style={styles.modalButtonText}>No</Text>
+                  </View>
+                )}
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.header}>
         <Link href="/self-care/mood-tracker/" asChild>
           <Pressable>
@@ -135,6 +174,15 @@ const MoodEntries = () => {
             )}
         </View>
       </List.Section>
+      {pastMoods.length > 0 ?
+        <Pressable onPress={() => setShowModal(true)} style={styles.buttonWrapper}>
+          {({ pressed }) => (
+            <View style={[styles.deleteButton, { opacity: pressed ? 0.5 : 1 }]}>
+              <Text style={styles.buttonText}>Delete Mood Entries</Text>
+            </View>
+          )}
+        </Pressable>
+        : null}
     </ScrollView>
   )
 }
@@ -199,7 +247,73 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
     backgroundColor: "#B39EBE",
-  }
+  },
+  modalContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.85)'
+  },
+  modalContents: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    width: '90%',
+    height: '30%',
+    borderWidth: 1,
+    borderRadius: 16,
+    borderColor: '#420C5C',
+    overflow: 'hidden',
+    padding: 16,
+    backgroundColor: '#F0EDF1'
+  },
+  modalButtons: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    width: "100%"
+  },
+  modalButtonWrapper: {
+    alignItems: 'center',
+  },
+  modalButton: {
+    width: "80%",
+    borderWidth: 1,
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    padding: 5,
+  },
+  modalButtonText: {
+    fontFamily: 'JakartaSemiBold',
+    marginVertical: 10,
+    fontSize: 20,
+    color: 'white',
+  },
+  buttonWrapper: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  deleteButton: {
+    width: '95%',
+    borderWidth: 1,
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: '#D22F27',
+    padding: 5,
+    marginVertical: 30
+  },
+  buttonText: {
+    fontFamily: 'JakartaSemiBold',
+    marginVertical: 10,
+    fontSize: 20,
+    color: 'white',
+  },
 })
 
 export default MoodEntries
