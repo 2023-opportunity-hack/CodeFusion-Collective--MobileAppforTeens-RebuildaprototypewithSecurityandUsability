@@ -30,11 +30,34 @@ export default function MoodTracker () {
   const [savedStrategies, setSavedStrategies] = useState([]);
 
   const saveMoodEntry = () => {
-    console.log("Saved entry: " + selectedMood);
+    const newDate = new Date();
+    const currentDate = newDate.toISOString().slice(0, 10);
+    const currentTime = newDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    console.log("type of: ", typeof selectedMood);
+
+    db.transaction((tx) => {
+      tx.executeSql('SELECT id FROM mood_entries WHERE date = ?', [currentDate], (_, resultSet) => {
+        if (resultSet.rows.length > 0) {
+          const moodId = resultSet.rows.item(0).id;
+
+          tx.executeSql('INSERT INTO mood_details (mood_id, mood, time) VALUES (?, ?, ?)', [moodId, selectedMood, currentTime]);
+        } else {
+          tx.executeSql('INSERT INTO mood_entries (date) VALUES (?)', [currentDate], (_, resultSet) => {
+            const moodId = resultSet.insertId;
+
+            tx.executeSql('INSERT INTO mood_details (mood_id, mood, time) VALUES (?, ?, ?)', [moodId!, selectedMood, currentTime]);
+          })
+        }
+      })
+    });
+
+    setSelectedMood('');
   }
 
   useEffect(() => {
     db.transaction((tx) => {
+      // tx.executeSql('DROP TABLE IF EXISTS mood_entries');
+      // tx.executeSql('DROP TABLE IF EXISTS mood_details');
       tx.executeSql(sqlQuery, [], (_, resultSet) => {
         const parsedStrategies = JSON.parse(resultSet.rows._array[0].strategies);
         if (!parsedStrategies) {

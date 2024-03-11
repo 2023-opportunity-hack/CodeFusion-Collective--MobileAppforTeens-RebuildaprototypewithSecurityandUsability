@@ -55,7 +55,7 @@ const sqlQuery = `SELECT
                     me.id AS date_id,
                     me.date AS date,
                     '[' || GROUP_CONCAT(
-                        '{"mood": ' || md.mood || ', "time": "' || md.time || '"}'
+                        '{"mood": "' || md.mood || '", "time": "' || md.time || '"}'
                     ) || ']' AS moodInfo
                     FROM
                       mood_entries me
@@ -71,7 +71,7 @@ const MoodEntry = ({mood, time}: {mood: string, time: string}) => {
   return (
     <View style={styles.moodEntryContainer}>
       <Image source={moodEntryImagePaths[moodTitle]} style={styles.moodImage}/>
-      <Text style={styles.moodText}>{mood}</Text>
+      <Text style={styles.moodText}>{mood.slice(0, 1).toUpperCase() + mood.slice(1)}</Text>
       <Text style={styles.timeText}>at {time}</Text>
     </View>
   )
@@ -87,6 +87,7 @@ const MoodEntries = () => {
     db.transaction((tx) => {
       tx.executeSql(sqlQuery, undefined, (_, resultSet) => {
         resultSet.rows._array.forEach((day) => {
+          console.log("Mood info: ", day.moodInfo);
           day.moodInfo = JSON.parse(day.moodInfo);
         });
         const sortedMoods = resultSet.rows._array.sort((a, b) => {
