@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useEffect, useState, } from "react";
 import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import TicTacToePin from "../../components/TicTacToePin";
@@ -11,7 +12,7 @@ export default function Lockscreen() {
     ['', '', ''],
   ];
 
-  const [buttonSequence, setButtonSequence] = useState('');
+  const [buttonSequence, setButtonSequence] = useState<string[]>([]);
   const [board, setBoard] = useState(initialBoard);
   const [player, setPlayer] = useState('X');
   const [winner, setWinner] = useState('');
@@ -20,6 +21,19 @@ export default function Lockscreen() {
 
 
   const handlePress = (rowIndex: number, squareIndex: number) => {
+    if (buttonSequence.length === 0) {
+      setButtonSequence([`${rowIndex}${squareIndex}`]);
+    } else if (buttonSequence[0] === `${rowIndex}${squareIndex}`) {
+      setButtonSequence([...buttonSequence, `${rowIndex}${squareIndex}`]);
+    } else {
+      setButtonSequence([`${rowIndex}${squareIndex}`]);
+    }
+
+    if (buttonSequence.length === 2) {
+      setButtonSequence([]);
+      router.replace('/homepage');
+    }
+
     if (board[rowIndex][squareIndex] === '' && !winner) {
       const newBoard = [...board];
       newBoard[rowIndex][squareIndex] = player;
@@ -75,6 +89,7 @@ export default function Lockscreen() {
     setBoard(initialBoard);
     setPlayer('X');
     setWinner('');
+    setButtonSequence([]);
   };
 
   useEffect(() => {
