@@ -65,6 +65,12 @@ const sqlQuery = `SELECT
                       me.id;
                           `;
 
+const options: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+};
+
 const MoodEntry = ({mood, time}: {mood: string, time: string}) => {
   const moodTitle = mood.slice(0, 1).toLowerCase() + mood.slice(1);
 
@@ -161,7 +167,7 @@ const MoodEntries = () => {
                 <List.Accordion
                   key={day.date}
                   id={day.date}
-                  title={day.date}
+                  title={new Date(`${day.date}T07:00:00Z`).toLocaleDateString('en-US', options)}
                   theme={{ colors: { background: "#FFFFFF" } }}
                   >
                   {day.moodInfo.map((mood, index) => (
