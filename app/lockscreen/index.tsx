@@ -1,64 +1,154 @@
 import { router } from "expo-router";
 import { useEffect, useState, } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import TicTacToePin from "../../components/TicTacToePin";
 
-export default function Lockscreen() {
-  const [buttonSequence, setButtonSequence] = useState('');
 
-  const checkButtonPress = (button: string) => {
-    setButtonSequence((oldSequence) => (oldSequence + button));
+
+export default function Lockscreen() {
+  const initialBoard = [
+    ['', '', ''],
+    ['', '', ''],
+    ['', '', ''],
+  ];
+
+  const [buttonSequence, setButtonSequence] = useState<string[]>([]);
+  const [board, setBoard] = useState(initialBoard);
+  const [player, setPlayer] = useState('X');
+  const [winner, setWinner] = useState('');
+  const [xScore, setXScore] = useState(0);
+  const [oScore, setOScore] = useState(0);
+
+
+  const handlePress = (rowIndex: number, squareIndex: number) => {
+    if (buttonSequence.length === 0) {
+      setButtonSequence([`${rowIndex}${squareIndex}`]);
+    } else if (buttonSequence[0] === `${rowIndex}${squareIndex}`) {
+      setButtonSequence([...buttonSequence, `${rowIndex}${squareIndex}`]);
+    } else {
+      setButtonSequence([`${rowIndex}${squareIndex}`]);
+    }
+
+    if (buttonSequence.length === 2) {
+      setButtonSequence([]);
+      router.replace('/homepage');
+    }
+
+    if (board[rowIndex][squareIndex] === '' && !winner) {
+      const newBoard = [...board];
+      newBoard[rowIndex][squareIndex] = player;
+      setBoard(newBoard);
+      setPlayer(player === 'X' ? 'O' : 'X');
+    }
   };
 
-  const checkSequence = (sequence: string[]) => {
-    if (sequence.length < 3) {
-      return false;
-    }
-
-    const firstString = sequence[0];
-    for (let i = 1; i < sequence.length; i++) {
-      if (firstString !== sequence[i]) {
-        return false;
+  const checkWinner = () => {
+    for (let i = 0; i < 3; i++) {
+      if (board[i][0] === board[i][1] && board[i][1] === board[i][2] && board[i][0] !== '') {
+        setWinner(board[i][0]);
+        if (board[i][0] === 'X') {
+          setXScore((prevScore) => prevScore + 1);
+        } else {
+          setOScore((prevScore) => prevScore + 1);
+        }
+        break;
       }
     }
-    return true;
+
+    for (let i = 0; i < 3; i++) {
+      if (board[0][i] === board[1][i] && board[1][i] === board[2][i] && board[0][i] !== '') {
+        setWinner(board[0][i]);
+        if (board[0][i] === 'X') {
+          setXScore((prevScore) => prevScore + 1);
+        } else {
+          setOScore((prevScore) => prevScore + 1);
+        }
+        break;
+      }
+    }
+
+    if (board[0][0] === board[1][1] && board[1][1] === board[2][2] && board[0][0] !== '') {
+      setWinner(board[0][0]);
+      if (board[0][0] === 'X') {
+        setXScore((prevScore) => prevScore + 1);
+      } else {
+        setOScore((prevScore) => prevScore + 1);
+      }
+    } else if (board[0][2] === board[1][1] && board[1][1] === board[2][0] && board[0][2] !== '') {
+      setWinner(board[0][2]);
+      if (board[0][2] === 'X') {
+        setXScore((prevScore) => prevScore + 1);
+      } else {
+        setOScore((prevScore) => prevScore + 1);
+      }
+    }
+  };
+
+  const resetBoard = () => {
+    console.log("Board value: ", board);
+    setBoard(initialBoard);
+    setPlayer('X');
+    setWinner('');
+    setButtonSequence([]);
   };
 
   useEffect(() => {
-    if (buttonSequence.length >= 3) {
-      if (checkSequence(buttonSequence.split(''))) {
-        setButtonSequence('');
-        console.log('HURRAY');
-        router.replace('/homepage');
-      } else {
-        setButtonSequence('');
-        console.log('BOO');
-        // DISPLAY ERROR MESSAGE?
+    checkWinner();
+  }, [board]);
+
+  useEffect(() => {
+    if (winner) {
+      Alert.alert(`Player ${winner} wins!`, 'Restart the game', [
+        {
+          text: 'OK',
+          onPress: resetBoard,
+        }
+      ]);
+    }
+  }, [winner]);
+
+  useEffect(() => {
+    if (!winner) {
+      const isBoardFull = board.every(row => row.every(square => square !== ''));
+      if (isBoardFull) {
+        Alert.alert('It\'s a tie', ' ', [
+          {
+            text: 'OK',
+            onPress: resetBoard,
+          }
+        ]);
       }
     }
-  }, [buttonSequence]);
+  }, [board]);
+
+  // useEffect(() => {
+  //   if (buttonSequence.length >= 3) {
+  //     if (checkSequence(buttonSequence.split(''))) {
+  //       setButtonSequence('');
+  //       console.log('HURRAY');
+  //       router.replace('/homepage');
+  //     } else {
+  //       setButtonSequence('');
+  //       console.log('BOO');
+  //       // DISPLAY ERROR MESSAGE?
+  //     }
+  //   }
+  // }, [buttonSequence]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>TIC TAC TOE</Text>
+      <Text style={styles.title}>TIC-TAC-TOE</Text>
       <View style={styles.separator} />
       <View style={styles.scoreboard}>
-        <Text style={[{color: '#683D7D'}, styles.score]}>0</Text>
+        <Text style={[{color: '#683D7D'}, styles.score]}>{xScore}</Text>
         <Text style={styles.score}> : </Text>
-        <Text style={[{color: '#27B6AF'}, styles.score]}>0</Text>
+        <Text style={[{color: '#27B6AF'}, styles.score]}>{oScore}</Text>
       </View>
-      <TicTacToePin checkButtonPress={checkButtonPress}/>
-      <Pressable style={{width: '100%', justifyContent: 'center', alignItems: 'center'}}>
+      <TicTacToePin board={board} onPress={handlePress}/>
+      <Pressable style={{width: '100%', justifyContent: 'center', alignItems: 'center'}} onPress={() => resetBoard()}>
         {({ pressed }) => (
-          <View style={[styles.button, {marginBottom: 30, marginTop: 5, backgroundColor: '#420C5C', opacity: pressed ? 0.5 : 1}]}>
+          <View style={[styles.button, { marginTop: 5, backgroundColor: '#420C5C', opacity: pressed ? 0.5 : 1 }]}>
             <Text style={[styles.buttontext, {color: '#fff', fontWeight: 'bold'}]}>New Game</Text>
-          </View>
-        )}
-      </Pressable>
-      <Pressable style={{width: '100%', justifyContent: 'center', alignItems: 'center'}}>
-        {({ pressed }) => (
-          <View style={[styles.button, {backgroundColor: 'white', opacity: pressed ? 0.5 : 1}]}>
-            <Text style={[styles.buttontext, {color: '#420C5C'}]}>Reset Game</Text>
           </View>
         )}
       </Pressable>

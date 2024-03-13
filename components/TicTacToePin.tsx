@@ -1,112 +1,47 @@
-import { Pressable, StyleSheet, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-interface functionProps{
-  checkButtonPress: (button: string) => void;
-}
 
-export default function TicTacToePin({ checkButtonPress = () => {} }: functionProps) {
+export default function TicTacToePin({ board, onPress }) {
   return (
-    <View style={styles.container}>
-      <View style={styles.board}>
-        <View style={styles.row}>
-          <View style={[styles.square, {borderTopWidth: 0, borderLeftWidth: 0}]}>
-            <Pressable
-              onPress={() => {checkButtonPress('1')}}
-              style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
+    <View style={styles.board}>
+      {board.map((row: string[], rowIndex: number) => (
+        <View key={rowIndex} style={styles.row}>
+          {row.map((square, squareIndex) => (
+            <TouchableOpacity
+              key={squareIndex}
+              style={[
+                styles.square,
+                { borderRightWidth: squareIndex === 2 ? 0 : 1 },
+                { borderBottomWidth: rowIndex === 2 ? 0 : 1 },
+                { borderLeftWidth: squareIndex === 0 ? 0 : 1 },
+                { borderTopWidth: rowIndex === 0 ? 0 : 1 },
+              ]}
+              onPress={() => onPress(rowIndex, squareIndex)}
             >
-            </Pressable>
-          </View>
-          <View style={[styles.square, {borderTopWidth: 0}]}>
-          <Pressable
-              onPress={() => {checkButtonPress('2')}}
-              style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
-            >
-            </Pressable>
-          </View>
-          <View style={[styles.square, {borderTopWidth: 0, borderRightWidth: 0}]}>
-          <Pressable
-              onPress={() => {checkButtonPress('3')}}
-              style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
-            >
-            </Pressable>
-          </View>
+              <Text style={[styles.squareText, { color: square === 'X' ? '#683D7D' : '#27B6AF' }]}>{square}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
-        <View style={styles.row}>
-          <View style={[styles.square, {borderLeftWidth: 0}]}>
-          <Pressable
-              onPress={() => {checkButtonPress('4')}}
-              style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
-            >
-            </Pressable>
-          </View>
-          <View style={styles.square}>
-          <Pressable
-              onPress={() => {checkButtonPress('5')}}
-              style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
-            >
-            </Pressable>
-          </View>
-          <View style={[styles.square, {borderRightWidth: 0}]}>
-          <Pressable
-              onPress={() => {checkButtonPress('6')}}
-              style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
-            >
-            </Pressable>
-          </View>
-        </View>
-        <View style={[styles.row, {borderBottomWidth: 0}]} >
-          <View style={[styles.square, {borderBottomWidth: 0, borderLeftWidth: 0}]}>
-          <Pressable
-              onPress={() => {checkButtonPress('7')}}
-              style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
-            >
-            </Pressable>
-          </View>
-          <View style={[styles.square, {borderBottomWidth: 0}]}>
-          <Pressable
-              onPress={() => {checkButtonPress('8')}}
-              style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
-            >
-            </Pressable>
-          </View>
-          <View style={[styles.square, {borderBottomWidth: 0, borderRightWidth: 0}]}>
-          <Pressable
-              onPress={() => {checkButtonPress('9')}}
-              style={({pressed}) => [{backgroundColor: pressed ? '#B39EBE40' : '#f0edf1'}, styles.button]}
-            >
-            </Pressable>
-          </View>
-        </View>
-      </View>
+      ))}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 40,
-    justifyContent: 'center',
-  },
   board: {
-    width: '85%',
-    aspectRatio: 1,
+    marginVertical: 60,
   },
   row: {
     flexDirection: 'row',
-    width: '100%',
-    height: 100,
   },
   square: {
-    height: '100%',
-    width: '33%',
+    height: 100,
+    width: 100,
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  button: {
-    width: 90,
-    borderRadius: 90,
-    aspectRatio: 1,
-    // backgroundColor: 'black',
+  squareText: {
+    fontSize: 40
   }
 });
