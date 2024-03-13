@@ -1,8 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-interface functionProps{
-  checkButtonPress: (button: string) => void;
-}
 
 export default function TicTacToePin({ board, onPress }) {
   return (
@@ -12,10 +9,16 @@ export default function TicTacToePin({ board, onPress }) {
           {row.map((square, squareIndex) => (
             <TouchableOpacity
               key={squareIndex}
-              style={styles.square}
+              style={[
+                styles.square,
+                { borderRightWidth: squareIndex === 2 ? 0 : 1 },
+                { borderBottomWidth: rowIndex === 2 ? 0 : 1 },
+                { borderLeftWidth: squareIndex === 0 ? 0 : 1 },
+                { borderTopWidth: rowIndex === 0 ? 0 : 1 },
+              ]}
               onPress={() => onPress(rowIndex, squareIndex)}
             >
-              <Text style={styles.squareText}>{square}</Text>
+              <Text style={[styles.squareText, { color: square === 'X' ? '#683D7D' : '#27B6AF' }]}>{square}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -26,7 +29,7 @@ export default function TicTacToePin({ board, onPress }) {
 
 const styles = StyleSheet.create({
   board: {
-    marginTop: 20,
+    marginVertical: 60,
   },
   row: {
     flexDirection: 'row',
@@ -39,6 +42,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   squareText: {
-    fontSize: 36
+    fontSize: 40
   }
 });
