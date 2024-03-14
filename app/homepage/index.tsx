@@ -1,11 +1,55 @@
 import { Link } from 'expo-router';
-import { Image, Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import * as SQLite from 'expo-sqlite';
+import { useState } from 'react';
+import { Image, Modal, Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
 
 export default function Homepage() {
+  const db = SQLite.openDatabase('safespace.db');
   const colorScheme = useColorScheme();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const deleteAllData = () => {
+    db.transaction((tx) => {
+      tx.executeSql('DELETE FROM journal_entries;');
+      tx.executeSql('DELETE FROM journal_details;');
+      tx.executeSql('DELETE FROM mood_entries;');
+      tx.executeSql('DELETE FROM mood_details;');
+      tx.executeSql('DELETE FROM records;');
+      tx.executeSql('DELETE FROM record_details;');
+    });
+    setShowDeleteModal(false);
+  };
 
   return (
     <View style={styles.container}>
+      <Modal
+        animationType='fade'
+        transparent={true}
+        visible={showDeleteModal}
+        onRequestClose={() => setShowDeleteModal(false)}
+        >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContents}>
+            <Text>Are you sure you want to delete all saved data?</Text>
+            <View style={styles.modalButtons}>
+              <Pressable style={styles.modalButtonWrapper} onPress={deleteAllData}>
+                {({ pressed }) => (
+                  <View style={[styles.modalButton, { backgroundColor: '#D22F27', opacity: pressed ? 0.5 : 1}]}>
+                    <Text style={styles.modalButtonText}>Yes</Text>
+                  </View>
+                )}
+              </Pressable>
+              <Pressable style={styles.modalButtonWrapper} onPress={() => setShowDeleteModal(false)}>
+                {({ pressed }) => (
+                  <View style={[styles.modalButton, { backgroundColor: 'green', opacity: pressed ? 0.5 : 1}]}>
+                    <Text style={styles.modalButtonText}>No</Text>
+                  </View>
+                )}
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <Text style={styles.title}>Home</Text>
       <Image source={require('../../assets/images/safe-space-logo.png')} style={styles.logo} resizeMode='contain'/>
       <Link href="/emergency" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
@@ -86,11 +130,31 @@ export default function Homepage() {
           )}
         </Pressable>
       </Link>
+      <Pressable style={{ position: 'absolute', bottom: 35, width: 200 }} onPress={() => setShowDeleteModal(true)}>
+        {({ pressed }) => (
+          <View style={[styles.deleteButton, { opacity: pressed ? 0.5 : 1 }]}>
+            <Text style={styles.deleteButtonText}>Delete all data</Text>
+          </View>
+        )}
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  deleteButton: {
+    backgroundColor: 'red',
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  deleteButtonText: {
+    color: 'white',
+    fontSize: 15,
+    textAlign: 'center',
+    fontFamily: 'JakartaMed'
+  },
   backimage: {
     width: 30,
     height: 30,
@@ -120,6 +184,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
   },
   iconandtext: {
     marginLeft: 15,
@@ -143,5 +208,50 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+  },
+  modalContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.85)'
+  },
+  modalContents: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    width: '90%',
+    height: '30%',
+    borderWidth: 1,
+    borderRadius: 16,
+    borderColor: '#420C5C',
+    overflow: 'hidden',
+    padding: 16,
+    backgroundColor: '#F0EDF1'
+  },
+  modalButtons: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    width: "100%"
+  },
+  modalButtonWrapper: {
+    alignItems: 'center',
+  },
+  modalButton: {
+    width: "80%",
+    borderWidth: 1,
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    padding: 5,
+  },
+  modalButtonText: {
+    fontFamily: 'JakartaSemiBold',
+    marginVertical: 10,
+    fontSize: 20,
+    color: 'white',
   },
 });
