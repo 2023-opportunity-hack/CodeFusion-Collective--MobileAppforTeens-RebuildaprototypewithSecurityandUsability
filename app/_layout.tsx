@@ -5,9 +5,9 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
-import { useEffect } from "react";
-import { useColorScheme } from "react-native";
+import { SplashScreen, Stack, router } from "expo-router";
+import { useEffect, useState } from "react";
+import { AppState, AppStateStatus, useColorScheme } from "react-native";
 import EmergencyContactContextProvider from "../context/contactContext";
 
 export {
@@ -24,6 +24,8 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const [appState, setAppState] = useState(AppState.currentState);
+
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     JakartaSemiBold: require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
@@ -45,6 +47,23 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (nextAppState !== 'active') {
+        router.replace('/lockscreen');
+      }
+
+      setAppState(nextAppState);
+    };
+
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      subscription.remove();
+    };
+  }, [appState])
+
   if (!loaded) {
     return null;
   }
@@ -58,7 +77,7 @@ function RootLayoutNav() {
   return (
     <EmergencyContactContextProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
           {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
           {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
         </Stack>
