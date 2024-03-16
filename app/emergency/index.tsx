@@ -11,6 +11,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { PageHeader } from "../../components/PageHeader";
 import { useEmergencyContactContext } from "../../context/contactContext";
 import { checkPermission } from "../../lib/utils";
 
@@ -48,17 +49,7 @@ export default function Emergency() {
             <ActivityIndicator size="large" color="#420C5C" />
           </View>
         )}
-        <View style={styles.header}>
-          <Link href="/homepage" asChild>
-            <Pressable>
-              <Image
-                source={require("../../assets/images/Back.png")}
-                style={styles.backimage}
-              />
-            </Pressable>
-          </Link>
-          <Text style={styles.title}>Emergency</Text>
-        </View>
+        <PageHeader route="/homepage" title="Emergency" />
         <Pressable style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} onPress={callEmergencyNum}>
             {({ pressed }) => (
               <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
@@ -110,6 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     gap: 25,
+    padding: "5%"
   },
   text: {
     fontFamily: "JakartaSemiBold",
@@ -124,7 +116,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#683d7d",
     borderStyle: "solid",
-    width: "85%",
+    width: "100%",
     position: "relative",
     backgroundColor: "#ffffff",
     paddingTop: 15,
@@ -136,13 +128,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: "5%",
   },
-  link: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "85%",
-    backgroundColor: "black",
-  },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: "center",
@@ -151,25 +136,5 @@ const styles = StyleSheet.create({
     transitionProperty: "opacity, visibility",
     transitionDuration: "0.75s",
     zIndex: 1,
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "95%",
-    marginTop: "20%",
-    marginBottom: "10%",
-  },
-  backimage: {
-    height: 30,
-    width: 30,
-    marginRight: "-10%",
-  },
-  title: {
-    fontFamily: "JakartaSemiBold",
-    fontSize: 25,
-    fontWeight: "bold",
-    marginLeft: "auto",
-    marginRight: "auto",
   },
 });
