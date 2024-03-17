@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Link } from 'expo-router';
 import * as SMS from 'expo-sms';
 import { useEffect, useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { TextInput } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
+import { PageHeader } from '../../components/PageHeader';
 
 export default function ContactProfessional() {
   const [selected, setSelected] = useState('');
@@ -97,17 +97,7 @@ export default function ContactProfessional() {
   return (
     <ScrollView nestedScrollEnabled={true}>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Link href="/homepage" asChild>
-            <Pressable>
-              <Image
-                source={require("../../assets/images/Back.png")}
-                style={styles.backimage}
-              />
-            </Pressable>
-          </Link>
-          <Text style={styles.title}>Contact a Professional</Text>
-        </View>
+        <PageHeader route="/homepage" title="Contact Professional" />
         <View style={styles.form}>
           <View>
             <Text style={styles.areatitle}>The dropdown menu provides a list of national hotlines you can text or call for information</Text>
@@ -219,11 +209,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#F0EDF1',
-    paddingTop: 15
+    padding: "5%",
   },
   form: {
-    width: '90%',
-    height: '90%',
+    width: '100%',
     flexDirection: 'column',
   },
   areatitle: {
@@ -276,25 +265,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#FFFFFF',
     fontWeight: 'bold',
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "95%",
-    marginTop: "15%",
-    marginBottom: "5%",
-  },
-  backimage: {
-    height: 30,
-    width: 30,
-    marginRight: "-10%",
-  },
-  title: {
-    fontFamily: "JakartaSemiBold",
-    fontSize: 25,
-    marginLeft: "auto",
-    marginRight: "auto",
   },
   remainingText: {
     fontSize: 12,

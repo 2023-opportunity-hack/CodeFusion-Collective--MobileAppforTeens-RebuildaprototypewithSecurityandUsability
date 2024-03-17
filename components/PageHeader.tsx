@@ -34,11 +34,11 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   backimage: {
-    height: 30,
-    width: 30,
+    height: 35,
+    width: 35,
     position: "absolute",
     left: 0,
-    top: "-45%",
+    top: "-50%",
     borderRadius: 10,
   },
   title: {
