@@ -8,7 +8,7 @@ interface functionProps {
 export default function MediaUploadModal({closeModal = () => {}}: functionProps) {
   return (
     <View style={styles.modalContents}>
-      <Text>If you have any sensitive photos or videos that you don't want others to see, be sure to properly secure or hide them.</Text>
+      <Text style={{ fontFamily: 'JakartaMed', fontSize: 14 }}>If you have any sensitive photos or videos that you don't want others to see, be sure to properly secure or hide them.</Text>
       <A style={{marginVertical: 40, color: 'blue', textDecorationLine: 'underline'}}href="https://support.apple.com/en-us/HT205891">Hide photos on iOS with the Hidden album</A>
       <A style={{marginVertical: 20, color: 'blue', textDecorationLine: 'underline'}}href="https://support.google.com/files/answer/9935264">Protect your files on Android with Safe folder</A>
       <Pressable
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     marginVertical: 10,
+    fontFamily: 'JakartaSemiBold',
     fontSize: 20,
     color: '#fff',
   },

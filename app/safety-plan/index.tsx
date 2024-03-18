@@ -1,6 +1,6 @@
-import { Link } from "expo-router";
 import { useState } from 'react';
 import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { PageHeader } from "../../components/PageHeader";
 import bank from './safetyLibrary.jsx';
 
 const SafePlanHome = () => {
@@ -18,93 +18,70 @@ const SafePlanHome = () => {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
-        <View style={styles.header}>
-          <Link href="/homepage" asChild>
-            <Pressable>
-              <Image
-                source={require("../../assets/images/Back.png")}
-                style={styles.backimage}
-              />
-            </Pressable>
-          </Link>
-          <Text style={styles.title}>Safety Plan</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <PageHeader route="/homepage" title="Safety Plan" />
+      <Text style={styles.statement}>{bank.Statement}</Text>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={[styles.container, styles.modalView]}>
+          <Image style={styles.buttonimages} source={icons[safetyCategory as keyof typeof icons]} />
+          <ScrollView contentContainerStyle={{ paddingBottom: 25, paddingTop: 10 }}>
+            {(bank[safetyCategory as keyof typeof bank] as []).map((tips: string, i: number) => (
+              <View key={i} style={{ flexDirection: "row", maxWidth: "95%", padding: 5, marginBottom: 10 }}>
+                <Text style={{ fontWeight: "bold", fontSize: 20 }}>{"\u2022"}</Text>
+                <Text style={styles.modalText}>{tips}</Text>
+              </View>
+              ))}
+          </ScrollView>
+          <Pressable
+            onPress={() => setModalVisible(!modalVisible)}
+            style={{ width: '90%', marginTop: 10}}
+            >
+            {({ pressed }) => (
+              <View style={[styles.modalButton, { opacity: pressed ? 0.5 : 1 }]}>
+                <Text style={styles.modalBack}>Back</Text>
+              </View>
+            )}
+          </Pressable>
         </View>
-        <Text style={styles.statement}>{bank.Statement}</Text>
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}>
-          <View style={[styles.container, styles.modalView]}>
-            <Image style={styles.buttonimages} source={icons[safetyCategory as keyof typeof icons]} />
-            <ScrollView contentContainerStyle={{ paddingBottom: 25 }}>
-              {(bank[safetyCategory as keyof typeof bank] as []).map((tips: string, i: number) => (
-                <View key={i} style={{ flexDirection: "row", maxWidth: "95%", padding: 5, marginBottom: 10 }}>
-                  <Text style={{ fontWeight: "bold", fontSize: 20 }}>{"\u2022"}</Text>
-                  <Text style={styles.modalText}>{tips}</Text>
-                </View>
-                ))}
-            </ScrollView>
-            <Pressable style={{ width: "100%", justifyContent: "center", alignItems: "center", height: "15%" }} onPress={() => setModalVisible(!modalVisible)}>
+      </Modal>
+      {bank.Categories.map((ele: string, i: number) => {
+        return (
+          <Pressable key={'sp' + i} style={{  justifyContent: 'center', alignItems: 'center' }} onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
               {({ pressed }) => (
-                <View style={[styles.modalButton, { opacity: pressed ? 0.5 : 1 }]}>
-                  <Text style={styles.modalBack}>Back</Text>
+              <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+                <View style={styles.insideButton}>
+                  <Image style={styles.buttonimages} source={icons[ele as keyof typeof icons]} />
+                  <Text style={styles.textStyle}>{ele}</Text>
+                  <Image style={styles.backArrow} source={require('../../assets/images/Back.png')} />
                 </View>
+              </View>
               )}
             </Pressable>
-          </View>
-        </Modal>
-        {bank.Categories.map((ele: string, i: number) => {
-          return (
-            <Pressable key={'sp' + i} style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
-                {({ pressed }) => (
-                <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
-                  <View style={styles.insideButton}>
-                    <Image style={styles.buttonimages} source={icons[ele as keyof typeof icons]} />
-                    <Text style={styles.textStyle}>{ele}</Text>
-                    <Image style={styles.backArrow} source={require('../../assets/images/Back.png')} />
-                  </View>
-                </View>
-                )}
-              </Pressable>
-          )
-        })}
+        )
+      })}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontFamily: "JakartaSemiBold",
-    fontSize: 20,
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
-  backimage: {
-    height: 30,
-    width: 30,
-    marginRight: "-10%",
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "90%",
-    marginBottom: "10%",
-    marginTop: "15%",
-  },
   container: {
     flex: 1,
+    padding: "5%",
     flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   statement: {
     fontFamily: 'JakartaSemiBold',
-    marginHorizontal: '10%',
     marginBottom: '6%',
     fontSize: 12,
+    width: '90%'
   },
   insideButton: {
     width: '90%',
@@ -118,7 +95,7 @@ const styles = StyleSheet.create({
     marginLeft: "auto"
   },
   button: {
-    width: '80%',
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     borderColor: '#683D7D',
@@ -160,8 +137,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalButton: {
-    height: '30%',
-    width: '80%',
+    width: '100%',
+    padding: 5,
     borderRadius: 20,
     backgroundColor: '#683D7D',
     alignItems: 'center',

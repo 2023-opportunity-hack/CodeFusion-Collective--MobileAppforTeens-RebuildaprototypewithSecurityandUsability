@@ -97,7 +97,7 @@ export default function NewRecordPage() {
         >
         <View style={styles.modalContainer}>
           <View style={styles.modalContents}>
-            <Text>Are you sure you want to delete all records?</Text>
+            <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 18 }}>Are you sure you want to delete all records?</Text>
             <View style={styles.modalButtons}>
               <Pressable style={styles.modalButtonWrapper} onPress={deleteAllRecords}>
                 {({ pressed }) => (
