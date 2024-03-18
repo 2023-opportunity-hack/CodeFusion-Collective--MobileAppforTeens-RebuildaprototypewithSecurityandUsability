@@ -1,10 +1,11 @@
 import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
-import { Alert, Image, Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 //import { TextInput } from 'react-native-gesture-handler';
 import { Button } from 'react-native-paper';
+import { PageHeader } from '../../../components/PageHeader';
 
 
 const items = [
@@ -104,17 +105,7 @@ export default function GratitiudeJournal() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Link href="/self-care" asChild>
-          <Pressable>
-            <Image
-              source={require("../../../assets/images/Back.png")}
-              style={styles.backimage}
-            />
-          </Pressable>
-        </Link>
-        <Text style={styles.title}>Gratitude Journal</Text>
-      </View>
+      <PageHeader route="/self-care" title="Gratitude Journal" />
       <Modal
         visible={labelAlert}
         animationType='fade'
@@ -191,7 +182,7 @@ export default function GratitiudeJournal() {
         <Link href="/self-care/gratitude-journal/journal-entries" asChild>
           <TouchableOpacity style={styles.viewButton}>
             <Text style={styles.viewText}>
-             View Entries
+              View Entries
             </Text>
           </TouchableOpacity>
         </Link>
@@ -212,10 +203,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    backgroundColor: '#F0EDF1'
+    backgroundColor: '#F0EDF1',
+    padding: '5%',
   },
   form: {
-    width: '90%',
+    width: '100%',
     height: '90%',
     flexDirection: 'column',
   },
@@ -264,25 +256,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     fontFamily: 'JakartaSemiBold',
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "95%",
-    marginTop: "20%",
-    marginBottom: "10%",
-  },
-  backimage: {
-    height: 30,
-    width: 30,
-    marginRight: "-10%",
-  },
-  title: {
-    fontSize: 25,
-    fontFamily: "JakartaSemiBold",
-    marginLeft: "auto",
-    marginRight: "auto",
   },
   modalContainer: {
     width: '100%',

@@ -130,11 +130,12 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
+    alignSelf: "center",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "transparent",
     transitionProperty: "opacity, visibility",
     transitionDuration: "0.75s",
-    zIndex: 1,
+    zIndex: 100,
   },
 });

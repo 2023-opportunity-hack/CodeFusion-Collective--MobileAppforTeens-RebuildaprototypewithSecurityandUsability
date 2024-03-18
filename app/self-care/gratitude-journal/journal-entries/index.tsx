@@ -1,8 +1,8 @@
-import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
-import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
+import { PageHeader } from '../../../../components/PageHeader';
 
 
 const sqlQuery = `SELECT
@@ -71,7 +71,7 @@ export default function JournalEntries() {
 
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'flex-start'}}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Modal
         animationType='fade'
         transparent={true}
@@ -80,7 +80,7 @@ export default function JournalEntries() {
         >
         <View style={styles.modalContainer}>
           <View style={styles.modalContents}>
-            <Text>Are you sure you want to delete all journal entries?</Text>
+            <Text style={{ fontFamily: 'JakartaMed', fontSize: 15 }}>Are you sure you want to delete all journal entries?</Text>
             <View style={styles.modalButtons}>
               <Pressable style={styles.modalButtonWrapper} onPress={deleteAllJournalEntries}>
                 {({ pressed }) => (
@@ -100,17 +100,7 @@ export default function JournalEntries() {
           </View>
         </View>
       </Modal>
-      <View style={styles.header}>
-        <Link href="/self-care/gratitude-journal/" asChild>
-          <Pressable>
-            <Image
-              source={require("../../../../assets/images/Back.png")}
-              style={styles.backimage}
-            />
-          </Pressable>
-        </Link>
-        <Text style={styles.title}>Journal Entries</Text>
-      </View>
+      <PageHeader route="/self-care/gratitude-journal" title="Journal Entries" />
       <List.Section style={styles.listGroupContainer}>
         <View style={styles.listGroup}>
           {!loading && journalEntries.length > 0 ? (
@@ -151,8 +141,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#F0EDF1',
-    width: "100%",
+    padding: "3%",
   },
   submitbutton: {
     marginTop: 10,
