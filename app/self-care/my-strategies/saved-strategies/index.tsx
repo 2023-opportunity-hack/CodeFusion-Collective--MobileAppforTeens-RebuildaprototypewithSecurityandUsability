@@ -1,8 +1,8 @@
-import { Link } from "expo-router";
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from "react";
-import { Image, Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { ActivityIndicator, List } from "react-native-paper";
+import { PageHeader } from "../../../../components/PageHeader";
 
 
 const sqlQuery = `SELECT
@@ -52,17 +52,7 @@ const MySavedStrategies = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Link href="/self-care/my-strategies/" asChild>
-          <Pressable>
-            <Image
-              source={require("../../../../assets/images/Back.png")}
-              style={styles.backimage}
-            />
-          </Pressable>
-        </Link>
-        <Text style={styles.title}>My Strategies</Text>
-      </View>
+      <PageHeader route="/self-care/my-strategies" title="Saved Strategies" />
       <Text style={styles.pagedescription}>My strategies for when I'm feeling stressed or anxious</Text>
       <List.Section style={styles.listItemsSection}>
         {!loading
@@ -114,7 +104,7 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    paddingHorizontal: "5%",
+    padding: "5%",
     backgroundColor: "#F0EDF1",
     flex: 1,
   },

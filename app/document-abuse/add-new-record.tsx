@@ -1,9 +1,10 @@
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from "react";
-import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import MediaUploadModal from "../../components/MediaUploadModal";
+import { PageHeader } from '../../components/PageHeader';
 
 export default function AddNewRecordPage() {
   const db = SQLite.openDatabase('safespace.db');
@@ -13,7 +14,7 @@ export default function AddNewRecordPage() {
   const [text, setText] = useState<string>('');
 
 
-  const onChange = (event: DateTimePickerEvent, selectedDate: Date) => {
+  const onChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
     const currentDate = selectedDate;
     setDate(currentDate);
   }
@@ -69,7 +70,7 @@ export default function AddNewRecordPage() {
   }, []);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'flex-start'}}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Modal
         animationType="fade"
         transparent={true}
@@ -82,17 +83,7 @@ export default function AddNewRecordPage() {
           </View>
         </View>
       </Modal>
-      <View style={styles.header}>
-        <Link href="/document-abuse" asChild>
-          <Pressable>
-            <Image
-              source={require("../../assets/images/Back.png")}
-              style={styles.backimage}
-            />
-          </Pressable>
-        </Link>
-        <Text style={styles.title}>Add a New Record</Text>
-      </View>
+      <PageHeader route="/document-abuse" title="Add New Record" />
       <View style={[styles.descriptionContainer, { marginBottom: 40 }]}>
         <Text style={styles.subtitle}>What Happened?</Text>
         <TextInput
@@ -114,7 +105,7 @@ export default function AddNewRecordPage() {
         {show && (
           <>
             <DateTimePicker
-              value={date}
+              value={date || new Date()}
               mode={"date"}
               display='spinner'
               onChange={onChange}
@@ -164,10 +155,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#F0EDF1',
+    padding: "5%",
   },
   descriptionContainer: {
-    width: '90%',
+    width: '100%',
     marginBottom: 20,
     marginTop: "5%",
   },
@@ -205,7 +199,7 @@ const styles = StyleSheet.create({
     marginTop: 60
   },
   button: {
-    width: '90%',
+    width: '100%',
     borderWidth: 1,
     borderRadius: 100,
     justifyContent: 'center',
@@ -235,24 +229,5 @@ const styles = StyleSheet.create({
     borderColor: '#420C5C',
     overflow: 'hidden',
     padding: 16,
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "95%",
-    marginTop: "20%",
-    marginBottom: "10%",
-  },
-  backimage: {
-    height: 30,
-    width: 30,
-    marginRight: "-10%",
-  },
-  title: {
-    fontFamily: "JakartaSemiBold",
-    fontSize: 25,
-    marginLeft: "auto",
-    marginRight: "auto",
   },
 })

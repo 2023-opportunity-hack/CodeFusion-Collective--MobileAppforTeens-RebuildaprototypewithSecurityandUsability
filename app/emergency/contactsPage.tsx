@@ -1,17 +1,14 @@
 import * as Contacts from "expo-contacts";
-import { Link } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  Image,
-  Pressable,
   ScrollView,
   StyleSheet,
-  Text,
-  View,
+  View
 } from "react-native";
 import ContactItem from "../../components/ContactItem";
+import { PageHeader } from "../../components/PageHeader";
 import {
   EmergencyContactsType,
   useEmergencyContactContext,
@@ -121,23 +118,13 @@ export default function ContactsPage() {
   const sortedContactList = [...emergencyContacts, ...nonEmergencyContacts];
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {isLoading && (
         <View style={styles.overlay}>
           <ActivityIndicator size="large" color="#683d7d" />
         </View>
       )}
-      <View style={styles.header}>
-        <Link href="/emergency" asChild>
-          <Pressable>
-            <Image
-              source={require("../../assets/images/Back.png")}
-              style={styles.backimage}
-            />
-          </Pressable>
-        </Link>
-        <Text style={styles.title}>Contacts</Text>
-      </View>
+      <PageHeader route="/emergency" title="Contacts" />
       {sortedContactList.map((contact, index) => (
         <ContactItem
           name={contact.name}
@@ -152,10 +139,8 @@ export default function ContactsPage() {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 5,
-    gap: 3,
-    marginTop: -5,
-    marginBottom: 35,
+    padding: "2%",
+    paddingBottom: "10%",
   },
   loading: {
     fontSize: 20,
@@ -170,24 +155,5 @@ const styles = StyleSheet.create({
     transitionProperty: "opacity, visibility",
     transitionDuration: "0.75s",
     zIndex: 1,
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "95%",
-    marginTop: "20%",
-    marginBottom: "10%",
-  },
-  backimage: {
-    height: 30,
-    width: 30,
-    marginRight: "-10%",
-  },
-  title: {
-    fontFamily: "JakartaSemiBold",
-    fontSize: 25,
-    marginLeft: "auto",
-    marginRight: "auto",
   },
 });

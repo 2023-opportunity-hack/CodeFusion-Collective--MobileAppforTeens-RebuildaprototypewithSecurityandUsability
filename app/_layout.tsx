@@ -50,7 +50,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
-      if (nextAppState !== 'active') {
+      if (nextAppState === 'background') {
         router.replace('/lockscreen');
       }
 

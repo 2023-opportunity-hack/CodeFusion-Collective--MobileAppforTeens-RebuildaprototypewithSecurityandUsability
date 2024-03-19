@@ -1,20 +1,11 @@
 import { Link } from "expo-router";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { PageHeader } from "../../components/PageHeader";
 
 export default function DocumentAbusePage() {
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
-      <View style={styles.header}>
-        <Link href="/homepage" asChild>
-          <Pressable>
-            <Image
-              source={require("../../assets/images/Back.png")}
-              style={styles.backimage}
-            />
-          </Pressable>
-        </Link>
-        <Text style={styles.title}>Document Abuse</Text>
-      </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <PageHeader route="/homepage" title="Document Abuse" />
       <View style={styles.logoContainer}>
         <Image
           source={require('../../assets/images/1F4C3_color.png')}
@@ -58,7 +49,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: "#F0EDF1"
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor: "#F0EDF1",
+    padding: "5%"
   },
   logoContainer: {
     width: 125,
@@ -81,7 +75,7 @@ const styles = StyleSheet.create({
     paddingTop: "10%"
   },
   button: {
-    width: '90%',
+    width: '100%',
     borderWidth: 1,
     borderRadius: 100,
     justifyContent: 'center',
@@ -93,24 +87,5 @@ const styles = StyleSheet.create({
     fontFamily: "JakartaSemiBold",
     marginVertical: 10,
     fontSize: 20,
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "95%",
-    marginTop: "20%",
-    marginBottom: "10%",
-  },
-  backimage: {
-    height: 30,
-    width: 30,
-    marginRight: "-10%",
-  },
-  title: {
-    fontFamily: "JakartaSemiBold",
-    fontSize: 25,
-    marginLeft: "auto",
-    marginRight: "auto",
   },
 });

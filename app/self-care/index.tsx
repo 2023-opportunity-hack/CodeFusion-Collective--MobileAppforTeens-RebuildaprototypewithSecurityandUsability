@@ -1,24 +1,15 @@
 import { Link } from 'expo-router';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { PageHeader } from '../../components/PageHeader';
 
 export default function SelfCare() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
-      <View style={styles.header}>
-        <Link href="/homepage" asChild>
-          <Pressable>
-            <Image
-              source={require("../../assets/images/Back.png")}
-              style={styles.back}
-            />
-          </Pressable>
-        </Link>
-        <Text style={styles.title}>Self Care</Text>
-      </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <PageHeader route="/homepage" title="Self Care" />
       <Image source={require('../../assets/images/self-care.png')} style={styles.logo} resizeMode='contain'/>
-      <Text style={styles.pagedescription}>Self care means taking time to do good things for yourself. Even small acts of self care in your daily life can have a big impact. Self care looks different for everyone. You may try different things before discovering what works best for you. </Text>
+      <Text style={styles.pagedescription}>
+        Self care means taking time to do good things for yourself. Even small acts of self care in your daily life can have a big impact. Self care looks different for everyone. You may try different things before discovering what works best for you.
+      </Text>
       <Link href="/self-care/gratitude-journal" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
         <Pressable>
           {({ pressed }) => (
@@ -90,7 +81,7 @@ const styles = StyleSheet.create({
     transform: [{scaleX: -1}],
   },
   button: {
-    width: '90%',
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     borderColor: '#420C5C',
@@ -110,6 +101,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: '5%',
     backgroundColor: '#F0EDF1',
   },
   iconandtext: {
@@ -128,7 +122,7 @@ const styles = StyleSheet.create({
   },
   pagedescription: {
     fontFamily: "JakartaSemiBold",
-    width: '90%',
+    width: '100%',
     marginBottom: "10%",
     marginTop: "5%",
   },
@@ -136,25 +130,5 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "95%",
-    marginTop: "20%",
-    marginBottom: "10%",
-  },
-  back: {
-    height: 30,
-    width: 30,
-    marginRight: "-10%",
-  },
-  title: {
-    fontFamily: "JakartaSemiBold",
-    fontSize: 25,
-    fontWeight: "bold",
-    marginLeft: "auto",
-    marginRight: "auto",
   },
 });

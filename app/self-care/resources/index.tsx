@@ -1,8 +1,8 @@
-import { Link } from "expo-router";
 import { useState } from "react";
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import YoutubePlayer from "react-native-youtube-iframe";
+import { PageHeader } from "../../../components/PageHeader";
 
 const Resources = () => {
   const [loading, setLoading] = useState(true);
@@ -12,19 +12,11 @@ const Resources = () => {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Link href="/self-care" asChild>
-          <Pressable>
-            <Image
-              source={require("../../../assets/images/Back.png")}
-              style={styles.backimage}
-            />
-          </Pressable>
-        </Link>
-        <Text style={styles.title}>Resources</Text>
-      </View>
-      <Text style={{ fontFamily: "JakartaSemiBold" }}>These videos may be helpful for additional support and strategies in maintaining your mental health</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <PageHeader route="/self-care" title="Resources" />
+      <Text style={{ fontFamily: "JakartaSemiBold" }}>
+        These videos may be helpful for additional support and strategies in maintaining your mental health
+      </Text>
       <View style={styles.video}>
         {loading && <ActivityIndicator animating={loading} size="small" style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0 }} />}
          <YoutubePlayer
@@ -52,7 +44,9 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    paddingHorizontal: "5%",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    padding: "5%",
     backgroundColor: "#F0EDF1",
     flex: 1,
   },

@@ -1,6 +1,6 @@
-import { Link } from 'expo-router';
 import { useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { PageHeader } from '../../components/PageHeader';
 import DomesticViolenceText from '../../components/warning-signs/DomesticViolenceText';
 import EconomicAbuseText from '../../components/warning-signs/EconomicAbuseText';
 import EmotionalAbuseText from '../../components/warning-signs/EmotionalAbuseText';
@@ -26,17 +26,7 @@ export default function WarningSigns () {
   return (
     <ScrollView>
       <View style={styles.container}>
-      <View style={styles.header}>
-        <Link href="/homepage" asChild>
-          <Pressable>
-            <Image
-              source={require("../../assets/images/Back.png")}
-              style={styles.backimage}
-            />
-          </Pressable>
-        </Link>
-        <Text style={styles.title}>Warning Signs</Text>
-      </View>
+        <PageHeader title='Warning Signs' route='/homepage' />
         <Text style={styles.description}>It is not always obvious when someone you care about has been affected by sexual violence. Learning the warning signs for children, teens, and college-age adults can help you learn when to act.</Text>
         <TouchableOpacity onPress={() => setShowMoreDomesticViolence(!showMoreDomesticViolence)}>
           <View style={styles.dropDownButtonOne}>
@@ -112,7 +102,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F0EDF1',
     flex: 1,
-    padding: 30,
+    padding: "5%",
   },
   description: {
     fontFamily: "JakartaSemiBold",
@@ -161,24 +151,5 @@ const styles = StyleSheet.create({
   backButton: {
     textAlign: 'left',
     flexDirection: 'row',
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "95%",
-    marginTop: "20%",
-    marginBottom: "15%",
-  },
-  backimage: {
-    height: 30,
-    width: 30,
-    marginRight: "-10%",
-  },
-  title: {
-    fontFamily: "JakartaSemiBold",
-    fontSize: 25,
-    marginLeft: "auto",
-    marginRight: "auto",
   }
 });
