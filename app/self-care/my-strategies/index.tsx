@@ -1,8 +1,9 @@
 import { Link } from "expo-router";
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from "react";
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { ActivityIndicator, List } from "react-native-paper";
+import { PageHeader } from "../../../components/PageHeader";
 
 const labelTitles = [
   {title: "Listen to your favorite artist"},
@@ -68,24 +69,14 @@ const MyStrategies = () => {
   }, [])
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ alignItems: "center" }}>
+    <ScrollView contentContainerStyle={styles.container}>
       {loading
         ? <View>
             <ActivityIndicator size="large" color="#420C5C" />
           </View>
         : null
         }
-      <View style={styles.header}>
-        <Link href="/self-care" asChild>
-          <Pressable>
-            <Image
-              source={require("../../../assets/images/Back.png")}
-              style={styles.backimage}
-            />
-          </Pressable>
-        </Link>
-        <Text style={styles.title}>My Strategies</Text>
-      </View>
+      <PageHeader route="/self-care" title="My Strategies" />
       <Text style={styles.pagedescription}>Choose strategies that help you when you are feeling stressed or anxious</Text>
       <List.Section style={styles.listItemsSection}>
           <List.Accordion
@@ -117,7 +108,7 @@ const MyStrategies = () => {
         <Pressable style={styles.saveButtonWrapper} onPress={saveStrategies} disabled={selected.length === 0}>
           {({ pressed }) => (
             <View style={[styles.saveButton, { opacity: pressed || selected.length === 0 ? 0.5 : 1 }]}>
-              <Text style={styles.saveButtonText}>Save My Strategies</Text>
+              <Text style={styles.saveButtonText}>Save New Strategy</Text>
             </View>
           )}
         </Pressable>
@@ -138,8 +129,9 @@ const MyStrategies = () => {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
+    alignItems: "center",
     flexDirection: "column",
-    paddingHorizontal: "5%",
+    padding: "5%",
     backgroundColor: "#F0EDF1"
   },
   header: {

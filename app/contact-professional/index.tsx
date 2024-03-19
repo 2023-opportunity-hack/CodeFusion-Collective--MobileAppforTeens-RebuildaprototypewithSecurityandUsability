@@ -100,10 +100,12 @@ export default function ContactProfessional() {
         <PageHeader route="/homepage" title="Contact Professional" />
         <View style={styles.form}>
           <View>
-            <Text style={styles.areatitle}>The dropdown menu provides a list of national hotlines you can text or call for information</Text>
+            <Text style={[styles.areatitle, { marginTop: 0 }]}>
+              The dropdown menu provides a list of national hotlines you can text or call for information
+            </Text>
             <SelectList
               placeholder='Please select'
-              setSelected={(val) => setSelected(val)}
+              setSelected={(val: string) => setSelected(val)}
               data={data}
               save="key"
               boxStyles={{borderColor: '#420C5C', borderWidth: 1, borderRadius: 10}}
