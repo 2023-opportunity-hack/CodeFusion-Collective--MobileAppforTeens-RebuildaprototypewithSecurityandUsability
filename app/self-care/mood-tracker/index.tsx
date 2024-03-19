@@ -3,6 +3,7 @@ import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
+import { PageHeader } from '../../../components/PageHeader';
 
 const sqlQuery = `SELECT
                     '[' || GROUP_CONCAT('"' || strategy || '"') || ']' AS strategies
@@ -12,7 +13,7 @@ const sqlQuery = `SELECT
 
 const moods = ["happy", "sad", "angry", "nervous", "annoyed", "goofy", "surprised", "disappointed", "tired"];
 
-const moodImagePaths = {
+const moodImagePaths: { [key: string]: any } = {
   happy: require("../../../assets/images/happy.png"),
   sad: require("../../../assets/images/sad.png"),
   angry: require("../../../assets/images/angry.png"),
@@ -79,17 +80,7 @@ export default function MoodTracker () {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Link href="/self-care" asChild>
-            <Pressable>
-              <Image
-                source={require("../../../assets/images/Back.png")}
-                style={styles.backimage}
-              />
-            </Pressable>
-          </Link>
-          <Text style={styles.title}>Mood Tracker</Text>
-        </View>
+        <PageHeader route="/self-care" title="Mood Tracker"/>
         <Text style={{ fontFamily: "JakartaSemiBold" }}>How are you feeling today?</Text>
         <View style={styles.moodGrid}>
           {moods.map((mood) => (
@@ -125,7 +116,9 @@ export default function MoodTracker () {
             </Pressable>
           </Link>
         </View>
-        <Text style={styles.description}>If you are not having a great day, it may help to use one of your self care strategies. If you need to, try one and see if it helps!</Text>
+        <Text style={styles.description}>
+          If you are not having a great day, it may help to use one of your self care strategies. If you need to, try one and see if it helps!
+        </Text>
         <Text style={{ fontFamily: "JakartaSemiBold" }}>Your Strategies</Text>
         <List.Section style={styles.listItemsSection}>
           {savedStrategies.map((strategy, index) => (
@@ -146,8 +139,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F0EDF1',
     flex: 1,
-    padding: 30,
-    paddingTop: 0
+    padding: "5%"
   },
   description: {
     fontFamily: "JakartaSemiBold",

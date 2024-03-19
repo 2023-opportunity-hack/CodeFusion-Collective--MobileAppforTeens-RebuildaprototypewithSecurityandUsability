@@ -5,6 +5,16 @@ import { List } from 'react-native-paper';
 import { PageHeader } from '../../../../components/PageHeader';
 
 
+type JournalEntryType = {
+  date_id: number,
+  date: string,
+  entries: {
+    entry_id: number,
+    prompt: string,
+    entry: string
+  }[]
+};
+
 const sqlQuery = `SELECT
                     je.id AS date_id,
                     je.date AS date,
@@ -38,7 +48,7 @@ const JournalEntry = ({ entry, prompt }: { entry: string, prompt: string }) => {
 export default function JournalEntries() {
   const db = SQLite.openDatabase('safespace.db');
 
-  const [journalEntries, setJournalEntries] = useState([]);
+  const [journalEntries, setJournalEntries] = useState<JournalEntryType[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -55,16 +65,17 @@ export default function JournalEntries() {
     setLoading(true);
     db.transaction((tx) => {
       tx.executeSql(sqlQuery, undefined,
-      (txObj, resultSet) => {
+      (_, resultSet) => {
         resultSet.rows._array.forEach((day) => {
           day.entries = JSON.parse(day.entries);
         });
-        const sortedEntries = resultSet.rows._array.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const sortedEntries: JournalEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         setJournalEntries(sortedEntries);
         setLoading(false);
-      }, (txObj, error) => {
+      }, (_, error) => {
         setLoading(false);
-        console.log('Error in Journal Entries: ' + error)
+        console.log('Error in Journal Entries: ' + error);
+        return false;
       })
     })
   }, []);

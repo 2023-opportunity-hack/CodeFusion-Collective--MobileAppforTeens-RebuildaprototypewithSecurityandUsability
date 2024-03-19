@@ -1,45 +1,20 @@
-import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
+import { PageHeader } from '../../../../components/PageHeader';
 
-// const pastMoods = [
-//   {
-//     date: "8/17/2023",
-//     moodInfo: [{mood: "Happy", time: "9:47 AM" }, {mood: "Annoyed", time: "10:00 AM"}, {mood: "Sad", time: "10:35 AM" }]
-//   },
-//   {
-//     date: "8/15/2023",
-//     moodInfo: [{mood: "Nervous", time: "9:47 AM" }, {mood: "Disappointed", time: "10:00 AM"}, {mood: "Sad", time: "10:35 AM" }]
-//   },
-//   {
-//     date: "8/10/2023",
-//     moodInfo: [{mood: "Angry", time: "9:30 AM" }, {mood: "Nervous", time: "10:15 AM"}, {mood: "Disappointed", time: "11:20 AM" }]
-//   },
-//   {
-//     date: "7/27/2023",
-//     moodInfo: [{mood: "Happy", time: "9:37 AM" }, {mood: "Goofy", time: "10:43 AM"}]
-//   },
-//   {
-//     date: "6/20/2023",
-//     moodInfo: [{mood: "Sad", time: "9:00 AM" }, {mood: "Happy", time: "10:30 AM"}, {mood: "Annoyed", time: "11:45 AM" }]
-//   },
-//   {
-//     date: "6/17/2023",
-//     moodInfo: [{mood: "Sad", time: "9:15 AM" }, {mood: "Surprised", time: "10:45 AM"}, {mood: "Happy", time: "11:00 AM" }]
-//   },
-//   {
-//     date: "5/25/2023",
-//     moodInfo: [{mood: "Annoyed", time: "9:50 AM" }, {mood: "Goofy", time: "10:30 AM"}, {mood: "Angry", time: "11:15 AM" }]
-//   },
-//   {
-//     date: "5/20/2023",
-//     moodInfo: [{mood: "Happy", time: "9:20 AM" }, {mood: "Disappointed", time: "10:10 AM"}, {mood: "Annoyed", time: "11:30 AM" }]
-//   },
-// ];
 
-const moodEntryImagePaths = {
+type MoodEntryType = {
+  date_id: number,
+  date: string,
+  moodInfo: {
+    mood: string,
+    time: string
+  }[]
+};
+
+const moodEntryImagePaths: Record<string, any> = {
   happy: require("../../../../assets/images/happy.png"),
   sad: require("../../../../assets/images/sad.png"),
   angry: require("../../../../assets/images/angry.png"),
@@ -86,7 +61,7 @@ const MoodEntry = ({mood, time}: {mood: string, time: string}) => {
 const MoodEntries = () => {
   const db = SQLite.openDatabase('safespace.db');
 
-  const [pastMoods, setPastMoods] = useState([]);
+  const [pastMoods, setPastMoods] = useState<MoodEntryType[]>([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -104,23 +79,23 @@ const MoodEntries = () => {
     db.transaction((tx) => {
       tx.executeSql(sqlQuery, undefined, (_, resultSet) => {
         resultSet.rows._array.forEach((day) => {
-          console.log("Mood info: ", day.moodInfo);
           day.moodInfo = JSON.parse(day.moodInfo);
         });
         const sortedMoods = resultSet.rows._array.sort((a, b) => {
-          return new Date(b.date) - new Date(a.date);
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
         setPastMoods(sortedMoods);
         setLoading(false);
       }, (_, error) => {
         setLoading(false);
         console.log("Error in mood entries: " + error);
+        return false;
       })
     })
   }, []);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Modal
         animationType='fade'
         transparent={true}
@@ -149,17 +124,7 @@ const MoodEntries = () => {
           </View>
         </View>
       </Modal>
-      <View style={styles.header}>
-        <Link href="/self-care/mood-tracker/" asChild>
-          <Pressable>
-            <Image
-              source={require("../../../../assets/images/Back.png")}
-              style={styles.backimage}
-            />
-          </Pressable>
-        </Link>
-        <Text style={styles.title}>Saved Moods</Text>
-      </View>
+      <PageHeader route="/self-care/mood-tracker" title="Saved Moods" />
       <List.Section style={styles.listGroupContainer}>
         <View style={styles.listGroup}>
           {!loading && pastMoods.length > 0 ? (
@@ -181,13 +146,14 @@ const MoodEntries = () => {
         </View>
       </List.Section>
       {pastMoods.length > 0 ?
-        <Pressable onPress={() => setShowModal(true)} style={styles.buttonWrapper}>
-          {({ pressed }) => (
-            <View style={[styles.deleteButton, { opacity: pressed ? 0.5 : 1 }]}>
-              <Text style={styles.buttonText}>Delete Mood Entries</Text>
-            </View>
-          )}
-        </Pressable>
+        <View style={styles.deleteButton}>
+          <Pressable
+            onPress={() => setShowModal(true)}
+            style={({ pressed }) => [{ borderRadius: 10, width: '100%', backgroundColor: pressed ? '#ff3333' : '#D22F27' }]}
+            >
+            <Text style={styles.buttonText}>Delete Mood Entries</Text>
+          </Pressable>
+        </View>
         : null}
     </ScrollView>
   )
@@ -197,28 +163,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F0EDF1',
     flex: 1,
-    padding: 30,
-    paddingTop: 0
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
     alignItems: "center",
-    width: "100%",
-    marginTop: "20%",
-    marginBottom: "10%",
-  },
-  backimage: {
-    height: 30,
-    width: 30,
-    marginRight: "-10%",
-  },
-  title: {
-    fontFamily: "JakartaSemiBold",
-    fontSize: 25,
-    fontWeight: "bold",
-    marginLeft: "auto",
-    marginRight: "auto",
+    justifyContent: "flex-start",
+    padding: "5%"
   },
   listGroupContainer: {
     width: "100%",
@@ -299,26 +246,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
   },
-  buttonWrapper: {
-    width: '100%',
-    alignItems: 'center',
-  },
   deleteButton: {
-    width: '95%',
     borderWidth: 1,
-    borderRadius: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
+    borderRadius: 10,
     backgroundColor: '#D22F27',
-    padding: 5,
-    marginVertical: 30
+    marginVertical: 30,
+    width: '90%',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   buttonText: {
     fontFamily: 'JakartaSemiBold',
+    textAlign: 'center',
     marginVertical: 10,
     fontSize: 20,
-    color: 'white',
+    color: 'white'
   },
 })
 
