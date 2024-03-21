@@ -1,14 +1,18 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const Onboarding3 = () => {
+  const { width } = Dimensions.get('window');
+  const descriptionFontSize = width < 391 ? 21 : 24;
 
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={require(`../../assets/images/onboard3.png`)} resizeMode="stretch" />
       <Text style={styles.title}>How to Login</Text>
-      <Text style={styles.description}>Tapping any one square three times in a row reveals the real application</Text>
+      <Text style={[styles.description, { fontSize: descriptionFontSize }]}>
+        Tapping any one square three times in a row reveals the real application
+      </Text>
       <Link style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} href="/lockscreen" asChild>
         <Pressable>
           {({ pressed }) => (
@@ -36,23 +40,21 @@ const styles = StyleSheet.create({
     height: '55%',
   },
   title: {
-    marginVertical: 20,
+    marginTop: "5%",
     fontSize: 40,
     fontFamily: 'JakartaBold',
     alignItems: 'center',
     justifyContent: 'center',
   },
   description: {
+    marginVertical: "5%",
     fontFamily: 'JakartaMed',
-    fontSize: 24,
     color: `#676767`,
-    marginTop: 10,
     width: '90%',
-    marginBottom: 30,
-    marginHorizontal: 30,
     textAlign: 'center',
   },
   button: {
+    marginTop: "5%",
     display: 'flex',
     flexDirection: 'row',
     width: '90%',
