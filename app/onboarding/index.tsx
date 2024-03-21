@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   logo: {
     height: "80%",
@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
   },
   button: {
     display: 'flex',
+    marginTop: "5%",
     flexDirection: 'row',
     width: '90%',
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#420C5C',
-    marginTop: "10%",
   },
   buttontext: {
     color: '#fff',

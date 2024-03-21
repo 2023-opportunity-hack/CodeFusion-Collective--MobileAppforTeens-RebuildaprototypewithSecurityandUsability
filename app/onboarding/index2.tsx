@@ -1,8 +1,10 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const Onboarding2 = () => {
+  const { width } = Dimensions.get('window');
+  const descriptionFontSize = width < 391 ? 21 : 24;
 
   return (
     <View style={styles.container}>
@@ -12,7 +14,7 @@ const Onboarding2 = () => {
         resizeMode="stretch"
         />
       <Text style={styles.title}>How it works</Text>
-      <Text style={styles.description}>The app is disguised as a game to offer a layer of confidentiality and protection</Text>
+      <Text style={[styles.description, { fontSize: descriptionFontSize }]}>The app is disguised as a game to offer a layer of confidentiality and protection</Text>
       <Link style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} href="/onboarding/index3" asChild>
         <Pressable>
           {({ pressed }) => (
@@ -39,24 +41,22 @@ const styles = StyleSheet.create({
     height: '55%',
   },
   title: {
-    marginVertical: 5,
     fontSize: 40,
+    marginTop: "5%",
     fontFamily: 'JakartaBold',
     alignItems: 'center',
     justifyContent: 'center',
   },
   description: {
     fontFamily: 'JakartaMed',
+    marginVertical: "5%",
     width: '90%',
-    fontSize: 24,
     color: `#676767`,
-    marginTop: 10,
-    marginBottom: 30,
-    marginHorizontal: 30,
     textAlign: 'center',
   },
   button: {
     display: 'flex',
+    marginTop: "5%",
     flexDirection: 'row',
     width: '90%',
     borderRadius: 100,

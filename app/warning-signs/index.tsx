@@ -1,99 +1,42 @@
-import { useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { List } from 'react-native-paper';
 import { PageHeader } from '../../components/PageHeader';
-import DomesticViolenceText from '../../components/warning-signs/DomesticViolenceText';
-import EconomicAbuseText from '../../components/warning-signs/EconomicAbuseText';
-import EmotionalAbuseText from '../../components/warning-signs/EmotionalAbuseText';
-import GaslightingText from '../../components/warning-signs/GaslightingText';
-import PhysicalAbuseText from '../../components/warning-signs/PhysicalAbuseText';
-import ReproductiveCoercionText from '../../components/warning-signs/ReproductiveCoercionText';
-import SexualAbuseText from '../../components/warning-signs/SexualAbuseText';
-import TechnologicalAssistedAbuseText from '../../components/warning-signs/TechnologicalAssistedAbuseText';
+import { warningSigns } from './warningSigns';
 
 
 
 export default function WarningSigns () {
 
-  const [showMoreDomesticViolence, setShowMoreDomesticViolence] = useState(false);
-  const [showMoreEmotionalAbuse, setShowMoreEmotionalAbuse] = useState(false);
-  const [showMoreGaslighting, setShowMoreGaslighting] = useState(false);
-  const [showMoreReproductiveCoersion, setShowMoreReproductiveCoersion] = useState(false);
-  const [showMorePhysicalAbuse, setShowMorePhysicalAbuse] = useState(false);
-  const [showMoreSexualAbuse, setShowMoreSexualAbuse] = useState(false);
-  const [showMoreEconomicAbuse, setShowMoreEconomicAbuse] = useState(false);
-  const [showMoreTechnologicalAssistedAbuse, setShowMoreTechnologicalAssistedAbuse] = useState(false);
-
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <PageHeader title='Warning Signs' route='/homepage' />
-        <Text style={styles.description}>It is not always obvious when someone you care about has been affected by sexual violence. Learning the warning signs for children, teens, and college-age adults can help you learn when to act.</Text>
-        <TouchableOpacity onPress={() => setShowMoreDomesticViolence(!showMoreDomesticViolence)}>
-          <View style={styles.dropDownButtonOne}>
-            <Text style={{ fontFamily: "JakartaSemiBold"}}>
-              {showMoreDomesticViolence ? <DomesticViolenceText/> : 'What is domestic violence?'}
-            </Text>
-            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
-          </View>
-        </TouchableOpacity>
-        <Text style={{ fontFamily: "JakartaSemiBold"}}>Types of abuse</Text>
-        <TouchableOpacity onPress={() => setShowMoreEmotionalAbuse(!showMoreEmotionalAbuse)}>
-          <View style={styles.dropDownButtonTop}>
-            <Text style={{ fontFamily: "JakartaSemiBold"}}>
-              {showMoreEmotionalAbuse ? <EmotionalAbuseText/> : 'Emotional abuse'}
-            </Text>
-            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setShowMoreGaslighting(!showMoreGaslighting)}>
-          <View style={styles.dropDownButtonMiddle}>
-            <Text style={{ fontFamily: "JakartaSemiBold"}}>
-              {showMoreGaslighting ? <GaslightingText/> : 'Gaslighting'}
-            </Text>
-            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setShowMoreReproductiveCoersion(!showMoreReproductiveCoersion)}>
-          <View style={styles.dropDownButtonMiddle}>
-            <Text style={{ fontFamily: "JakartaSemiBold"}}>
-              {showMoreReproductiveCoersion ? <ReproductiveCoercionText/> : 'Reproductive coercion'}
-            </Text>
-            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setShowMorePhysicalAbuse(!showMorePhysicalAbuse)}>
-          <View style={styles.dropDownButtonMiddle}>
-            <Text style={{ fontFamily: "JakartaSemiBold"}}>
-              {showMorePhysicalAbuse ? <PhysicalAbuseText/> : 'Physical abuse'}
-            </Text>
-            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setShowMoreSexualAbuse(!showMoreSexualAbuse)}>
-          <View style={styles.dropDownButtonMiddle}>
-            <Text style={{ fontFamily: "JakartaSemiBold"}}>
-              {showMoreSexualAbuse ? <SexualAbuseText/> : 'Sexual abuse'}
-            </Text>
-            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setShowMoreEconomicAbuse  (!showMoreEconomicAbuse)}>
-          <View style={{...styles.dropDownButtonMiddle}}>
-            <Text style={{ fontFamily: "JakartaSemiBold"}}>
-              {showMoreEconomicAbuse ? <EconomicAbuseText/> : 'Economic abuse'}
-            </Text>
-            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setShowMoreTechnologicalAssistedAbuse(!showMoreTechnologicalAssistedAbuse)}>
-          <View style={styles.dropDownButtonBottom}>
-            <Text style={{ fontFamily: "JakartaSemiBold"}}>
-              {showMoreTechnologicalAssistedAbuse ? <TechnologicalAssistedAbuseText/> : 'Technological-assisted abuse'}
-            </Text>
-            <Image source={require('../../assets/images/Back.png')} style={styles.image} resizeMode='contain'/>
-          </View>
-        </TouchableOpacity>
-      </View>
+    <ScrollView style={styles.container}>
+      <PageHeader title='Warning Signs' route='/homepage' />
+      <Text style={styles.description}>
+        It is not always obvious when someone you care about has been affected by sexual violence. Learning the warning signs for children, teens, and college-age adults can help you learn when to act.
+      </Text>
+      <List.Section style={{ borderRadius: 10, backgroundColor: "#F0EDF1", marginBottom: 50 }}>
+        <View style={{ borderRadius: 10, borderWidth: 1, borderColor: "#420C5C", overflow: "hidden", backgroundColor: "white"}}>
+          {warningSigns.map((warningSign, index) => (
+            <List.Accordion
+              key={index}
+              title={warningSign.title}
+              style={{ backgroundColor: "white", overflow: "hidden", borderTopWidth: index === 0 ? 0 : 1, borderColor: "#A2A1A2", paddingVertical: 0}}
+              titleStyle={{ fontFamily: "JakartaSemiBold" }}
+              >
+              <List.Item
+                style={{ paddingTop: 0 }}
+                title={
+                  <View>
+                    <Text style={{ fontFamily: "JakartaLight"}}>
+                      <Text style={{ fontFamily: "JakartaBold" }}>{warningSign.title}</Text>{" "}
+                      {warningSign.text}
+                    </Text>
+                  </View>
+                }
+                />
+            </List.Accordion>
+          ))}
+        </View>
+      </List.Section>
     </ScrollView>
   );
 };
@@ -103,53 +46,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0EDF1',
     flex: 1,
     padding: "5%",
+    height: "100%",
   },
   description: {
     fontFamily: "JakartaSemiBold",
     marginBottom: 25,
   },
-  dropDownButtonOne: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    marginTop: 10,
-    borderWidth: 1,
-    padding: '3%',
-    borderRadius: 5,
-    marginBottom: 30,
-  },
-  dropDownButtonTop: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    marginTop: 10,
-    borderWidth: 1,
-    padding: '3%',
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-  },
-  dropDownButtonMiddle: {
-    flexDirection: 'row',
-    borderTopWidth: 0,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    padding: '3%',
-  },
-  dropDownButtonBottom: {
-    flexDirection: 'row',
-    borderTopWidth: 0,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    padding: '3%',
-    borderBottomRightRadius: 5,
-    borderBottomLeftRadius: 5,
-  },
-  image: {
-    width: 20,
-    height: 20,
-    transform: [{ rotate: '270deg' }],
-    marginLeft: 'auto'
-  },
-  backButton: {
-    textAlign: 'left',
-    flexDirection: 'row',
-  }
 });

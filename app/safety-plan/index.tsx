@@ -32,7 +32,7 @@ const SafePlanHome = () => {
           <Image style={styles.buttonimages} source={icons[safetyCategory as keyof typeof icons]} />
           <ScrollView contentContainerStyle={{ paddingBottom: 25, paddingTop: 10 }}>
             {(bank[safetyCategory as keyof typeof bank] as []).map((tips: string, i: number) => (
-              <View key={i} style={{ flexDirection: "row", maxWidth: "95%", padding: 5, marginBottom: 10 }}>
+              <View key={i} style={{ flexDirection: "row", maxWidth: "95%", padding: 5, marginBottom: 15 }}>
                 <Text style={{ fontWeight: "bold", fontSize: 20 }}>{"\u2022"}</Text>
                 <Text style={styles.modalText}>{tips}</Text>
               </View>
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '70%',
+    width: '85%',
     marginTop: '30%',
     maxHeight: '70%',
     backgroundColor: '#F0EDF1',

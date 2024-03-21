@@ -149,7 +149,7 @@ const MoodEntries = () => {
         <View style={styles.deleteButton}>
           <Pressable
             onPress={() => setShowModal(true)}
-            style={({ pressed }) => [{ borderRadius: 10, width: '100%', backgroundColor: pressed ? '#ff3333' : '#D22F27' }]}
+            style={({ pressed }) => [{ borderRadius: 100, width: '100%', backgroundColor: pressed ? '#ff3333' : '#D22F27' }]}
             >
             <Text style={styles.buttonText}>Delete Mood Entries</Text>
           </Pressable>
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 100,
     backgroundColor: '#D22F27',
     marginVertical: 30,
     width: '90%',

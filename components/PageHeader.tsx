@@ -38,13 +38,16 @@ const styles = StyleSheet.create({
     width: 35,
     position: "absolute",
     left: 0,
-    top: "-50%",
+    top: "-65%",
     borderRadius: 10,
+    // borderWidth: 1,
+    // borderColor: "#420C5C",
   },
   title: {
     fontFamily: "JakartaSemiBold",
-    fontSize: 25,
+    fontSize: 20,
     marginLeft: "auto",
     marginRight: "auto",
+    color: "#420C5C"
   },
 })

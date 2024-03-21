@@ -130,7 +130,7 @@ export default function Homepage() {
           )}
         </Pressable>
       </Link>
-      <Pressable style={{ position: 'absolute', bottom: 35, width: 200 }} onPress={() => setShowDeleteModal(true)}>
+      <Pressable style={{ position: 'absolute', bottom: 35, width: '85%', borderRadius: 100 }} onPress={() => setShowDeleteModal(true)}>
         {({ pressed }) => (
           <View style={[styles.deleteButton, { opacity: pressed ? 0.5 : 1 }]}>
             <Text style={styles.deleteButtonText}>Delete all data</Text>
@@ -147,11 +147,11 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 100,
   },
   deleteButtonText: {
     color: 'white',
-    fontSize: 15,
+    fontSize: 20,
     textAlign: 'center',
     fontFamily: 'JakartaMed'
   },
@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#420C5C',
     marginLeft: 10,
+    fontFamily: 'JakartaMed'
   },
   container: {
     flex: 1,
