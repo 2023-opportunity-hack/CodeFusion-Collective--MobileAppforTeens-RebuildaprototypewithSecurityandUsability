@@ -167,7 +167,6 @@ const styles = StyleSheet.create({
     borderColor: '#420C5C',
     borderWidth: 1,
     borderRadius: 10,
-    //marginBottom: 20,
     justifyContent: 'space-between',
     backgroundColor: '#ffffff',
     paddingTop: 10,
@@ -203,7 +202,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'JakartaBold',
+    color: '#420C5C',
   },
   separator: {
     marginVertical: 30,
