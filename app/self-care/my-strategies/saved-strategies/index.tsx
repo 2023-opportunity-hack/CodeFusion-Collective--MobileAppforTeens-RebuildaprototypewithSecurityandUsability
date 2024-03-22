@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
   saveButtonWrapper: {
     width: "100%",
     alignItems: "center",
+    marginTop: 20
   },
   saveButton: {
     backgroundColor: "#420C5C",
@@ -141,7 +142,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 15,
     paddingBottom: 15,
-    marginTop: 20
   },
   saveButtonText: {
     fontFamily: "JakartaSemiBold",

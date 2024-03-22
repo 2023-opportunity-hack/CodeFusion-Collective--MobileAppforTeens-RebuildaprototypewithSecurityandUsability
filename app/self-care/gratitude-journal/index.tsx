@@ -169,7 +169,7 @@ export default function GratitiudeJournal() {
           />
         </View>
         <Pressable
-          style={{width: '100%', alignItems: 'center'}}
+          style={{width: '100%', alignItems: 'center', marginVertical: 20}}
           onPress={handleSubmit}
           disabled={promptEntry.length === 0 && gratefulEntry.length === 0}
           >
@@ -235,7 +235,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     backgroundColor: '#420C5C',
-    marginVertical: 20
   },
   submittext: {
     color: '#FFFFFF',

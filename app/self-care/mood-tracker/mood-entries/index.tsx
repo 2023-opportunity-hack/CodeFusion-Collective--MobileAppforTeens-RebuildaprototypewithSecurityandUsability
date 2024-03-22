@@ -230,9 +230,10 @@ const styles = StyleSheet.create({
   },
   modalButtonWrapper: {
     alignItems: 'center',
+    width: "40%"
   },
   modalButton: {
-    width: "80%",
+    width: "100%",
     borderWidth: 1,
     borderRadius: 100,
     justifyContent: 'center',

@@ -52,7 +52,7 @@ const SafePlanHome = () => {
       </Modal>
       {bank.Categories.map((ele: string, i: number) => {
         return (
-          <Pressable key={'sp' + i} style={{  justifyContent: 'center', alignItems: 'center' }} onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
+          <Pressable key={'sp' + i} style={{  justifyContent: 'center', alignItems: 'center', marginBottom: 15 }} onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
               {({ pressed }) => (
               <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
                 <View style={styles.insideButton}>
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     borderColor: '#683D7D',
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 15,
     justifyContent: 'space-between',
     backgroundColor: '#ffffff',
     padding: 10

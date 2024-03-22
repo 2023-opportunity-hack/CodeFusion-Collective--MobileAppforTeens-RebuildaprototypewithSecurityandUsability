@@ -135,13 +135,11 @@ export default function JournalEntries() {
         </View>
       </List.Section>
       {journalEntries.length > 0 ?
-        <Pressable onPress={() => setShowModal(true)} style={styles.buttonWrapper}>
-          {({ pressed }) => (
-            <View style={[styles.deleteButton, { opacity: pressed ? 0.5 : 1 }]}>
-              <Text style={styles.buttonText}>Delete Journal Entries</Text>
-            </View>
-          )}
-        </Pressable>
+        <View style={styles.buttonWrapper}>
+          <Pressable onPress={() => setShowModal(true)} style={({ pressed }) => ([{ opacity: pressed ? 0.5 : 1 }, styles.deleteButton])}>
+            <Text style={styles.buttonText}>Delete Journal Entries</Text>
+          </Pressable>
+        </View>
         : null}
     </ScrollView>
   );
@@ -247,9 +245,11 @@ const styles = StyleSheet.create({
   },
   modalButtonWrapper: {
     alignItems: 'center',
+    borderRadius: 100,
+    width: '40%',
   },
   modalButton: {
-    width: "80%",
+    width: "100%",
     borderWidth: 1,
     borderRadius: 100,
     justifyContent: 'center',
@@ -266,6 +266,7 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     width: '100%',
     alignItems: 'center',
+    marginVertical: 30
   },
   deleteButton: {
     width: '95%',
@@ -276,7 +277,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#D22F27',
     padding: 5,
-    marginVertical: 30
   },
   buttonText: {
     fontFamily: 'JakartaSemiBold',

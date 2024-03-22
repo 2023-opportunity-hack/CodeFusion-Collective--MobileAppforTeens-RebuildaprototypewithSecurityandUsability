@@ -129,6 +129,7 @@ const MyStrategies = () => {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
+    flex: 1,
     alignItems: "center",
     flexDirection: "column",
     padding: "5%",
@@ -164,6 +165,7 @@ const styles = StyleSheet.create({
   saveButtonWrapper: {
     width: "100%",
     alignItems: "center",
+    marginTop: 20
   },
   saveButton: {
     backgroundColor: "#420C5C",
@@ -174,7 +176,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 15,
     paddingBottom: 15,
-    marginTop: 20
   },
   saveButtonText: {
     fontFamily: "JakartaSemiBold",
@@ -185,6 +186,8 @@ const styles = StyleSheet.create({
   viewButtonWrapper: {
     width: "100%",
     alignItems: "center",
+    marginTop: 30,
+    marginBottom: 50
   },
   viewButton: {
     backgroundColor: "#FFFFFF",
@@ -197,8 +200,6 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     borderWidth: 1,
     borderColor: "#420C5C",
-    marginTop: 30,
-    marginBottom: 50
   },
   viewButtonText: {
     fontFamily: "JakartaSemiBold",

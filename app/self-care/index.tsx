@@ -11,7 +11,7 @@ export default function SelfCare() {
         Self care means taking time to do good things for yourself. Even small acts of self care in your daily life can have a big impact. Self care looks different for everyone. You may try different things before discovering what works best for you.
       </Text>
       <Link href="/self-care/gratitude-journal" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
-        <Pressable>
+        <Pressable style={{ marginBottom: 15 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -26,7 +26,7 @@ export default function SelfCare() {
         </Pressable>
       </Link>
       <Link href="/self-care/mood-tracker" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
-        <Pressable>
+        <Pressable style={{ marginBottom: 15 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -41,7 +41,7 @@ export default function SelfCare() {
         </Pressable>
       </Link>
       <Link href="/self-care/my-strategies" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
-        <Pressable>
+        <Pressable style={{ marginBottom: 15 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -56,7 +56,7 @@ export default function SelfCare() {
         </Pressable>
       </Link>
       <Link href="/self-care/resources" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
-        <Pressable>
+        <Pressable style={{ marginBottom: 15 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -87,7 +87,6 @@ const styles = StyleSheet.create({
     borderColor: '#420C5C',
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 15,
     justifyContent: 'space-between',
     backgroundColor: '#ffffff',
     paddingTop: 10,
