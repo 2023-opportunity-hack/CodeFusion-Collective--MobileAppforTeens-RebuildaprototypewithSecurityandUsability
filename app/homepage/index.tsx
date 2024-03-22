@@ -52,8 +52,8 @@ export default function Homepage() {
       </Modal>
       <Text style={styles.title}>Home</Text>
       <Image source={require('../../assets/images/safe-space-logo.png')} style={styles.logo} resizeMode='contain'/>
-      <Link href="/emergency" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
-        <Pressable>
+      <Link href="/emergency" style={{ width: '85%', justifyContent: 'center', alignItems: 'center' }} asChild>
+        <Pressable style={{ marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -65,8 +65,8 @@ export default function Homepage() {
           )}
         </Pressable>
       </Link>
-      <Link href="/contact-professional" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
-        <Pressable>
+      <Link href="/contact-professional" style={{ width: '85%', justifyContent: 'center', alignItems: 'center' }} asChild>
+        <Pressable style={{ marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -78,8 +78,8 @@ export default function Homepage() {
           )}
         </Pressable>
       </Link>
-      <Link href="/document-abuse" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
-        <Pressable>
+      <Link href="/document-abuse" style={{ width: '85%', justifyContent: 'center', alignItems: 'center' }} asChild>
+        <Pressable style={{ marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -91,8 +91,8 @@ export default function Homepage() {
           )}
         </Pressable>
       </Link>
-      <Link href="/safety-plan" asChild style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <Pressable>
+      <Link href="/safety-plan" asChild style={{ width: '85%', justifyContent: 'center', alignItems: 'center' }}>
+        <Pressable style={{ marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -104,8 +104,8 @@ export default function Homepage() {
           )}
         </Pressable>
       </Link>
-      <Link href="/self-care" asChild style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <Pressable>
+      <Link href="/self-care" asChild style={{ width: '85%', justifyContent: 'center', alignItems: 'center' }}>
+        <Pressable style={{ marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -117,8 +117,8 @@ export default function Homepage() {
           )}
         </Pressable>
       </Link>
-      <Link href="/warning-signs" asChild style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <Pressable>
+      <Link href="/warning-signs" asChild style={{ width: '85%', justifyContent: 'center', alignItems: 'center' }}>
+        <Pressable style={{ marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -161,13 +161,13 @@ const styles = StyleSheet.create({
     transform: [{scaleX: -1}],
   },
   button: {
-    width: '85%',
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     borderColor: '#420C5C',
     borderWidth: 1,
     borderRadius: 10,
-    marginBottom: 20,
+    //marginBottom: 20,
     justifyContent: 'space-between',
     backgroundColor: '#ffffff',
     paddingTop: 10,
