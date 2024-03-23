@@ -20,7 +20,7 @@ export default function SelfCare() {
                   Gratitude Journal
                 </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
@@ -35,7 +35,7 @@ export default function SelfCare() {
                   Mood Tracker
                 </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
@@ -50,7 +50,7 @@ export default function SelfCare() {
                   My Strategies
                 </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
@@ -65,7 +65,7 @@ export default function SelfCare() {
                   Resources
                 </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#420C5C',
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 10,
     justifyContent: 'space-between',
     backgroundColor: '#ffffff',
     paddingTop: 10,
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#420C5C',
     marginLeft: 10,
+    fontFamily: 'JakartaSemiBold',
   },
   container: {
     flex: 1,

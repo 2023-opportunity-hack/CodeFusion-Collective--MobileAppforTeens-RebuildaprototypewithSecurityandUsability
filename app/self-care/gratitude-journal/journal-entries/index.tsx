@@ -91,7 +91,7 @@ export default function JournalEntries() {
         >
         <View style={styles.modalContainer}>
           <View style={styles.modalContents}>
-            <Text style={{ fontFamily: 'JakartaMed', fontSize: 15 }}>Are you sure you want to delete all journal entries?</Text>
+            <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 16 }}>Are you sure you want to delete all journal entries?</Text>
             <View style={styles.modalButtons}>
               <Pressable style={styles.modalButtonWrapper} onPress={deleteAllJournalEntries}>
                 {({ pressed }) => (
@@ -120,6 +120,7 @@ export default function JournalEntries() {
                 key={day.date}
                 title={new Date(`${day.date}T07:00:00Z`).toLocaleDateString('en-US', options)}
                 theme={{ colors: { background: "#FFFFFF" } }}
+                titleStyle={{ fontFamily: 'JakartaMed' }}
                 >
                 {day.entries && day.entries.map((entry) => (
                   <List.Item
@@ -130,7 +131,7 @@ export default function JournalEntries() {
              </List.Accordion>
             ))
           ) : (
-            <List.Item title={"No saved journal entries"} />
+            <List.Item title={"No saved journal entries"} titleStyle={{ fontFamily: "JakartaMed" }} />
           )}
         </View>
       </List.Section>

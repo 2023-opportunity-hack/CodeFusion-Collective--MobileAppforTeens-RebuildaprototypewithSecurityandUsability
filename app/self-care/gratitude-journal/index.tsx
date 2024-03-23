@@ -145,12 +145,13 @@ export default function GratitiudeJournal() {
               value={journalEntryLabel}
               setValue={(val) => setJournalEntryLabel(val)}
               dropDownContainerStyle={{ maxHeight: 150, borderColor: "#420C5C", borderRadius: 10 }}
-              listItemLabelStyle={{ fontFamily: 'JakartaMed', }}
-              listItemContainerStyle={{ marginVertical: 5, borderRadius: 10}}
+              listItemLabelStyle={{ fontFamily: 'JakartaSemiBold', }}
+              listItemContainerStyle={{ marginVertical: 5, borderRadius: 10 }}
               containerStyle={{ borderRadius: 10 }}
               selectedItemLabelStyle={{ color: "#420C5C", fontFamily: 'JakartaSemiBold' }}
-              labelStyle={{ fontFamily: 'JakartaSemiBold', color: "#420C5C" }}
               style={styles.dropDown}
+              labelStyle={{ color: "#420C5C", fontFamily: 'JakartaSemiBold' }}
+              showTickIcon={false}
             />
           </View>
           <TextInput
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
     borderColor: '#420C5C',
     borderBottomEndRadius: 0,
     borderBottomStartRadius: 0,
-    borderRadius: 5
+    borderRadius: 5,
   },
   textinput: {
     fontFamily: "JakartaMed",

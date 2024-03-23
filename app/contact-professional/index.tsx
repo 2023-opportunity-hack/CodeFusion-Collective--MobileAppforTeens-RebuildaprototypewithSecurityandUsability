@@ -105,6 +105,7 @@ export default function ContactProfessional() {
             </Text>
             <SelectList
               placeholder='Please select'
+              inputStyles={{ fontFamily: 'JakartaMed' }}
               setSelected={(val: string) => setSelected(val)}
               data={data}
               save="key"
@@ -134,7 +135,7 @@ export default function ContactProfessional() {
               maxLength={20}
               value={name}
               onChangeText={handleNameChange}
-              placeholder='First and Last Name'
+              placeholder='First and last name'
               placeholderTextColor="gray"
               style={styles.infoinput}
             />
@@ -158,7 +159,7 @@ export default function ContactProfessional() {
               maxLength={20}
               value={email}
               onChangeText={handleEmailChange}
-              placeholder='email address'
+              placeholder='Email address'
               placeholderTextColor="gray"
               style={styles.infoinput}
             />
@@ -172,7 +173,7 @@ export default function ContactProfessional() {
                   status={ checked === 'Call' ? 'checked' : 'unchecked' }
                   onPress={() => setChecked('Call')}
                 />
-                <Text>Call/Voicemail</Text>
+                <Text style={{ fontFamily: 'JakartaMed' }}>Call/Voicemail</Text>
               </View>
               <View style={styles.radiooption}>
                 <RadioButton.Android
@@ -180,7 +181,7 @@ export default function ContactProfessional() {
                   status={ checked === 'Text' ? 'checked' : 'unchecked' }
                   onPress={() => setChecked('Text')}
                 />
-                <Text>Text</Text>
+                <Text style={{ fontFamily: 'JakartaMed' }}>Text</Text>
               </View>
               <View style={styles.radiooption}>
                 <RadioButton.Android
@@ -188,7 +189,7 @@ export default function ContactProfessional() {
                   status={ checked === 'Email' ? 'checked' : 'unchecked' }
                   onPress={() => setChecked('Email')}
                 />
-                <Text>Email</Text>
+                <Text style={{ fontFamily: 'JakartaMed' }}>Email</Text>
               </View>
             </View>
             {error === 0 ? <Text></Text> :

@@ -30,7 +30,7 @@ export default function Homepage() {
         >
         <View style={styles.modalContainer}>
           <View style={styles.modalContents}>
-            <Text>Are you sure you want to delete all saved data?</Text>
+            <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 16 }}>Are you sure you want to delete all saved data?</Text>
             <View style={styles.modalButtons}>
               <Pressable style={styles.modalButtonWrapper} onPress={deleteAllData}>
                 {({ pressed }) => (
@@ -60,7 +60,7 @@ export default function Homepage() {
                 <Image source={require('../../assets/images/SOS.png')} style={styles.image} />
                 <Text style={styles.buttonText}> Emergency </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
@@ -73,7 +73,7 @@ export default function Homepage() {
                 <Image source={require('../../assets/images/contact-professional.png')} style={styles.image} />
                 <Text style={styles.buttonText}> Contact Professional </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
@@ -86,7 +86,7 @@ export default function Homepage() {
                 <Image source={require('../../assets/images/document-abuse.png')} style={styles.image} />
                 <Text style={styles.buttonText}> Document Abuse </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
@@ -99,7 +99,7 @@ export default function Homepage() {
                 <Image source={require('../../assets/images/safety-plan.png')} style={styles.image} />
                 <Text style={styles.buttonText}> Safety Plan </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
@@ -112,7 +112,7 @@ export default function Homepage() {
                 <Image source={require('../../assets/images/self-care.png')} style={styles.image} />
                 <Text style={styles.buttonText}> Self Care </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
@@ -125,7 +125,7 @@ export default function Homepage() {
                 <Image source={require('../../assets/images/warning-sign.png')} style={styles.image} />
                 <Text style={styles.buttonText}> Warning Signs </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#420C5C',
     marginLeft: 10,
-    fontFamily: 'JakartaMed'
+    fontFamily: 'JakartaSemiBold'
   },
   container: {
     flex: 1,

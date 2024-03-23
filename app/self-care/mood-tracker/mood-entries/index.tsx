@@ -104,7 +104,7 @@ const MoodEntries = () => {
         >
         <View style={styles.modalContainer}>
           <View style={styles.modalContents}>
-            <Text>Are you sure you want to delete all mood entries?</Text>
+            <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 16 }}>Are you sure you want to delete all mood entries?</Text>
             <View style={styles.modalButtons}>
               <Pressable style={styles.modalButtonWrapper} onPress={deleteAllMoodEntries}>
                 {({ pressed }) => (
@@ -134,6 +134,7 @@ const MoodEntries = () => {
                   id={day.date}
                   title={new Date(`${day.date}T07:00:00Z`).toLocaleDateString('en-US', options)}
                   theme={{ colors: { background: "#FFFFFF" } }}
+                  titleStyle={{ fontFamily: 'JakartaMed' }}
                   >
                   {day.moodInfo.map((mood, index) => (
                     <List.Item key={index} title={<MoodEntry mood={mood.mood} time={mood.time} />} />
@@ -141,7 +142,7 @@ const MoodEntries = () => {
                 </List.Accordion>
               ))
             ) : (
-              <List.Item title="No saved moods" />
+              <List.Item title="No saved moods" titleStyle={{ fontFamily: "JakartaMed" }} />
             )}
         </View>
       </List.Section>

@@ -58,7 +58,7 @@ const SafePlanHome = () => {
                 <View style={styles.insideButton}>
                   <Image style={styles.buttonimages} source={icons[ele as keyof typeof icons]} />
                   <Text style={styles.textStyle}>{ele}</Text>
-                  <Image style={styles.backArrow} source={require('../../assets/images/Back.png')} />
+                  <Image style={styles.backArrow} source={require('../../assets/images/Back2.png')} />
                 </View>
               </View>
               )}
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#683D7D',
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 10,
     justifyContent: 'space-between',
     backgroundColor: '#ffffff',
     padding: 10
@@ -110,11 +110,11 @@ const styles = StyleSheet.create({
     width: 30,
   },
   textStyle: {
-    color: '#683D7D',
+    color: '#420C5C',
     fontFamily: 'JakartaSemiBold',
     textAlign: 'left',
     marginLeft: 20,
-    fontSize: 18,
+    fontSize: 20,
   },
   modalView: {
     alignSelf: 'center',
