@@ -71,18 +71,22 @@ export default function NewRecordPage() {
   useEffect(() => {
     setLoading(true);
     db.transaction((tx) => {
-      tx.executeSql(sqlQuery, undefined,
-      (_, resultSet) => {
-        resultSet.rows._array.forEach((day) => {
-          day.records = JSON.parse(day.records);
-        })
-        const sortedRecords: RecordEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.record_date).getTime() - new Date(a.record_date).getTime());
-        sortedRecords.forEach((day) => {
-          day.records.sort((a, b) => new Date(b.event_date).getTime() - new Date(a.event_date).getTime());
-        })
-        setRecordEntries(sortedRecords);
-        setLoading(false);
-      });
+      tx.executeSql(sqlQuery, undefined, (_, resultSet) => {
+        if (!resultSet.rows._array[0]) {
+          setRecordEntries([]);
+          setLoading(false);
+        } else {
+          resultSet.rows._array.forEach((day) => {
+            day.records = JSON.parse(day.records);
+          })
+          const sortedRecords: RecordEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.record_date).getTime() - new Date(a.record_date).getTime());
+          sortedRecords.forEach((day) => {
+            day.records.sort((a, b) => new Date(b.event_date).getTime() - new Date(a.event_date).getTime());
+          })
+          setRecordEntries(sortedRecords);
+          setLoading(false);
+        }
+      }, );
     });
   }, [])
 
@@ -97,7 +101,7 @@ export default function NewRecordPage() {
         >
         <View style={styles.modalContainer}>
           <View style={styles.modalContents}>
-            <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 18 }}>Are you sure you want to delete all records?</Text>
+            <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 16 }}>Are you sure you want to delete all records?</Text>
             <View style={styles.modalButtons}>
               <Pressable style={styles.modalButtonWrapper} onPress={deleteAllRecords}>
                 {({ pressed }) => (
@@ -126,6 +130,7 @@ export default function NewRecordPage() {
                 key={day.record_id}
                 title={new Date(`${day.record_date}T07:00:00Z`).toLocaleString('en-US', options)}
                 theme={{ colors: { background: "#FFFFFF" } }}
+                titleStyle={{ fontFamily: 'JakartaMed' }}
               >
                 {day.records.map((entry) => (
                   <List.Item
@@ -136,7 +141,7 @@ export default function NewRecordPage() {
               </List.Accordion>
             ))
           ): (
-            <List.Item title="No saved records" />
+            <List.Item title="No saved records" titleStyle={{ fontFamily: "JakartaMed" }} />
           )}
         </View>
       </List.Section>

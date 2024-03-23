@@ -11,7 +11,7 @@ export const PageHeader = ({ route, title }: { route: RelativePathString, title:
         <Pressable>
           {({ pressed }) => (
             <Image
-              source={require("../assets/images/Back.png")}
+              source={require("../assets/images/Back2.png")}
               style={[styles.backimage, pressed && { backgroundColor: "#B39EBE" }]}
             />
           )}
@@ -38,10 +38,8 @@ const styles = StyleSheet.create({
     width: 35,
     position: "absolute",
     left: 0,
-    top: "-65%",
+    top: "-60%",
     borderRadius: 10,
-    // borderWidth: 1,
-    // borderColor: "#420C5C",
   },
   title: {
     fontFamily: "JakartaSemiBold",

@@ -145,12 +145,13 @@ export default function GratitiudeJournal() {
               value={journalEntryLabel}
               setValue={(val) => setJournalEntryLabel(val)}
               dropDownContainerStyle={{ maxHeight: 150, borderColor: "#420C5C", borderRadius: 10 }}
-              listItemLabelStyle={{ fontFamily: 'JakartaMed', }}
-              listItemContainerStyle={{ marginVertical: 5, borderRadius: 10}}
+              listItemLabelStyle={{ fontFamily: 'JakartaSemiBold', }}
+              listItemContainerStyle={{ marginVertical: 5, borderRadius: 10 }}
               containerStyle={{ borderRadius: 10 }}
               selectedItemLabelStyle={{ color: "#420C5C", fontFamily: 'JakartaSemiBold' }}
-              labelStyle={{ fontFamily: 'JakartaSemiBold', color: "#420C5C" }}
               style={styles.dropDown}
+              labelStyle={{ color: "#420C5C", fontFamily: 'JakartaSemiBold' }}
+              showTickIcon={false}
             />
           </View>
           <TextInput
@@ -169,7 +170,7 @@ export default function GratitiudeJournal() {
           />
         </View>
         <Pressable
-          style={{width: '100%', alignItems: 'center'}}
+          style={{width: '100%', alignItems: 'center', marginVertical: 20}}
           onPress={handleSubmit}
           disabled={promptEntry.length === 0 && gratefulEntry.length === 0}
           >
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
     borderColor: '#420C5C',
     borderBottomEndRadius: 0,
     borderBottomStartRadius: 0,
-    borderRadius: 5
+    borderRadius: 5,
   },
   textinput: {
     fontFamily: "JakartaMed",
@@ -235,7 +236,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     backgroundColor: '#420C5C',
-    marginVertical: 20
   },
   submittext: {
     color: '#FFFFFF',

@@ -96,7 +96,7 @@ export default function MoodTracker () {
         </View>
         <View style={styles.buttonContainer}>
           <Pressable
-            style={{ width: "100%", justifyContent: "center", alignItems: "center" }}
+            style={{ width: "100%", justifyContent: "center", alignItems: "center", marginTop: 20 }}
             disabled={selectedMood === ""}
             onPress={saveMoodEntry}
             >
@@ -107,7 +107,7 @@ export default function MoodTracker () {
             )}
           </Pressable>
           <Link href="/self-care/mood-tracker/mood-entries" asChild>
-            <Pressable style={{ width: "100%", justifyContent: "center", alignItems: "center" }}>
+            <Pressable style={{ width: "100%", justifyContent: "center", alignItems: "center", marginTop: 30, marginBottom: 50 }}>
               {({ pressed }) => (
                 <View style={[styles.viewButton, { opacity: pressed ? 0.5 : 1 }]}>
                   <Text style={styles.viewButtonText}>View Mood Entries</Text>
@@ -223,7 +223,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 15,
     paddingBottom: 15,
-    marginTop: 20
   },
   saveButtonText: {
     fontFamily: "JakartaSemiBold",
@@ -241,8 +240,6 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     borderWidth: 1,
     borderColor: "#420C5C",
-    marginTop: 30,
-    marginBottom: 50
   },
   viewButtonText: {
     fontFamily: "JakartaSemiBold",

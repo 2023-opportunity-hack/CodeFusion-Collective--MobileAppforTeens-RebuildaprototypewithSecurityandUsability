@@ -52,13 +52,13 @@ const SafePlanHome = () => {
       </Modal>
       {bank.Categories.map((ele: string, i: number) => {
         return (
-          <Pressable key={'sp' + i} style={{  justifyContent: 'center', alignItems: 'center' }} onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
+          <Pressable key={'sp' + i} style={{  justifyContent: 'center', alignItems: 'center', marginBottom: 15 }} onPress={() => { setModalVisible(true); setSafetyCategory(ele) }}>
               {({ pressed }) => (
               <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
                 <View style={styles.insideButton}>
                   <Image style={styles.buttonimages} source={icons[ele as keyof typeof icons]} />
                   <Text style={styles.textStyle}>{ele}</Text>
-                  <Image style={styles.backArrow} source={require('../../assets/images/Back.png')} />
+                  <Image style={styles.backArrow} source={require('../../assets/images/Back2.png')} />
                 </View>
               </View>
               )}
@@ -100,8 +100,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#683D7D',
     borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 15,
+    borderRadius: 10,
     justifyContent: 'space-between',
     backgroundColor: '#ffffff',
     padding: 10
@@ -111,11 +110,11 @@ const styles = StyleSheet.create({
     width: 30,
   },
   textStyle: {
-    color: '#683D7D',
+    color: '#420C5C',
     fontFamily: 'JakartaSemiBold',
     textAlign: 'left',
     marginLeft: 20,
-    fontSize: 18,
+    fontSize: 20,
   },
   modalView: {
     alignSelf: 'center',

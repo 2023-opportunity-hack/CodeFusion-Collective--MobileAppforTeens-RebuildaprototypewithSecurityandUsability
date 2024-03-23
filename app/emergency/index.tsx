@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "JakartaSemiBold",
     color: "#683d7d",
-    fontSize: 15,
+    fontSize: 16,
   },
   button: {
     flexDirection: "row",

@@ -30,7 +30,7 @@ export default function Homepage() {
         >
         <View style={styles.modalContainer}>
           <View style={styles.modalContents}>
-            <Text>Are you sure you want to delete all saved data?</Text>
+            <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 16 }}>Are you sure you want to delete all saved data?</Text>
             <View style={styles.modalButtons}>
               <Pressable style={styles.modalButtonWrapper} onPress={deleteAllData}>
                 {({ pressed }) => (
@@ -52,80 +52,80 @@ export default function Homepage() {
       </Modal>
       <Text style={styles.title}>Home</Text>
       <Image source={require('../../assets/images/safe-space-logo.png')} style={styles.logo} resizeMode='contain'/>
-      <Link href="/emergency" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
-        <Pressable>
+      <Link href="/emergency" style={{ width: '85%', justifyContent: 'center', alignItems: 'center' }} asChild>
+        <Pressable style={{ marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
                 <Image source={require('../../assets/images/SOS.png')} style={styles.image} />
                 <Text style={styles.buttonText}> Emergency </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
       </Link>
-      <Link href="/contact-professional" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
-        <Pressable>
+      <Link href="/contact-professional" style={{ width: '85%', justifyContent: 'center', alignItems: 'center' }} asChild>
+        <Pressable style={{ marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
                 <Image source={require('../../assets/images/contact-professional.png')} style={styles.image} />
                 <Text style={styles.buttonText}> Contact Professional </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
       </Link>
-      <Link href="/document-abuse" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
-        <Pressable>
+      <Link href="/document-abuse" style={{ width: '85%', justifyContent: 'center', alignItems: 'center' }} asChild>
+        <Pressable style={{ marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
                 <Image source={require('../../assets/images/document-abuse.png')} style={styles.image} />
                 <Text style={styles.buttonText}> Document Abuse </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
       </Link>
-      <Link href="/safety-plan" asChild style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <Pressable>
+      <Link href="/safety-plan" asChild style={{ width: '85%', justifyContent: 'center', alignItems: 'center' }}>
+        <Pressable style={{ marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
                 <Image source={require('../../assets/images/safety-plan.png')} style={styles.image} />
                 <Text style={styles.buttonText}> Safety Plan </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
       </Link>
-      <Link href="/self-care" asChild style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <Pressable>
+      <Link href="/self-care" asChild style={{ width: '85%', justifyContent: 'center', alignItems: 'center' }}>
+        <Pressable style={{ marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
                 <Image source={require('../../assets/images/self-care.png')} style={styles.image} />
                 <Text style={styles.buttonText}> Self Care </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
       </Link>
-      <Link href="/warning-signs" asChild style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <Pressable>
+      <Link href="/warning-signs" asChild style={{ width: '85%', justifyContent: 'center', alignItems: 'center' }}>
+        <Pressable style={{ marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
                 <Image source={require('../../assets/images/warning-sign.png')} style={styles.image} />
                 <Text style={styles.buttonText}> Warning Signs </Text>
               </View>
-              <Image source={require('../../assets/images/Back.png')} style={styles.backimage} />
+              <Image source={require('../../assets/images/Back2.png')} style={styles.backimage} />
             </View>
           )}
         </Pressable>
@@ -161,13 +161,12 @@ const styles = StyleSheet.create({
     transform: [{scaleX: -1}],
   },
   button: {
-    width: '85%',
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     borderColor: '#420C5C',
     borderWidth: 1,
     borderRadius: 10,
-    marginBottom: 20,
     justifyContent: 'space-between',
     backgroundColor: '#ffffff',
     paddingTop: 10,
@@ -178,7 +177,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#420C5C',
     marginLeft: 10,
-    fontFamily: 'JakartaMed'
+    fontFamily: 'JakartaSemiBold'
   },
   container: {
     flex: 1,
@@ -203,7 +202,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'JakartaBold',
+    color: '#420C5C',
   },
   separator: {
     marginVertical: 30,
@@ -239,9 +239,10 @@ const styles = StyleSheet.create({
   },
   modalButtonWrapper: {
     alignItems: 'center',
+    width: "40%"
   },
   modalButton: {
-    width: "80%",
+    width: "100%",
     borderWidth: 1,
     borderRadius: 100,
     justifyContent: 'center',

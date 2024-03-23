@@ -1,9 +1,4 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack, router } from "expo-router";
 import { useEffect, useState } from "react";
@@ -76,12 +71,12 @@ function RootLayoutNav() {
 
   return (
     <EmergencyContactContextProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
         <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
           {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
           {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
         </Stack>
-      </ThemeProvider>
+      {/* </ThemeProvider> */}
     </EmergencyContactContextProvider>
   );
 }

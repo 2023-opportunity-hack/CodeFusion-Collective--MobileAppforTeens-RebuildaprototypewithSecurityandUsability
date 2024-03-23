@@ -70,7 +70,7 @@ const MySavedStrategies = () => {
                               />}
                 />
               )) : (
-                <List.Item title="No strategies saved" />
+                <List.Item title="No strategies saved" titleStyle={{ fontFamily: "JakartaMed" }} />
               )
             : (
               <View style={styles.loadingContainer}>
@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
   saveButtonWrapper: {
     width: "100%",
     alignItems: "center",
+    marginTop: 20
   },
   saveButton: {
     backgroundColor: "#420C5C",
@@ -141,7 +142,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 15,
     paddingBottom: 15,
-    marginTop: 20
   },
   saveButtonText: {
     fontFamily: "JakartaSemiBold",
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderWidth: 1,
+    fontFamily: "JakartaMed",
     borderColor: '#420C5C',
     borderRadius: 5,
     padding: 10,
