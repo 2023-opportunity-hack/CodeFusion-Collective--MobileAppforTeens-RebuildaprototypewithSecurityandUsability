@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
+    backgroundColor: '#F0EDF1',
   },
   iconandtext: {
     marginLeft: 15,

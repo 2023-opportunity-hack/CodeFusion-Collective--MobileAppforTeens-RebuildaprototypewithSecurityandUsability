@@ -46,13 +46,11 @@ const MyStrategies = () => {
       selected.forEach((label) => {
         tx.executeSql('SELECT id FROM strategies WHERE strategy = ?', [label], (_, resultSet) => {
           if (resultSet.rows.length > 0) {
-            console.log('Strategy already exists');
             setSelected([]);
             setShowList(false);
           } else {
             tx.executeSql('INSERT INTO strategies (strategy) VALUES (?)', [label], () => {
               setSelected([]);
-              console.log('Strategy saved');
               setShowList(false);
             });
           }
@@ -79,30 +77,30 @@ const MyStrategies = () => {
       <PageHeader route="/self-care" title="My Strategies" />
       <Text style={styles.pagedescription}>Choose strategies that help you when you are feeling stressed or anxious</Text>
       <List.Section style={styles.listItemsSection}>
-          <List.Accordion
-            title="Please select all that help"
-            style={styles.listItemsMainContainer}
-            titleStyle={{ color: "black", fontFamily: "JakartaSemiBold" }}
-            theme={{colors: {background: "#F0EDF1"}}}
-            expanded={showList}
-            onPress={() => setShowList(!showList)}
-            >
-            <View style={styles.listItemsSubContainer}>
-              {labelTitles.map((label, index) => (
-                <List.Item
-                  key={index}
-                  title={label.title}
-                  titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold" }}
-                  onPress={() => handleSelect(label.title)}
-                  left={() => <List.Icon
-                                icon={selected.includes(label.title) ? "checkbox-marked" : "checkbox-blank-outline"}
-                                style={{ paddingLeft: 15, }}
-                                color="#420C5C"
-                                 />}
-                  />
-                ))}
-            </View>
-          </List.Accordion>
+        <List.Accordion
+          title="Please select all that help"
+          style={styles.listItemsMainContainer}
+          titleStyle={{ color: "black", fontFamily: "JakartaSemiBold" }}
+          theme={{colors: {background: "#F0EDF1"}}}
+          expanded={showList}
+          onPress={() => setShowList(!showList)}
+          >
+          <View style={styles.listItemsSubContainer}>
+            {labelTitles.map((label, index) => (
+              <List.Item
+                key={index}
+                title={label.title}
+                titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold" }}
+                onPress={() => handleSelect(label.title)}
+                left={() => <List.Icon
+                              icon={selected.includes(label.title) ? "checkbox-marked" : "checkbox-blank-outline"}
+                              style={{ paddingLeft: 15, }}
+                              color="#420C5C"
+                                />}
+                />
+              ))}
+          </View>
+        </List.Accordion>
       </List.Section>
       <View style={styles.buttonContainer}>
         <Pressable style={styles.saveButtonWrapper} onPress={saveStrategies} disabled={selected.length === 0}>
@@ -129,31 +127,11 @@ const MyStrategies = () => {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    flex: 1,
+    flexGrow: 1,
     alignItems: "center",
     flexDirection: "column",
     padding: "5%",
     backgroundColor: "#F0EDF1"
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    marginTop: "20%",
-    marginBottom: "10%",
-  },
-  backimage: {
-    height: 30,
-    width: 30,
-    marginRight: "-10%",
-  },
-  title: {
-    fontFamily: "JakartaSemiBold",
-    fontSize: 25,
-    fontWeight: "bold",
-    marginLeft: "auto",
-    marginRight: "auto",
   },
   buttonContainer: {
     display: "flex",

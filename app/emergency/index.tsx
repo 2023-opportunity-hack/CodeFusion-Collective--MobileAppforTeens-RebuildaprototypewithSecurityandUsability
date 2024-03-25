@@ -101,7 +101,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     gap: 25,
-    padding: "5%"
+    padding: "5%",
+    backgroundColor: "#F0EDF1",
   },
   text: {
     fontFamily: "JakartaSemiBold",

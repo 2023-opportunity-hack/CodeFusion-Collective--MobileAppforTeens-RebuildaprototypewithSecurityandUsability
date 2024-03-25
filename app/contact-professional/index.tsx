@@ -61,8 +61,6 @@ export default function ContactProfessional() {
       Email: ${email}
       ${text}`
       );
-
-      console.log(result);
     }
   }
 

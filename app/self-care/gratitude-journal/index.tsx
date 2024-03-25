@@ -81,7 +81,7 @@ export default function GratitiudeJournal() {
       return;
     } else {
       Alert.alert('Error', 'Something went wrong', [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        {text: 'OK'},
       ])
     };
 
@@ -145,12 +145,12 @@ export default function GratitiudeJournal() {
               value={journalEntryLabel}
               setValue={(val) => setJournalEntryLabel(val)}
               dropDownContainerStyle={{ maxHeight: 150, borderColor: "#420C5C", borderRadius: 10 }}
-              listItemLabelStyle={{ fontFamily: 'JakartaSemiBold', }}
-              listItemContainerStyle={{ marginVertical: 5, borderRadius: 10 }}
+              listItemLabelStyle={{ fontFamily: 'JakartaSemiBold' }}
+              listItemContainerStyle={{ marginVertical: 5, height: 50 }}
               containerStyle={{ borderRadius: 10 }}
               selectedItemLabelStyle={{ color: "#420C5C", fontFamily: 'JakartaSemiBold' }}
               style={styles.dropDown}
-              labelStyle={{ color: "#420C5C", fontFamily: 'JakartaSemiBold' }}
+              labelStyle={{ color: "#420C5C", fontFamily: 'JakartaSemiBold', height: 45}}
               showTickIcon={false}
             />
           </View>

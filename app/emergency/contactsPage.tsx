@@ -141,6 +141,8 @@ const styles = StyleSheet.create({
   container: {
     padding: "2%",
     paddingBottom: "10%",
+    backgroundColor: "#F0EDF1",
+    flex: 1,
   },
   loading: {
     fontSize: 20,

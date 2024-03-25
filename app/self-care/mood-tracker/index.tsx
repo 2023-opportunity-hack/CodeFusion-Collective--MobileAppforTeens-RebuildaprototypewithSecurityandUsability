@@ -34,7 +34,6 @@ export default function MoodTracker () {
     const newDate = new Date();
     const currentDate = newDate.toISOString().slice(0, 10);
     const currentTime = newDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-    console.log("type of: ", typeof selectedMood);
 
     db.transaction((tx) => {
       tx.executeSql('SELECT id FROM mood_entries WHERE date = ?', [currentDate], (_, resultSet) => {

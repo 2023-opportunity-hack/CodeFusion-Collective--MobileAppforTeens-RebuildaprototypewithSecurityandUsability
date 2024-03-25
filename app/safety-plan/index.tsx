@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
     padding: "5%",
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: "#F0EDF1",
   },
   statement: {
     fontFamily: 'JakartaSemiBold',

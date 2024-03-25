@@ -4,7 +4,6 @@ import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import TicTacToePin from "../../components/TicTacToePin";
 
 
-
 export default function Lockscreen() {
   const initialBoard = [
     ['', '', ''],
@@ -85,7 +84,6 @@ export default function Lockscreen() {
   };
 
   const resetBoard = () => {
-    console.log("Board value: ", board);
     setBoard(initialBoard);
     setPlayer('X');
     setWinner('');
@@ -120,20 +118,6 @@ export default function Lockscreen() {
       }
     }
   }, [board]);
-
-  // useEffect(() => {
-  //   if (buttonSequence.length >= 3) {
-  //     if (checkSequence(buttonSequence.split(''))) {
-  //       setButtonSequence('');
-  //       console.log('HURRAY');
-  //       router.replace('/homepage');
-  //     } else {
-  //       setButtonSequence('');
-  //       console.log('BOO');
-  //       // DISPLAY ERROR MESSAGE?
-  //     }
-  //   }
-  // }, [buttonSequence]);
 
   return (
     <View style={styles.container}>
