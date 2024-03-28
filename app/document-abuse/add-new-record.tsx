@@ -15,6 +15,9 @@ export default function AddNewRecordPage() {
 
 
   const onChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
+    if (event.type === 'set' || event.type === 'dismissed') {
+      setShow(false);
+    }
     const currentDate = selectedDate;
     setDate(currentDate);
   }
@@ -99,7 +102,9 @@ export default function AddNewRecordPage() {
         <Text style={styles.subtitle}>Date of Event</Text>
         <Pressable onPress={showDatePicker}>
           <View style={styles.dateContainer}>
-            <Text style={{ fontFamily: "JakartaMed"}}>{date?.toLocaleDateString() ? date.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select Date'}</Text>
+            <Text style={{ fontFamily: "JakartaMed"}}>
+              {date?.toLocaleDateString() ? date.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select Date'}
+            </Text>
           </View>
         </Pressable>
         {show && (
@@ -110,6 +115,7 @@ export default function AddNewRecordPage() {
               display='spinner'
               onChange={onChange}
               maximumDate={new Date()}
+              positiveButton={{ label: 'Done' }}
             />
             <Pressable
               onPress={() => {

@@ -144,16 +144,16 @@ export default function Homepage() {
 const styles = StyleSheet.create({
   deleteButton: {
     backgroundColor: 'red',
-    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
+    paddingVertical: 10,
   },
   deleteButtonText: {
     color: 'white',
     fontSize: 20,
     textAlign: 'center',
-    fontFamily: 'JakartaMed'
+    fontFamily: 'JakartaSemiBold'
   },
   backimage: {
     width: 30,
@@ -169,8 +169,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'space-between',
     backgroundColor: '#ffffff',
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingVertical: 10,
     paddingRight: 10,
   },
   buttonText: {

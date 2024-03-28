@@ -12,11 +12,11 @@ const Onboarding = () => {
         resizeMode="contain"
         />
       <Link style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} href="/onboarding/index2" asChild>
-        <Pressable>
+        <Pressable style={{ marginTop: "5%" }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
-              <Text style={styles.buttontext}>How it works </Text>
-              <FontAwesome name="long-arrow-right" size={35} color="white" />
+              <Text style={[styles.buttontext, { includeFontPadding: false }]} >How it works </Text>
+              <FontAwesome name="long-arrow-right" size={35} color="white" style={{ position: 'absolute', right: "15%" }} />
             </View>
           )}
         </Pressable>
@@ -38,20 +38,21 @@ const styles = StyleSheet.create({
   },
   button: {
     display: 'flex',
-    marginTop: "5%",
+    position: 'relative',
     flexDirection: 'row',
     width: '90%',
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#420C5C',
+    padding: 10
   },
   buttontext: {
     color: '#fff',
     fontFamily: 'JakartaBold',
-    marginVertical: 10,
     fontSize: 25,
-    marginRight: 10
+    textAlign: 'center',
+    textAlignVertical: 'center'
   },
 });
 

@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   deleteButton: {
-    width: '90%',
+    width: '100%',
     borderWidth: 1,
     borderRadius: 100,
     justifyContent: 'center',

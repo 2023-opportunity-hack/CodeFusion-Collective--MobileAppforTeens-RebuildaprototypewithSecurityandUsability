@@ -23,7 +23,7 @@ export default function DocumentAbusePage() {
         <Pressable>
           {({ pressed }) => (
             <View style={[styles.button, { backgroundColor: '#420C5C', opacity: pressed ? 0.5 : 1 }]}>
-              <Text style={[styles.buttonText, {color: '#fff', fontWeight: 'bold'}]}>Add a New Record</Text>
+              <Text style={[styles.buttonText, {color: '#fff'}]}>Add a New Record</Text>
             </View>
           )}
         </Pressable>

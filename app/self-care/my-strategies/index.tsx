@@ -67,9 +67,9 @@ const MyStrategies = () => {
   }, [])
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={[styles.container, { position: "relative", }]}>
       {loading
-        ? <View>
+        ? <View style={styles.overlay}>
             <ActivityIndicator size="large" color="#420C5C" />
           </View>
         : null
