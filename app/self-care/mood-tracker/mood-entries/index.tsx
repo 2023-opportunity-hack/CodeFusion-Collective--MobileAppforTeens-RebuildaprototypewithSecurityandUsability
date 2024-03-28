@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   },
   moodEntryContainer: {
     display: "flex",
-    width: "100%",
+    width: 300,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between"

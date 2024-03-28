@@ -196,7 +196,8 @@ const styles = StyleSheet.create({
   },
   entrytext: {
     fontFamily: "JakartaLight",
-    fontSize: 15
+    fontSize: 15,
+    width: 340
   },
   buttonWrapper: {
     width: '100%',

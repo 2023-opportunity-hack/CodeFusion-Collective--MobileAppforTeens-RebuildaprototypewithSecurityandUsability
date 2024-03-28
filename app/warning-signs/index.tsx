@@ -24,8 +24,10 @@ export default function WarningSigns () {
               style={{ paddingTop: 0 }}
               title={
                 <View>
-                  <Text style={{ fontFamily: "JakartaLight" }}>
-                    <Text style={{ fontFamily: "JakartaBold" }}>{domesticViolenceText.title}</Text>{" "}
+                  <Text style={{ fontFamily: "JakartaLight", width: 320 }}>
+                    <Text style={{ fontFamily: "JakartaBold" }}>
+                      {domesticViolenceText.title}
+                    </Text>{" "}
                     {domesticViolenceText.text}
                   </Text>
                 </View>
@@ -48,8 +50,10 @@ export default function WarningSigns () {
                 style={{ paddingTop: 0 }}
                 title={
                   <View>
-                    <Text style={{ fontFamily: "JakartaLight"}}>
-                      <Text style={{ fontFamily: "JakartaBold" }}>{warningSign.title}</Text>{" "}
+                    <Text style={{ fontFamily: "JakartaLight", width: 320 }}>
+                      <Text style={{ fontFamily: "JakartaBold" }}>
+                        {warningSign.title}
+                      </Text>{" "}
                       {warningSign.text}
                     </Text>
                   </View>
