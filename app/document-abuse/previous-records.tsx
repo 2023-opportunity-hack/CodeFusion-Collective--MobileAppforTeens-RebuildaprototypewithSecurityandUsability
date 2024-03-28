@@ -128,7 +128,7 @@ export default function NewRecordPage() {
             recordEntries.map((day) => (
               <List.Accordion
                 key={day.record_id}
-                title={new Date(`${day.record_date}T07:00:00Z`).toLocaleString('en-US', options)}
+                title={new Date(day.record_date).toLocaleString('en-US', options)}
                 theme={{ colors: { background: "#FFFFFF" } }}
                 titleStyle={{ fontFamily: 'JakartaMed' }}
               >

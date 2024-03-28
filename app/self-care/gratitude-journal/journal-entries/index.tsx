@@ -66,6 +66,7 @@ export default function JournalEntries() {
       tx.executeSql(sqlQuery, undefined,
       (_, resultSet) => {
         resultSet.rows._array.forEach((day) => {
+          console.log(day);
           day.entries = JSON.parse(day.entries);
         });
         const sortedEntries: JournalEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -117,7 +118,7 @@ export default function JournalEntries() {
             journalEntries.map((day) => (
               <List.Accordion
                 key={day.date}
-                title={new Date(`${day.date}T07:00:00Z`).toLocaleDateString('en-US', options)}
+                title={new Date(day.date).toLocaleDateString('en-US', options)}
                 theme={{ colors: { background: "#FFFFFF" } }}
                 titleStyle={{ fontFamily: 'JakartaMed' }}
                 >

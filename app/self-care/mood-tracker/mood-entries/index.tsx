@@ -156,7 +156,7 @@ const MoodEntries = () => {
                 <List.Accordion
                   key={day.date}
                   id={day.date}
-                  title={new Date(`${day.date}T07:00:00Z`).toLocaleDateString('en-US', options)}
+                  title={new Date(day.date).toLocaleDateString('en-US', options)}
                   theme={{ colors: { background: "#FFFFFF" } }}
                   titleStyle={{ fontFamily: 'JakartaMed' }}
                   >
