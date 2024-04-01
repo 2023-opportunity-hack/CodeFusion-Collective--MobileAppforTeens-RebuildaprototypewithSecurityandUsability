@@ -148,7 +148,7 @@ export default function GratitiudeJournal() {
               onChange={(item) => setJournalEntryLabel(item.value)}
               placeholderStyle={{ fontFamily: 'JakartaSemiBold', fontSize: 14, paddingLeft: 10, color: '#605F5F' }}
               selectedTextProps={{ numberOfLines: 2 }}
-              selectedTextStyle={{ color: '#420C5C', fontFamily: 'JakartaSemiBold', fontSize: 14, height: 60, padding: 10 }}
+              selectedTextStyle={{ color: '#420C5C', fontFamily: 'JakartaSemiBold', fontSize: 14, height: 60, padding: 5 }}
               containerStyle={{  borderWidth: 1, borderColor: '#420C5C', borderTopWidth: 0 , marginTop: -2, marginLeft: 0.5 }}
               dropdownPosition={'bottom'}
               activeColor='white'
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#420C5C',
     borderRadius: 5,
-    padding: 10,
+    padding: 5,
     height: 150,
     marginTop: 10,
     marginBottom: 20,

@@ -165,7 +165,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: "#F0EDF1",
-    paddingHorizontal: 10,
     padding: "5%"
   },
   listGroupContainer: {

@@ -1,5 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as SMS from 'expo-sms';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
@@ -14,7 +13,10 @@ export default function ContactProfessional() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [checked, setChecked] = useState('');
+  const [contactChoice, setContactChoice] = useState('');
+  const [contactDay, setContactDay] = useState('');
+  const [contactTime, setContactTime] = useState('');
+  const [time, setTime] = useState<Date>();
   const [error, setError] = useState(0);
 
   const data = [
@@ -24,45 +26,50 @@ export default function ContactProfessional() {
     {key: '988', value: 'Suicide & Crisis Lifeline'},
   ]
 
-  const retrieveData = async () => {
-    try {
-      const fullName = await AsyncStorage.getItem('fullName')
-      const phoneNumber = await AsyncStorage.getItem('phoneNumber')
-      const storedEmail = await AsyncStorage.getItem('storedEmail')
-      if (fullName != null) {
-        setName(fullName);
-      }
-      if (phoneNumber != null) {
-        setPhone(phoneNumber);
-      }
-      if (storedEmail != null) {
-        setEmail(storedEmail)
-      }
-    } catch (error) {
-      console.error("Error in retrieving info: ", error);
-    }
+  const submitTime = (event: DateTimePickerEvent, selectedTime: Date | undefined) => {
+    console.log(selectedTime);
+    console.log(typeof selectedTime);
   }
 
-  const sendSms = async () => {
-    try {
-      await AsyncStorage.setItem("fullName", `${name}`)
-      await AsyncStorage.setItem("phoneNumber", `${phone}`)
-      await AsyncStorage.setItem("storedEmail", `${email}`)
-    } catch (error) {
-      console.error("Error setting info: ", error);
-    }
-    if ((selected === '' || checked === '') || ((checked === 'Call' || checked === 'Text') && phone === '') || (checked === 'Email' && email === '')) {
-      setError(1);
-    } else {
-      const {result} = await SMS.sendSMSAsync(
-        [`${selected}`],
-        `Hi, my name is ${name}. I'd like to be contacted via ${checked}.
-      Phone Number: ${phone}
-      Email: ${email}
-      ${text}`
-      );
-    }
-  }
+  // const retrieveData = async () => {
+  //   try {
+  //     const fullName = await AsyncStorage.getItem('fullName')
+  //     const phoneNumber = await AsyncStorage.getItem('phoneNumber')
+  //     const storedEmail = await AsyncStorage.getItem('storedEmail')
+  //     if (fullName != null) {
+  //       setName(fullName);
+  //     }
+  //     if (phoneNumber != null) {
+  //       setPhone(phoneNumber);
+  //     }
+  //     if (storedEmail != null) {
+  //       setEmail(storedEmail)
+  //     }
+  //   } catch (error) {
+  //     console.error("Error in retrieving info: ", error);
+  //   }
+  // }
+
+  // const sendSms = async () => {
+  //   try {
+  //     await AsyncStorage.setItem("fullName", `${name}`)
+  //     await AsyncStorage.setItem("phoneNumber", `${phone}`)
+  //     await AsyncStorage.setItem("storedEmail", `${email}`)
+  //   } catch (error) {
+  //     console.error("Error setting info: ", error);
+  //   }
+  //   if ((selected === '' || contactChoice === '') || ((contactChoice === 'Call' || contactChoice === 'Text') && phone === '') || (contactChoice === 'Email' && email === '')) {
+  //     setError(1);
+  //   } else {
+  //     const {result} = await SMS.sendSMSAsync(
+  //       [`${selected}`],
+  //       `Hi, my name is ${name}. I'd like to be contacted via ${contactChoice}.
+  //     Phone Number: ${phone}
+  //     Email: ${email}
+  //     ${text}`
+  //     );
+  //   }
+  // }
 
   const handleTextChange = (newText: string) => {
     setText(newText);
@@ -79,14 +86,6 @@ export default function ContactProfessional() {
   const handleEmailChange = (newEmail: string) => {
     setEmail(newEmail);
   }
-
-  useEffect(() => {
-    retrieveData();
-    const isSmsAvailable = async () => {
-      await SMS.isAvailableAsync();
-    }
-    isSmsAvailable();
-  }, [])
 
   useEffect(() => {
     setCount(160 - text.length)
@@ -168,33 +167,93 @@ export default function ContactProfessional() {
               <View style={styles.radiooption}>
                 <RadioButton.Android
                   value="Call"
-                  status={ checked === 'Call' ? 'checked' : 'unchecked' }
-                  onPress={() => setChecked('Call')}
+                  status={ contactChoice === 'Call' ? 'checked' : 'unchecked' }
+                  onPress={() => setContactChoice('Call')}
                 />
                 <Text style={{ fontFamily: 'JakartaMed' }}>Call/Voicemail</Text>
               </View>
+              {contactChoice === 'Call'
+                ? <View style={{ paddingLeft: 25 }}>
+                    <Text style={{ fontFamily: 'JakartaMed', textAlign: 'left' }}>When would you like to be contacted?</Text>
+                    <View style={styles.radio}>
+                      <View style={styles.radiooption}>
+                        <RadioButton.Android
+                          value='ASAP'
+                          status={contactDay === 'ASAP' ? 'checked' : 'unchecked'}
+                          onPress={() => setContactDay('ASAP')}
+                          />
+                        <Text style={{ fontFamily: 'JakartaMed' }}>ASAP</Text>
+                      </View>
+                      <View style={styles.radiooption}>
+                        <RadioButton.Android
+                          value='Weekdays'
+                          status={contactDay === 'Weekdays' ? 'checked' : 'unchecked'}
+                          onPress={() => setContactDay('Weekdays')}
+                          />
+                        <Text style={{ fontFamily: 'JakartaMed' }}>Weekdays</Text>
+                      </View>
+                      <View style={styles.radiooption}>
+                        <RadioButton.Android
+                          value='Weekends'
+                          status={contactDay === 'Weekends' ? 'checked' : 'unchecked'}
+                          onPress={() => setContactDay('Weekends')}
+                          />
+                        <Text style={{ fontFamily: 'JakartaMed' }}>Weekends</Text>
+                      </View>
+                      {contactDay.length > 0 && contactDay !== 'ASAP'
+                        ? <View style={{ paddingLeft: 25 }}>
+                            <View style={styles.radiooption}>
+                              <RadioButton.Android
+                                value='Before'
+                                status={contactTime === 'Before' ? 'checked' : 'unchecked'}
+                                onPress={() => setContactTime('Before')}
+                                />
+                              <Text style={{ fontFamily: 'JakartaMed' }}>Before</Text>
+                            </View>
+                            <View style={styles.radiooption}>
+                              <RadioButton.Android
+                                value='After'
+                                status={contactTime === 'After' ? 'checked' : 'unchecked'}
+                                onPress={() => setContactTime('After')}
+                                />
+                              <Text style={{ fontFamily: 'JakartaMed' }}>After</Text>
+                            </View>
+                            {contactTime.length > 0
+                              ? <DateTimePicker
+                                  value={time || new Date()}
+                                  mode={'time'}
+                                  display='spinner'
+                                  onChange={submitTime}
+                                  positiveButton={{ label: 'Done' }}
+                                  />
+                              : null}
+                          </View>
+                        : null}
+                    </View>
+                  </View>
+                : null}
               <View style={styles.radiooption}>
                 <RadioButton.Android
                   value="Text"
-                  status={ checked === 'Text' ? 'checked' : 'unchecked' }
-                  onPress={() => setChecked('Text')}
+                  status={ contactChoice === 'Text' ? 'checked' : 'unchecked' }
+                  onPress={() => setContactChoice('Text')}
                 />
                 <Text style={{ fontFamily: 'JakartaMed' }}>Text</Text>
               </View>
               <View style={styles.radiooption}>
                 <RadioButton.Android
                   value="Email"
-                  status={ checked === 'Email' ? 'checked' : 'unchecked' }
-                  onPress={() => setChecked('Email')}
+                  status={ contactChoice === 'Email' ? 'checked' : 'unchecked' }
+                  onPress={() => setContactChoice('Email')}
                 />
                 <Text style={{ fontFamily: 'JakartaMed' }}>Email</Text>
               </View>
             </View>
             {error === 0 ? <Text></Text> :
-            <Text style={{color:'red'}}>Please ensure all required information is filled.</Text>
+            <Text style={{ color:'red', fontFamily: 'JakartaMed', textAlign: 'center' }}>Please ensure all required information is filled.</Text>
             }
           </View>
-          <TouchableOpacity style={styles.submitbutton} onPress={sendSms}>
+          <TouchableOpacity style={styles.submitbutton} onPress={() => console.log("Submit")}>
             <Text style={styles.submittext}>Submit</Text>
           </TouchableOpacity>
         </View>
