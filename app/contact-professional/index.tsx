@@ -1,6 +1,6 @@
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { TextInput } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
@@ -17,6 +17,7 @@ export default function ContactProfessional() {
   const [contactDay, setContactDay] = useState('');
   const [contactTime, setContactTime] = useState('');
   const [time, setTime] = useState<Date>();
+  const [showTime, setShowTime] = useState(false);
   const [error, setError] = useState(0);
 
   const data = [
@@ -27,69 +28,48 @@ export default function ContactProfessional() {
   ]
 
   const submitTime = (event: DateTimePickerEvent, selectedTime: Date | undefined) => {
-    console.log(selectedTime);
-    console.log(typeof selectedTime);
-  }
+    if ((event.type === 'set' || event.type === 'dismissed') && Platform.OS === 'android') {
+      setShowTime(false);
+    }
+    setTime(selectedTime);
+    console.log('Selected time: ', selectedTime);
+  };
 
-  // const retrieveData = async () => {
-  //   try {
-  //     const fullName = await AsyncStorage.getItem('fullName')
-  //     const phoneNumber = await AsyncStorage.getItem('phoneNumber')
-  //     const storedEmail = await AsyncStorage.getItem('storedEmail')
-  //     if (fullName != null) {
-  //       setName(fullName);
-  //     }
-  //     if (phoneNumber != null) {
-  //       setPhone(phoneNumber);
-  //     }
-  //     if (storedEmail != null) {
-  //       setEmail(storedEmail)
-  //     }
-  //   } catch (error) {
-  //     console.error("Error in retrieving info: ", error);
-  //   }
-  // }
+  const formatDate = (date: Date | undefined) => {
+    if (!date) return 'Select Time';
 
-  // const sendSms = async () => {
-  //   try {
-  //     await AsyncStorage.setItem("fullName", `${name}`)
-  //     await AsyncStorage.setItem("phoneNumber", `${phone}`)
-  //     await AsyncStorage.setItem("storedEmail", `${email}`)
-  //   } catch (error) {
-  //     console.error("Error setting info: ", error);
-  //   }
-  //   if ((selected === '' || contactChoice === '') || ((contactChoice === 'Call' || contactChoice === 'Text') && phone === '') || (contactChoice === 'Email' && email === '')) {
-  //     setError(1);
-  //   } else {
-  //     const {result} = await SMS.sendSMSAsync(
-  //       [`${selected}`],
-  //       `Hi, my name is ${name}. I'd like to be contacted via ${contactChoice}.
-  //     Phone Number: ${phone}
-  //     Email: ${email}
-  //     ${text}`
-  //     );
-  //   }
-  // }
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+
+    const timeString = `${formattedHours}:${formattedMinutes} ${period}`;
+
+    return timeString;
+  };
 
   const handleTextChange = (newText: string) => {
     setText(newText);
-  }
+  };
 
   const handleNameChange = (newName: string) => {
     setName(newName);
-  }
+  };
 
   const handlePhoneChange = (newPhone: string) => {
     setPhone(newPhone);
-  }
+  };
 
   const handleEmailChange = (newEmail: string) => {
     setEmail(newEmail);
-  }
+  };
 
   useEffect(() => {
-    setCount(160 - text.length)
-  }, [text])
+    setCount(160 - text.length);
+  }, [text]);
 
   return (
     <ScrollView nestedScrollEnabled={true}>
@@ -126,13 +106,13 @@ export default function ContactProfessional() {
             />
           </View>
           <View>
-            <Text style={styles.areatitle}>Your Name</Text>
+            <Text style={styles.areatitle}>Anonymous Name</Text>
             <TextInput
               multiline={false}
               maxLength={20}
               value={name}
               onChangeText={handleNameChange}
-              placeholder='First and last name'
+              placeholder='Name'
               placeholderTextColor="gray"
               style={styles.infoinput}
             />
@@ -219,13 +199,33 @@ export default function ContactProfessional() {
                               <Text style={{ fontFamily: 'JakartaMed' }}>After</Text>
                             </View>
                             {contactTime.length > 0
-                              ? <DateTimePicker
-                                  value={time || new Date()}
-                                  mode={'time'}
-                                  display='spinner'
-                                  onChange={submitTime}
-                                  positiveButton={{ label: 'Done' }}
-                                  />
+                              ? <Pressable onPress={() => setShowTime(true)}>
+                                  {({ pressed }) => (
+                                    <View style={{ backgroundColor: 'white', borderColor: '#420C5C', borderWidth: 1, borderRadius: 10, padding: 10, opacity: pressed ? 0.5 : 1 }}>
+                                      <Text>{formatDate(time)}</Text>
+                                    </View>
+                                  )}
+                                </Pressable>
+                              : null}
+                            {showTime
+                              ? <>
+                                  <DateTimePicker
+                                    value={time || new Date()}
+                                    mode={'time'}
+                                    display='spinner'
+                                    onChange={submitTime}
+                                    positiveButton={{ label: 'Done' }}
+                                    />
+                                  {Platform.OS === 'ios'
+                                    ? <Pressable onPress={() => setShowTime(false)}>
+                                        {({ pressed }) => (
+                                          <View style={{ backgroundColor: '#420C5C', borderRadius: 100, padding: 10, width: '100%', alignItems: 'center', opacity: pressed ? 0.5 : 1 }}>
+                                            <Text style={{ color: 'white', fontFamily: 'JakartaSemiBold', textAlign: 'center' }}>Done</Text>
+                                          </View>
+                                        )}
+                                      </Pressable>
+                                    : null}
+                                </>
                               : null}
                           </View>
                         : null}
@@ -259,8 +259,8 @@ export default function ContactProfessional() {
         </View>
       </View>
     </ScrollView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -331,4 +331,4 @@ const styles = StyleSheet.create({
     fontFamily: "JakartaSemiBold",
     color: "gray",
   }
-})
+});

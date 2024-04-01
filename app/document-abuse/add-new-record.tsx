@@ -100,7 +100,7 @@ export default function AddNewRecordPage() {
       </View>
       <View style={styles.descriptionContainer}>
         <Text style={styles.subtitle}>Date of Event</Text>
-        <Pressable onPress={showDatePicker}>
+        <Pressable onPress={showDatePicker} style={{ marginBottom: 20 }}>
           <View style={styles.dateContainer}>
             <Text style={{ fontFamily: "JakartaMed"}}>
               {date?.toLocaleDateString() ? date.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select Date'}
@@ -117,18 +117,19 @@ export default function AddNewRecordPage() {
               maximumDate={new Date()}
               positiveButton={{ label: 'Done' }}
             />
-            {Platform.OS === 'ios' ? <Pressable
-              onPress={() => {
-                setShow(false);
-              }}
-              style={{width: '100%', alignItems: 'center', marginTop: 20}}
-            >
-              {({ pressed }) => (
-                <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
-                  <Text style={styles.buttonText}>Done</Text>
-                </View>
-              )}
-            </Pressable>
+            {Platform.OS === 'ios'
+            ? <Pressable
+                onPress={() => {
+                  setShow(false);
+                }}
+                style={{width: '100%', alignItems: 'center', marginTop: 20}}
+              >
+                {({ pressed }) => (
+                  <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+                    <Text style={styles.buttonText}>Done</Text>
+                  </View>
+                )}
+              </Pressable>
             : null}
           </>
         )}
@@ -194,7 +195,6 @@ const styles = StyleSheet.create({
     borderColor: '#420C5C',
     borderRadius: 10,
     padding: 10,
-    marginBottom: 20,
   },
   row: {
     flexDirection: 'row',
