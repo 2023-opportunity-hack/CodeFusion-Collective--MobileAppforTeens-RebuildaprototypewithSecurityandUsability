@@ -5,6 +5,10 @@ import { TextInput } from 'react-native-gesture-handler';
 import { List, RadioButton } from 'react-native-paper';
 import { PageHeader } from '../../components/PageHeader';
 
+type Timezones = {
+  [key: string]: string;
+};
+
 export default function ContactProfessional() {
   const [selected, setSelected] = useState('');
   const [text, setText] = useState('');
@@ -17,9 +21,30 @@ export default function ContactProfessional() {
   const [expandedList, setExpandedList] = useState(false);
   const [error, setError] = useState(0);
 
-  let timeZone = new Intl.DateTimeFormat('en-us', { timeZoneName: 'short' })
-  .formatToParts(new Date())
-  .find(part => part.type == "timeZoneName")?.value;
+  const timezones: Timezones = {
+    'GMT-5': 'EST',
+    'GMT-6': 'CST',
+    'GMT-7': 'MST',
+    'GMT-8': 'PST',
+  };
+
+  const formatTimeZone = () => {
+    let timeZone = new Intl.DateTimeFormat('en-us', { timeZoneName: 'short' })
+    .formatToParts(new Date())
+    .find(part => part.type == "timeZoneName")?.value;
+
+    if (!timeZone) {
+      return 'Error getting time zone';
+    }
+
+    if (timezones[timeZone]) {
+      return timezones[timeZone];
+    }
+
+    return timeZone;
+  };
+
+  const timeZone = formatTimeZone();
 
   const timeValues = [
     { key: 0, value: 'ASAP' },
@@ -30,7 +55,7 @@ export default function ContactProfessional() {
     { key: 5, value: 'Weekend midday (12pm - 5pm)' },
     { key: 6, value: 'Weekend evenings (5pm - 10pm)' },
     { key: 7, value: 'No preference/anytime' },
-  ]
+  ];
 
   const data = [
     {key: '88788', value: 'Domestic Violence Hotline'},
@@ -42,6 +67,7 @@ export default function ContactProfessional() {
   const selectTime = (selected: string) => {
     setExpandedList(false);
     setChosenTime(selected);
+    console.log("chosen time: ", selected);
   };
 
   const handleTextChange = (newText: string) => {
@@ -162,7 +188,7 @@ export default function ContactProfessional() {
                           <List.Item
                             key={timeValue.key}
                             title={timeValue.value}
-                            titleStyle={{ fontFamily: 'JakartaMed', fontSize: 14, color: selected === timeValue.value ? '#420C5C' : 'black' }}
+                            titleStyle={{ fontFamily: 'JakartaMed', fontSize: 14, color: chosenTime === timeValue.value ? '#420C5C' : 'gray' }}
                             onPress={() => selectTime(timeValue.value)}
                           />
                         ))}

@@ -36,8 +36,7 @@
         {
           "contactsPermission": "Allow SafeSpace to access your contacts"
         }
-      ],
-      "expo-localization"
+      ]
     ],
     "experiments": {
       "typedRoutes": true
