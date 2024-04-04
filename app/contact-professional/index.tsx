@@ -1,9 +1,8 @@
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useEffect, useState } from 'react';
-import { Platform, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { TextInput } from 'react-native-gesture-handler';
-import { RadioButton } from 'react-native-paper';
+import { List, RadioButton } from 'react-native-paper';
 import { PageHeader } from '../../components/PageHeader';
 
 export default function ContactProfessional() {
@@ -14,41 +13,35 @@ export default function ContactProfessional() {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [contactChoice, setContactChoice] = useState('');
-  const [contactDay, setContactDay] = useState('');
-  const [contactTime, setContactTime] = useState('');
-  const [time, setTime] = useState<Date>();
-  const [showTime, setShowTime] = useState(false);
+  const [chosenTime, setChosenTime] = useState('');
+  const [expandedList, setExpandedList] = useState(false);
   const [error, setError] = useState(0);
+
+  let timeZone = new Intl.DateTimeFormat('en-us', { timeZoneName: 'short' })
+  .formatToParts(new Date())
+  .find(part => part.type == "timeZoneName")?.value;
+
+  const timeValues = [
+    { key: 0, value: 'ASAP' },
+    { key: 1, value: 'Weekday mornings (8am - 12pm)' },
+    { key: 2, value: 'Weekday midday (12pm - 5pm)' },
+    { key: 3, value: 'Weekday evenings (5pm - 10pm)' },
+    { key: 4, value: 'Weekend mornings (8am - 12pm)' },
+    { key: 5, value: 'Weekend midday (12pm - 5pm)' },
+    { key: 6, value: 'Weekend evenings (5pm - 10pm)' },
+    { key: 7, value: 'No preference/anytime' },
+  ]
 
   const data = [
     {key: '88788', value: 'Domestic Violence Hotline'},
     {key: '22522', value: 'National Teen Dating Abuse Hotline'},
     {key: '741741', value: 'Crisis Hotline'},
     {key: '988', value: 'Suicide & Crisis Lifeline'},
-  ]
+  ];
 
-  const submitTime = (event: DateTimePickerEvent, selectedTime: Date | undefined) => {
-    if ((event.type === 'set' || event.type === 'dismissed') && Platform.OS === 'android') {
-      setShowTime(false);
-    }
-    setTime(selectedTime);
-    console.log('Selected time: ', selectedTime);
-  };
-
-  const formatDate = (date: Date | undefined) => {
-    if (!date) return 'Select Time';
-
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-
-    const period = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-
-    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-
-    const timeString = `${formattedHours}:${formattedMinutes} ${period}`;
-
-    return timeString;
+  const selectTime = (selected: string) => {
+    setExpandedList(false);
+    setChosenTime(selected);
   };
 
   const handleTextChange = (newText: string) => {
@@ -106,7 +99,7 @@ export default function ContactProfessional() {
             />
           </View>
           <View>
-            <Text style={styles.areatitle}>Anonymous Name</Text>
+            <Text style={styles.areatitle}>Preferred Name</Text>
             <TextInput
               multiline={false}
               maxLength={20}
@@ -153,84 +146,29 @@ export default function ContactProfessional() {
                 <Text style={{ fontFamily: 'JakartaMed' }}>Call/Voicemail</Text>
               </View>
               {contactChoice === 'Call'
-                ? <View style={{ paddingLeft: 25 }}>
-                    <Text style={{ fontFamily: 'JakartaMed', textAlign: 'left' }}>When would you like to be contacted?</Text>
-                    <View style={styles.radio}>
-                      <View style={styles.radiooption}>
-                        <RadioButton.Android
-                          value='ASAP'
-                          status={contactDay === 'ASAP' ? 'checked' : 'unchecked'}
-                          onPress={() => setContactDay('ASAP')}
+                ? <List.Section style={{ borderRadius: 10, backgroundColor: "#F0EDF1" }} >
+                    <View style={{ borderRadius: 10, borderWidth: 1, borderColor: "#420C5C", overflow: "hidden", backgroundColor: "white"}}>
+                      <List.Accordion
+                        title={'When would you prefer to be contacted?'}
+                        description={chosenTime.length > 0 ? (chosenTime.includes('(') ? `${chosenTime} ${timeZone}` : chosenTime) : ''}
+                        descriptionStyle={{ marginTop: 2 }}
+                        titleStyle={{ fontFamily: 'JakartaSemiBold', fontSize: 14 }}
+                        style={{ paddingVertical: 0,  }}
+                        expanded={expandedList}
+                        onPress={() => setExpandedList(!expandedList)}
+                        titleNumberOfLines={2}
+                      >
+                        {timeValues.map((timeValue) => (
+                          <List.Item
+                            key={timeValue.key}
+                            title={timeValue.value}
+                            titleStyle={{ fontFamily: 'JakartaMed', fontSize: 14, color: selected === timeValue.value ? '#420C5C' : 'black' }}
+                            onPress={() => selectTime(timeValue.value)}
                           />
-                        <Text style={{ fontFamily: 'JakartaMed' }}>ASAP</Text>
-                      </View>
-                      <View style={styles.radiooption}>
-                        <RadioButton.Android
-                          value='Weekdays'
-                          status={contactDay === 'Weekdays' ? 'checked' : 'unchecked'}
-                          onPress={() => setContactDay('Weekdays')}
-                          />
-                        <Text style={{ fontFamily: 'JakartaMed' }}>Weekdays</Text>
-                      </View>
-                      <View style={styles.radiooption}>
-                        <RadioButton.Android
-                          value='Weekends'
-                          status={contactDay === 'Weekends' ? 'checked' : 'unchecked'}
-                          onPress={() => setContactDay('Weekends')}
-                          />
-                        <Text style={{ fontFamily: 'JakartaMed' }}>Weekends</Text>
-                      </View>
-                      {contactDay.length > 0 && contactDay !== 'ASAP'
-                        ? <View style={{ paddingLeft: 25 }}>
-                            <View style={styles.radiooption}>
-                              <RadioButton.Android
-                                value='Before'
-                                status={contactTime === 'Before' ? 'checked' : 'unchecked'}
-                                onPress={() => setContactTime('Before')}
-                                />
-                              <Text style={{ fontFamily: 'JakartaMed' }}>Before</Text>
-                            </View>
-                            <View style={styles.radiooption}>
-                              <RadioButton.Android
-                                value='After'
-                                status={contactTime === 'After' ? 'checked' : 'unchecked'}
-                                onPress={() => setContactTime('After')}
-                                />
-                              <Text style={{ fontFamily: 'JakartaMed' }}>After</Text>
-                            </View>
-                            {contactTime.length > 0
-                              ? <Pressable onPress={() => setShowTime(true)}>
-                                  {({ pressed }) => (
-                                    <View style={{ backgroundColor: 'white', borderColor: '#420C5C', borderWidth: 1, borderRadius: 10, padding: 10, opacity: pressed ? 0.5 : 1 }}>
-                                      <Text>{formatDate(time)}</Text>
-                                    </View>
-                                  )}
-                                </Pressable>
-                              : null}
-                            {showTime
-                              ? <>
-                                  <DateTimePicker
-                                    value={time || new Date()}
-                                    mode={'time'}
-                                    display='spinner'
-                                    onChange={submitTime}
-                                    positiveButton={{ label: 'Done' }}
-                                    />
-                                  {Platform.OS === 'ios'
-                                    ? <Pressable onPress={() => setShowTime(false)}>
-                                        {({ pressed }) => (
-                                          <View style={{ backgroundColor: '#420C5C', borderRadius: 100, padding: 10, width: '100%', alignItems: 'center', opacity: pressed ? 0.5 : 1 }}>
-                                            <Text style={{ color: 'white', fontFamily: 'JakartaSemiBold', textAlign: 'center' }}>Done</Text>
-                                          </View>
-                                        )}
-                                      </Pressable>
-                                    : null}
-                                </>
-                              : null}
-                          </View>
-                        : null}
+                        ))}
+                      </List.Accordion>
                     </View>
-                  </View>
+                  </List.Section>
                 : null}
               <View style={styles.radiooption}>
                 <RadioButton.Android
