@@ -128,7 +128,7 @@ export default function NewRecordPage() {
             recordEntries.map((day) => (
               <List.Accordion
                 key={day.record_id}
-                title={new Date(`${day.record_date}T07:00:00Z`).toLocaleString('en-US', options)}
+                title={new Date(day.record_date).toLocaleString('en-US', options)}
                 theme={{ colors: { background: "#FFFFFF" } }}
                 titleStyle={{ fontFamily: 'JakartaMed' }}
               >
@@ -165,7 +165,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: "#F0EDF1",
-    paddingHorizontal: 10,
     padding: "5%"
   },
   listGroupContainer: {
@@ -196,14 +195,15 @@ const styles = StyleSheet.create({
   },
   entrytext: {
     fontFamily: "JakartaLight",
-    fontSize: 15
+    fontSize: 15,
+    width: 340
   },
   buttonWrapper: {
     width: '100%',
     alignItems: 'center',
   },
   deleteButton: {
-    width: '90%',
+    width: '100%',
     borderWidth: 1,
     borderRadius: 100,
     justifyContent: 'center',

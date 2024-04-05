@@ -60,7 +60,7 @@ const MySavedStrategies = () => {
             ? selected.map((strategy, index) => (
               <List.Item
                 key={index}
-                title={strategy}
+                title={strategy.slice(0, 1).toUpperCase() + strategy.slice(1)}
                 titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold" }}
                 onPress={() => handleDeselect(strategy)}
                 left={() => <List.Icon

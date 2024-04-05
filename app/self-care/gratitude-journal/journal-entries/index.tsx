@@ -36,10 +36,9 @@ const options: Intl.DateTimeFormatOptions = {
 };
 
 const JournalEntry = ({ entry, prompt }: { entry: string, prompt: string }) => {
-
   return (
     <View style={styles.journalEntryContainer}>
-      <Text style={styles.prompt}>{prompt}</Text>
+      <Text style={styles.prompt} >{prompt}</Text>
       <Text style={styles.entrytext}>{entry}</Text>
     </View>
   )
@@ -118,7 +117,7 @@ export default function JournalEntries() {
             journalEntries.map((day) => (
               <List.Accordion
                 key={day.date}
-                title={new Date(`${day.date}T07:00:00Z`).toLocaleDateString('en-US', options)}
+                title={new Date(day.date).toLocaleDateString('en-US', options)}
                 theme={{ colors: { background: "#FFFFFF" } }}
                 titleStyle={{ fontFamily: 'JakartaMed' }}
                 >
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: '#F0EDF1',
-    padding: "3%",
+    padding: "5%",
   },
   submitbutton: {
     marginTop: 10,
@@ -168,27 +167,8 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "95%",
-    marginTop: "20%",
-    marginBottom: "10%",
-  },
-  backimage: {
-    height: 30,
-    width: 30,
-    marginRight: "-10%",
-  },
-  title: {
-    fontSize: 25,
-    fontFamily: "JakartaSemiBold",
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
   listGroupContainer: {
-    width: "95%",
+    width: "100%",
     marginTop: "5%",
     borderRadius: 10,
     backgroundColor: "#F0EDF1",
@@ -206,16 +186,19 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "column",
     alignItems: "flex-start",
-    justifyContent: "center"
+    justifyContent: "center",
+    flexShrink: 1,
   },
   prompt: {
     fontFamily: "JakartaSemiBold",
     fontSize: 15,
-    marginBottom: 5
+    marginBottom: 5,
+    width: 310
   },
   entrytext: {
     fontFamily: "JakartaLight",
-    fontSize: 15
+    fontSize: 15,
+    width: 310
   },
   modalContainer: {
     width: '100%',
@@ -270,7 +253,7 @@ const styles = StyleSheet.create({
     marginVertical: 30
   },
   deleteButton: {
-    width: '95%',
+    width: '100%',
     borderWidth: 1,
     borderRadius: 100,
     justifyContent: 'center',

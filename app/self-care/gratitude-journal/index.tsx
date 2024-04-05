@@ -2,8 +2,7 @@ import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { Alert, Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-//import { TextInput } from 'react-native-gesture-handler';
+import { Dropdown } from 'react-native-element-dropdown';
 import { Button } from 'react-native-paper';
 import { PageHeader } from '../../../components/PageHeader';
 
@@ -81,7 +80,7 @@ export default function GratitiudeJournal() {
       return;
     } else {
       Alert.alert('Error', 'Something went wrong', [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        {text: 'OK'},
       ])
     };
 
@@ -137,21 +136,38 @@ export default function GratitiudeJournal() {
           />
         <View>
           <Text style={styles.areatitle}>Or, choose a journal prompt below</Text>
-          <View style={{ borderRadius: 10, marginTop: 10, zIndex: 3}}>
-            <DropDownPicker
-              items={items}
-              open={isOpen}
-              setOpen={() => setIsOpen(!isOpen)}
-              value={journalEntryLabel}
-              setValue={(val) => setJournalEntryLabel(val)}
-              dropDownContainerStyle={{ maxHeight: 150, borderColor: "#420C5C", borderRadius: 10 }}
-              listItemLabelStyle={{ fontFamily: 'JakartaSemiBold', }}
-              listItemContainerStyle={{ marginVertical: 5, borderRadius: 10 }}
-              containerStyle={{ borderRadius: 10 }}
-              selectedItemLabelStyle={{ color: "#420C5C", fontFamily: 'JakartaSemiBold' }}
+          <View style={{ marginTop: 10 }}>
+            <Dropdown
               style={styles.dropDown}
-              labelStyle={{ color: "#420C5C", fontFamily: 'JakartaSemiBold' }}
-              showTickIcon={false}
+              data={items}
+              valueField={'value'}
+              labelField={'label'}
+              maxHeight={150}
+              value={journalEntryLabel}
+              placeholder='Select Journal Prompt'
+              onChange={(item) => setJournalEntryLabel(item.value)}
+              placeholderStyle={{ fontFamily: 'JakartaSemiBold', fontSize: 14, paddingLeft: 10, color: '#605F5F' }}
+              selectedTextProps={{ numberOfLines: 2 }}
+              selectedTextStyle={{ color: '#420C5C', fontFamily: 'JakartaSemiBold', fontSize: 14, height: 60, padding: 5 }}
+              containerStyle={{  borderWidth: 1, borderColor: '#420C5C', borderTopWidth: 0 , marginTop: -2, marginLeft: 0.5 }}
+              dropdownPosition={'bottom'}
+              activeColor='white'
+              autoScroll={false}
+              renderItem={({ label }, active) => {
+                return (
+                  <Text
+                    style={{
+                      color: active ? "#420C5C" : 'gray',
+                      paddingVertical: 10,
+                      paddingHorizontal: 10,
+                      fontFamily: 'JakartaSemiBold',
+                      fontSize: 14
+                    }}
+                  >
+                    {label}
+                  </Text>
+                );
+              }}
             />
           </View>
           <TextInput
@@ -166,7 +182,7 @@ export default function GratitiudeJournal() {
             returnKeyType='done'
             blurOnSubmit={true}
             onSubmitEditing={() => Keyboard.dismiss()}
-            style={[styles.textinput, {marginTop: 0, borderTopWidth: 0, borderTopStartRadius: 0, borderTopEndRadius: 0, height: 180}]}
+            style={[styles.textinput, {marginTop: 0, borderTopWidth: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0, height: 180}]}
           />
         </View>
         <Pressable
@@ -214,20 +230,24 @@ const styles = StyleSheet.create({
   },
   dropDown: {
     borderColor: '#420C5C',
-    borderBottomEndRadius: 0,
-    borderBottomStartRadius: 0,
-    borderRadius: 5,
+    borderWidth: 1,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    backgroundColor: 'white',
+    borderBottomColor: 'gray',
+    height: 60,
   },
   textinput: {
     fontFamily: "JakartaMed",
     borderWidth: 1,
     borderColor: '#420C5C',
     borderRadius: 5,
-    padding: 10,
+    padding: 5,
     height: 150,
     marginTop: 10,
     marginBottom: 20,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    textAlignVertical: 'top',
   },
   submitbutton: {
     width: '100%',

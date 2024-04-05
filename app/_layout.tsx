@@ -1,6 +1,7 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { CommonActions } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack, router } from "expo-router";
+import { SplashScreen, Stack, useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
 import { AppState, AppStateStatus, useColorScheme } from "react-native";
 import EmergencyContactContextProvider from "../context/contactContext";
@@ -20,6 +21,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [appState, setAppState] = useState(AppState.currentState);
+  const navigation = useNavigation();
 
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
@@ -46,7 +48,7 @@ export default function RootLayout() {
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
       if (nextAppState === 'background') {
-        router.replace('/lockscreen');
+        navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'lockscreen/index' }] }));
       }
 
       setAppState(nextAppState);
@@ -73,7 +75,7 @@ function RootLayoutNav() {
     <EmergencyContactContextProvider>
       {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
         <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
-          {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+          <Stack.Screen name="lockscreen/index" />
           {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
         </Stack>
       {/* </ThemeProvider> */}

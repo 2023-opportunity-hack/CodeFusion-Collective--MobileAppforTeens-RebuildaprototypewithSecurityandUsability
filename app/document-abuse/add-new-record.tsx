@@ -2,7 +2,7 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 import { router } from "expo-router";
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from "react";
-import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import MediaUploadModal from "../../components/MediaUploadModal";
 import { PageHeader } from '../../components/PageHeader';
 
@@ -15,6 +15,9 @@ export default function AddNewRecordPage() {
 
 
   const onChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
+    if ((event.type === 'set' || event.type === 'dismissed') && Platform.OS === 'android') {
+      setShow(false);
+    }
     const currentDate = selectedDate;
     setDate(currentDate);
   }
@@ -38,7 +41,7 @@ export default function AddNewRecordPage() {
           if (resultSet.rows.length > 0) {
             const recordId = resultSet.rows.item(0).id;
 
-            tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, text, date.toISOString()], (_, resultSetDetails) => {
+            tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, text, date.toISOString().slice(0, 10)], (_, resultSetDetails) => {
               router.back();
             })
           } else {
@@ -46,7 +49,7 @@ export default function AddNewRecordPage() {
             (_, resultSet) => {
               const recordId = resultSet.insertId;
 
-              tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString()],
+              tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString().slice(0, 10)],
               (_, resultSetDetails) => {
                 router.back();
               })
@@ -97,9 +100,11 @@ export default function AddNewRecordPage() {
       </View>
       <View style={styles.descriptionContainer}>
         <Text style={styles.subtitle}>Date of Event</Text>
-        <Pressable onPress={showDatePicker}>
+        <Pressable onPress={showDatePicker} style={{ marginBottom: 20 }}>
           <View style={styles.dateContainer}>
-            <Text style={{ fontFamily: "JakartaMed"}}>{date?.toLocaleDateString() ? date.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select Date'}</Text>
+            <Text style={{ fontFamily: "JakartaMed"}}>
+              {date?.toLocaleDateString() ? date.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select Date'}
+            </Text>
           </View>
         </Pressable>
         {show && (
@@ -110,19 +115,22 @@ export default function AddNewRecordPage() {
               display='spinner'
               onChange={onChange}
               maximumDate={new Date()}
+              positiveButton={{ label: 'Done' }}
             />
-            <Pressable
-              onPress={() => {
-                setShow(false);
-              }}
-              style={{width: '100%', alignItems: 'center', marginTop: 20}}
-            >
-              {({ pressed }) => (
-                <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
-                  <Text style={styles.buttonText}>Done</Text>
-                </View>
-              )}
-            </Pressable>
+            {Platform.OS === 'ios'
+            ? <Pressable
+                onPress={() => {
+                  setShow(false);
+                }}
+                style={{width: '100%', alignItems: 'center', marginTop: 20}}
+              >
+                {({ pressed }) => (
+                  <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
+                    <Text style={styles.buttonText}>Done</Text>
+                  </View>
+                )}
+              </Pressable>
+            : null}
           </>
         )}
       </View>
@@ -187,7 +195,6 @@ const styles = StyleSheet.create({
     borderColor: '#420C5C',
     borderRadius: 10,
     padding: 10,
-    marginBottom: 20,
   },
   row: {
     flexDirection: 'row',

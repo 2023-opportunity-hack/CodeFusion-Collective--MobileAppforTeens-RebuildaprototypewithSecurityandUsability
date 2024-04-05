@@ -78,10 +78,33 @@ const MoodEntries = () => {
     setLoading(true);
     db.transaction((tx) => {
       tx.executeSql(sqlQuery, undefined, (_, resultSet) => {
-        resultSet.rows._array.forEach((day) => {
-          day.moodInfo = JSON.parse(day.moodInfo);
-        });
-        const sortedMoods = resultSet.rows._array.sort((a, b) => {
+        const sortedMoods: MoodEntryType[] = resultSet.rows._array.map((day: MoodEntryType) => {
+          if (typeof day.moodInfo === 'string') {
+            day.moodInfo = JSON.parse(day.moodInfo);
+            day.moodInfo.sort((a, b) => {
+              const parseTime = (timeStr: string) => {
+                const [time, period] = timeStr.split(" ");
+                const [hours, minutes] = time.split(":");
+                let hours24 = parseInt(hours);
+                if (period === "PM" && hours24 !== 12) {
+                  hours24 += 12;
+                } else if (period === "AM" && hours24 === 12) {
+                  hours24 = 0;
+                }
+                return { hours: hours24, minutes: parseInt(minutes) };
+              };
+
+              const aTime = parseTime(a.time);
+              const bTime = parseTime(b.time);
+
+              const aDate = new Date(`${day.date}T${aTime.hours.toString().padStart(2, "0")}:${aTime.minutes.toString().padStart(2, "0")}`);
+              const bDate = new Date(`${day.date}T${bTime.hours.toString().padStart(2, "0")}:${bTime.minutes.toString().padStart(2, "0")}`);
+
+              return bDate.getTime() - aDate.getTime();
+            });
+          }
+          return day;
+        }).sort((a, b) => {
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
         setPastMoods(sortedMoods);
@@ -90,9 +113,10 @@ const MoodEntries = () => {
         setLoading(false);
         console.log("Error in mood entries: " + error);
         return false;
-      })
-    })
+      });
+    });
   }, []);
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -132,7 +156,7 @@ const MoodEntries = () => {
                 <List.Accordion
                   key={day.date}
                   id={day.date}
-                  title={new Date(`${day.date}T07:00:00Z`).toLocaleDateString('en-US', options)}
+                  title={new Date(day.date).toLocaleDateString('en-US', options)}
                   theme={{ colors: { background: "#FFFFFF" } }}
                   titleStyle={{ fontFamily: 'JakartaMed' }}
                   >
@@ -183,7 +207,7 @@ const styles = StyleSheet.create({
   },
   moodEntryContainer: {
     display: "flex",
-    width: "100%",
+    width: 300,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between"
@@ -253,7 +277,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: '#D22F27',
     marginVertical: 30,
-    width: '90%',
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center'
   },
