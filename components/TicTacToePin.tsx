@@ -1,7 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 
-export default function TicTacToePin({ board, onPress }) {
+type TicTacToePinProps = {
+  board: string[][];
+  onPress: (rowIndex: number, squareIndex: number) => void;
+};
+
+export default function TicTacToePin({ board, onPress }: TicTacToePinProps) {
   return (
     <View style={styles.board}>
       {board.map((row: string[], rowIndex: number) => (
