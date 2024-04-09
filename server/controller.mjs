@@ -5,7 +5,7 @@ const sendEmail = async (req, res) => {
     await gmail.sendMail(req.body);
     res.sendStatus(200);
   } catch (err) {
-    console.log(err);
+    console.log("this is the error: ", err);
     res.sendStatus(500);
   }
 };

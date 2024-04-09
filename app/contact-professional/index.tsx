@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
@@ -63,6 +65,23 @@ export default function ContactProfessional() {
     {key: '741741', value: 'Crisis Hotline'},
     {key: '988', value: 'Suicide & Crisis Lifeline'},
   ];
+
+  const sendEmail = async () => {
+    try {
+      await axios.post('http://192.168.86.46:3000/contactProfessional', {
+        name,
+        phone,
+        email,
+        hotlineCenter: selected,
+        checked: contactChoice,
+        availability: chosenTime + timeZone,
+      });
+      console.log('Email sent');
+      router.back();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const selectTime = (selected: string) => {
     setExpandedList(false);
@@ -217,7 +236,7 @@ export default function ContactProfessional() {
             <Text style={{ color:'red', fontFamily: 'JakartaMed', textAlign: 'center' }}>Please ensure all required information is filled.</Text>
             }
           </View>
-          <TouchableOpacity style={styles.submitbutton} onPress={() => console.log("Submit")}>
+          <TouchableOpacity style={styles.submitbutton} onPress={sendEmail}>
             <Text style={styles.submittext}>Submit</Text>
           </TouchableOpacity>
         </View>
