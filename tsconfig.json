@@ -3,6 +3,8 @@
   "compilerOptions": {
     "jsx":"react-jsx",
     "strict": true,
+    "module": "ESNext",
+    "esModuleInterop": true
   },
   "include": [
     "**/*.ts",
