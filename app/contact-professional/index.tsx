@@ -61,17 +61,18 @@ export default function ContactProfessional() {
 
   const data = [
     {key: '88788', value: 'Domestic Violence Hotline'},
-    {key: '22522', value: 'National Teen Dating Abuse Hotline'},
+    {key: 'jimenez.gabriel12@outlook.com', value: 'National Teen Dating Abuse Hotline'},
     {key: '741741', value: 'Crisis Hotline'},
     {key: '988', value: 'Suicide & Crisis Lifeline'},
   ];
 
   const sendEmail = async () => {
     try {
-      await axios.post('http://192.168.86.46:3000/contactProfessional', {
+      await axios.post('http://192.168.68.65:3000/contactProfessional', {
         name,
         phone,
         email,
+        text,
         hotlineCenter: selected,
         checked: contactChoice,
         availability: chosenTime + timeZone,
@@ -267,7 +268,7 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   infoinput: {
-    fontFamily: 'JakartaLightItalic',
+    fontFamily: 'JakartaLight',
     borderWidth: 1,
     borderColor: '#420C5C',
     borderRadius: 5,

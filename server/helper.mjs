@@ -23,9 +23,9 @@ const sendMail = async (request) => {
     // Construct email options
     const mailOptions = {
       from: `jimenezgabriel12@gmail.com`,
-      to: 'jimenez.gabriel12@outlook.com', // Replace with your organization's email address
-      subject: request.hotlineCenter,
-      text: `${request.name} has sent this message via the SafeSpace app, a secure platform for individuals seeking help and support for abuse. ${request.name} is reaching out for assistance regarding personal experiences of abuse and wishes to remain anonymous until further communication is established. Please respond with utmost confidentiality and provide guidance on the next steps.\n\nPreferred method of contact: ${request.checked}\nPhone Number: ${request.phone}\nEmail: ${request.email}\nAvailability for contact: ${request.availability}`,
+      to: request.hotlineCenter,
+      subject: 'SafeSpace Anonymous Contact Request',
+      text: `${request.name} has sent this message via the SafeSpace app, a secure platform for individuals seeking help and support for abuse. ${request.name} is reaching out for assistance regarding personal experiences of abuse and wishes to remain anonymous until further communication is established. Please respond with utmost confidentiality and provide guidance on the next steps.\n\nPreferred method of contact: ${request.checked}\nPhone Number: ${request.phone}\nEmail: ${request.email}${request.availability.length > 3 ? `\nAvailability for contact: ${request.availability}` : ''} \nTheir message: ${request.text}`,
     };
 
     // Send mail
