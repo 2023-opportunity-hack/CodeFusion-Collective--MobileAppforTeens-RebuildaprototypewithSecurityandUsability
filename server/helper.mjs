@@ -35,14 +35,15 @@ const sendMail = async (request) => {
     };
 
     // Send mail
-    const info = await transporter.sendMail(mailOptions, (error, info) => {
+    await transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log('Error sending email:', error);
         throw error;
+      } else {
+        console.log('Email sent:', info.response);
       }
     });
-    console.log('Email sent:', info);
-    return info;
+    console.log('Email sent');
   } catch (error) {
     console.log('Error sending email:', error);
     throw error;
