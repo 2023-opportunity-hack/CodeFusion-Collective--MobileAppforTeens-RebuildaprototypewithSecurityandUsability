@@ -68,7 +68,7 @@ export default function ContactProfessional() {
 
   const sendEmail = async () => {
     try {
-      await axios.post('http://192.168.68.65:3000/contactProfessional', {
+      await axios.post('http://192.168.68.69:3000/contactProfessional', {
         name,
         phone,
         email,
