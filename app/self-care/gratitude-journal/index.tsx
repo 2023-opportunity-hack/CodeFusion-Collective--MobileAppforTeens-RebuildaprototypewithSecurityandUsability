@@ -37,7 +37,7 @@ export default function GratitiudeJournal() {
 
   const handleSubmit = () => {
     const newDate = new Date();
-    const currentDate = newDate.toISOString().slice(0, 10);
+    const currentDate = newDate.toISOString();
     let promptValue = '';
 
     if (activeInput === 'gratefulEntry' && gratefulEntry.length > 0) {

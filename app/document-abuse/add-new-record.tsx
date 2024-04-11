@@ -33,7 +33,7 @@ export default function AddNewRecordPage() {
 
   const handleSubmit = () => {
     const newDate = new Date();
-    const currentDate = newDate.toISOString().slice(0, 10);
+    const currentDate = newDate.toISOString();
 
     if (date && text.length > 0) {
       db.transaction((tx) => {
@@ -41,7 +41,7 @@ export default function AddNewRecordPage() {
           if (resultSet.rows.length > 0) {
             const recordId = resultSet.rows.item(0).id;
 
-            tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, text, date.toISOString().slice(0, 10)], (_, resultSetDetails) => {
+            tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, text, date.toISOString()], (_, resultSetDetails) => {
               router.back();
             })
           } else {
@@ -49,7 +49,7 @@ export default function AddNewRecordPage() {
             (_, resultSet) => {
               const recordId = resultSet.insertId;
 
-              tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString().slice(0, 10)],
+              tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString()],
               (_, resultSetDetails) => {
                 router.back();
               })

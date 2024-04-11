@@ -32,7 +32,7 @@ export default function MoodTracker () {
 
   const saveMoodEntry = () => {
     const newDate = new Date();
-    const currentDate = newDate.toISOString().slice(0, 10);
+    const currentDate = newDate.toISOString();
     const currentTime = newDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
 
     db.transaction((tx) => {
