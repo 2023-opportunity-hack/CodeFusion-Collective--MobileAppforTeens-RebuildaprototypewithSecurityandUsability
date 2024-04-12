@@ -72,13 +72,13 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <EmergencyContactContextProvider>
-      {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
-        <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
-          <Stack.Screen name="lockscreen/index" />
-          {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
-        </Stack>
-      {/* </ThemeProvider> */}
-    </EmergencyContactContextProvider>
+      <EmergencyContactContextProvider>
+        {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
+          <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
+            <Stack.Screen name="lockscreen/index" />
+            {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
+          </Stack>
+        {/* </ThemeProvider> */}
+      </EmergencyContactContextProvider>
   );
 }

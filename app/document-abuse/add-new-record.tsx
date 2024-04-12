@@ -1,10 +1,10 @@
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { router } from "expo-router";
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from "react";
 import { Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import MediaUploadModal from "../../components/MediaUploadModal";
 import { PageHeader } from '../../components/PageHeader';
+import { SuccessToast } from '../../components/SuccessToast';
 
 export default function AddNewRecordPage() {
   const db = SQLite.openDatabase('safespace.db');
@@ -12,6 +12,8 @@ export default function AddNewRecordPage() {
   const [date, setDate] = useState<Date>();
   const [show, setShow] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
+  const [showSuccessToast, setShowSuccessToast] = useState<boolean>(false);
+  const [showErrorToast, setShowErrorToast] = useState<boolean>(false);
 
 
   const onChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
@@ -42,7 +44,9 @@ export default function AddNewRecordPage() {
             const recordId = resultSet.rows.item(0).id;
 
             tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, text, date.toISOString()], (_, resultSetDetails) => {
-              router.back();
+              setDate(new Date());
+              setText('');
+              setShowSuccessToast(true);
             })
           } else {
             tx.executeSql('INSERT INTO records (date) VALUES (?)', [currentDate],
@@ -51,7 +55,13 @@ export default function AddNewRecordPage() {
 
               tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString()],
               (_, resultSetDetails) => {
-                router.back();
+                setDate(new Date());
+                setText('');
+                setShowSuccessToast(true);
+              }, (_, error) => {
+                console.error('Error inserting record details:', error);
+                setShowErrorToast(true);
+                return false;
               })
             },
             );
@@ -59,7 +69,13 @@ export default function AddNewRecordPage() {
         });
       });
     }
-  }
+    setTimeout(() => {
+      if (showErrorToast) {
+        setShowErrorToast(false);
+      }
+      setShowSuccessToast(false);
+    }, 3000);
+  };
 
   useEffect(() => {
     db.transaction((tx) => {
@@ -74,6 +90,8 @@ export default function AddNewRecordPage() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {showSuccessToast ? <SuccessToast entryName="Record" type="success" /> : null}
+      {showErrorToast ? <SuccessToast entryName="Record" type="error" /> : null}
       <Modal
         animationType="fade"
         transparent={true}
@@ -96,6 +114,7 @@ export default function AddNewRecordPage() {
           textAlignVertical="top"
           placeholder="Describe what happened here. Provide as much detail as possible"
           onChangeText={setText}
+          value={text}
         />
       </View>
       <View style={styles.descriptionContainer}>
