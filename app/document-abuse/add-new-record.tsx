@@ -40,7 +40,7 @@ export default function AddNewRecordPage() {
 
     if (date && text.length > 0) {
       db.transaction((tx) => {
-        tx.executeSql('SELECT id FROM records WHERE date = ?;', [currentDate], (_, resultSet) => {
+        tx.executeSql('SELECT id FROM records WHERE date_title = ?;', [dateTitle], (_, resultSet) => {
           if (resultSet.rows.length > 0) {
             const recordId = resultSet.rows.item(0).id;
 
@@ -54,7 +54,7 @@ export default function AddNewRecordPage() {
               return false;
             })
           } else {
-            tx.executeSql('INSERT INTO records (date) VALUES (?)', [currentDate],
+            tx.executeSql('INSERT INTO records (date_title, date_value) VALUES (?, ?)', [dateTitle ,currentDate],
               (_, resultSet) => {
                 const recordId = resultSet.insertId;
 
@@ -95,7 +95,7 @@ export default function AddNewRecordPage() {
     db.transaction((tx) => {
       // tx.executeSql('DROP TABLE IF EXISTS records');
       // tx.executeSql('DROP TABLE IF EXISTS record_details');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS records (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS records (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT)');
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS record_details (id INTEGER PRIMARY KEY AUTOINCREMENT, record_id INTEGER, description TEXT, date TEXT, FOREIGN KEY (record_id) REFERENCES Records(id))'
       );

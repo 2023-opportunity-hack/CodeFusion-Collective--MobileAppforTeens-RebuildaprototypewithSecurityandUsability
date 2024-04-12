@@ -7,6 +7,7 @@ import { PageHeader } from '../../components/PageHeader';
 type RecordEntryType = {
   record_date: string,
   record_id: number,
+  date_value: string,
   records: {
     description: string,
     event_date: string,
@@ -47,7 +48,8 @@ export default function NewRecordPage() {
 
   const sqlQuery = `SELECT
                       r.id AS record_id,
-                      r.date AS record_date,
+                      r.date_title AS record_date,
+                      r.date_value AS date_value,
                       '[' || GROUP_CONCAT(
                           '{"detail_id": ' || rd.id || ', "event_date": "' || rd.date || '", "description": "' || rd.description || '"}'
                       ) || ']' AS records
@@ -79,7 +81,7 @@ export default function NewRecordPage() {
           resultSet.rows._array.forEach((day) => {
             day.records = JSON.parse(day.records);
           })
-          const sortedRecords: RecordEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.record_date).getTime() - new Date(a.record_date).getTime());
+          const sortedRecords: RecordEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.date_value).getTime() - new Date(a.date_value).getTime());
           sortedRecords.forEach((day) => {
             day.records.sort((a, b) => new Date(b.event_date).getTime() - new Date(a.event_date).getTime());
           })
@@ -129,7 +131,7 @@ export default function NewRecordPage() {
               recordEntries.map((day) => (
                 <List.Accordion
                   key={day.record_id}
-                  title={new Date(day.record_date).toLocaleString('en-US', options)}
+                  title={new Date(day.date_value).toLocaleString('en-US', options)}
                   theme={{ colors: { background: "#FFFFFF" } }}
                   titleStyle={{ fontFamily: 'JakartaMed' }}
                 >
