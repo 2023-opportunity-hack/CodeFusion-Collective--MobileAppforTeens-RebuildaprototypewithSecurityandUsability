@@ -92,80 +92,82 @@ export default function NewRecordPage() {
 
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Modal
-        animationType='fade'
-        transparent={true}
-        visible={showModal}
-        onRequestClose={() => setShowModal(false)}
-        >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContents}>
-            <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 16 }}>Are you sure you want to delete all records?</Text>
-            <View style={styles.modalButtons}>
-              <Pressable style={styles.modalButtonWrapper} onPress={deleteAllRecords}>
-                {({ pressed }) => (
-                  <View style={[styles.modalButton, { backgroundColor: '#D22F27', opacity: pressed ? 0.5 : 1}]}>
-                    <Text style={styles.modalButtonText}>Yes</Text>
-                  </View>
-                )}
-              </Pressable>
-              <Pressable style={styles.modalButtonWrapper} onPress={() => setShowModal(false)}>
-                {({ pressed }) => (
-                  <View style={[styles.modalButton, { backgroundColor: 'green', opacity: pressed ? 0.5 : 1}]}>
-                    <Text style={styles.modalButtonText}>No</Text>
-                  </View>
-                )}
-              </Pressable>
+    <View style={{ flex: 1, backgroundColor: '#F0EDF1' }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Modal
+          animationType='fade'
+          transparent={true}
+          visible={showModal}
+          onRequestClose={() => setShowModal(false)}
+          >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContents}>
+              <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 16 }}>Are you sure you want to delete all records?</Text>
+              <View style={styles.modalButtons}>
+                <Pressable style={styles.modalButtonWrapper} onPress={deleteAllRecords}>
+                  {({ pressed }) => (
+                    <View style={[styles.modalButton, { backgroundColor: '#D22F27', opacity: pressed ? 0.5 : 1}]}>
+                      <Text style={styles.modalButtonText}>Yes</Text>
+                    </View>
+                  )}
+                </Pressable>
+                <Pressable style={styles.modalButtonWrapper} onPress={() => setShowModal(false)}>
+                  {({ pressed }) => (
+                    <View style={[styles.modalButton, { backgroundColor: 'green', opacity: pressed ? 0.5 : 1}]}>
+                      <Text style={styles.modalButtonText}>No</Text>
+                    </View>
+                  )}
+                </Pressable>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
-      <PageHeader route="/document-abuse" title="Previous Records" />
-      <List.Section style={styles.listGroupContainer}>
-        <View style={styles.listGroup}>
-          {!loading && recordEntries.length > 0 ? (
-            recordEntries.map((day) => (
-              <List.Accordion
-                key={day.record_id}
-                title={new Date(day.record_date).toLocaleString('en-US', options)}
-                theme={{ colors: { background: "#FFFFFF" } }}
-                titleStyle={{ fontFamily: 'JakartaMed' }}
-              >
-                {day.records.map((entry) => (
-                  <List.Item
-                    key={entry.event_date}
-                    title={<RecordEntry description={entry.description} date={entry.event_date} />}
-                  />
-                ))}
-              </List.Accordion>
-            ))
-          ): (
-            <List.Item title="No saved records" titleStyle={{ fontFamily: "JakartaMed" }} />
-          )}
-        </View>
-      </List.Section>
-      {recordEntries.length > 0 ?
-        <Pressable onPress={() => setShowModal(true)} style={styles.buttonWrapper}>
-          {({ pressed }) => (
-            <View style={[styles.deleteButton, { opacity: pressed ? 0.5 : 1 }]}>
-              <Text style={styles.buttonText}>Delete Records</Text>
-            </View>
-          )}
-        </Pressable>
-        : null}
-    </ScrollView>
+        </Modal>
+        <PageHeader route="/document-abuse" title="Previous Records" />
+        <List.Section style={styles.listGroupContainer}>
+          <View style={styles.listGroup}>
+            {!loading && recordEntries.length > 0 ? (
+              recordEntries.map((day) => (
+                <List.Accordion
+                  key={day.record_id}
+                  title={new Date(day.record_date).toLocaleString('en-US', options)}
+                  theme={{ colors: { background: "#FFFFFF" } }}
+                  titleStyle={{ fontFamily: 'JakartaMed' }}
+                >
+                  {day.records.map((entry) => (
+                    <List.Item
+                      key={entry.event_date}
+                      title={<RecordEntry description={entry.description} date={entry.event_date} />}
+                    />
+                  ))}
+                </List.Accordion>
+              ))
+            ): (
+              <List.Item title="No saved records" titleStyle={{ fontFamily: "JakartaMed" }} />
+            )}
+          </View>
+        </List.Section>
+        {recordEntries.length > 0 ?
+          <Pressable onPress={() => setShowModal(true)} style={styles.buttonWrapper}>
+            {({ pressed }) => (
+              <View style={[styles.deleteButton, { opacity: pressed ? 0.5 : 1 }]}>
+                <Text style={styles.buttonText}>Delete Records</Text>
+              </View>
+            )}
+          </Pressable>
+          : null}
+      </ScrollView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: "#F0EDF1",
-    padding: "5%"
+    padding: "5%",
   },
   listGroupContainer: {
     width: "100%",
@@ -196,7 +198,7 @@ const styles = StyleSheet.create({
   entrytext: {
     fontFamily: "JakartaLight",
     fontSize: 15,
-    width: 340
+    width: 320
   },
   buttonWrapper: {
     width: '100%',

@@ -36,6 +36,7 @@ export default function AddNewRecordPage() {
   const handleSubmit = () => {
     const newDate = new Date();
     const currentDate = newDate.toISOString();
+    const dateTitle = currentDate.slice(0, 10);
 
     if (date && text.length > 0) {
       db.transaction((tx) => {
@@ -47,25 +48,38 @@ export default function AddNewRecordPage() {
               setDate(new Date());
               setText('');
               setShowSuccessToast(true);
+            }, (_, error) => {
+              console.error('Error inserting record details:', error);
+              setShowErrorToast(true);
+              return false;
             })
           } else {
             tx.executeSql('INSERT INTO records (date) VALUES (?)', [currentDate],
-            (_, resultSet) => {
-              const recordId = resultSet.insertId;
+              (_, resultSet) => {
+                const recordId = resultSet.insertId;
 
-              tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString()],
-              (_, resultSetDetails) => {
-                setDate(new Date());
-                setText('');
-                setShowSuccessToast(true);
-              }, (_, error) => {
-                console.error('Error inserting record details:', error);
+                tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString()],
+                (_, resultSetDetails) => {
+                  setDate(new Date());
+                  setText('');
+                  setShowSuccessToast(true);
+                }, (_, error) => {
+                  console.error('Error inserting record details:', error);
+                  setShowErrorToast(true);
+                  return false;
+                })
+              },
+              (_, error) => {
+                console.error('Error inserting record:', error);
                 setShowErrorToast(true);
                 return false;
-              })
-            },
+              }
             );
           }
+        }, (_, error) => {
+          console.error('Error selecting record:', error);
+          setShowErrorToast(true);
+          return false;
         });
       });
     }

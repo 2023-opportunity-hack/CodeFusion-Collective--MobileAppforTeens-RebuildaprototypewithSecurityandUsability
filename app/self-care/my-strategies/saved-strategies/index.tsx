@@ -131,7 +131,8 @@ const styles = StyleSheet.create({
   saveButtonWrapper: {
     width: "100%",
     alignItems: "center",
-    marginTop: 20
+    marginTop: 20,
+    marginBottom: 60
   },
   saveButton: {
     backgroundColor: "#420C5C",

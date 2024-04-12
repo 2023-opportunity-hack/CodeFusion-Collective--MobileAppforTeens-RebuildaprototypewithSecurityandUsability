@@ -6,7 +6,7 @@ export const SuccessToast = ({ entryName, type }: { entryName: string, type: str
   const translateY = useRef(new Animated.Value(-100)).current;
 
   useEffect(() => {
-    const hideDelay = 1000; // Adjust as needed (in milliseconds)
+    const hideDelay = 1000;
 
     const showAnimation = Animated.timing(translateY, {
       toValue: 0,
@@ -22,7 +22,7 @@ export const SuccessToast = ({ entryName, type }: { entryName: string, type: str
 
     const sequence = Animated.sequence([
       showAnimation,
-      Animated.delay(hideDelay), // Add a delay before hiding
+      Animated.delay(hideDelay),
       hideAnimation,
     ]);
 
@@ -39,7 +39,7 @@ export const SuccessToast = ({ entryName, type }: { entryName: string, type: str
         display: 'flex',
         flexDirection: 'row',
         backgroundColor: 'white',
-        borderColor: 'green',
+        borderColor: type === "success" ? 'green' : 'red',
         borderWidth: 1,
         borderRadius: 10,
         padding: 5,
@@ -52,7 +52,7 @@ export const SuccessToast = ({ entryName, type }: { entryName: string, type: str
     >
       {type === "success"
         ? <Ionicons name="checkbox" size={50} color="green" />
-        : <MaterialCommunityIcons name="alert-box" size={24} color="red" />
+        : <MaterialCommunityIcons name="alert-box" size={50} color="red" />
       }
       <View style={{ display: 'flex', flexDirection: 'column', marginLeft: 5 }}>
         <Text style={{ fontFamily: 'JakartaBold', fontSize: 14 }}>{type === "success" ? "Success!" : "Error"}</Text>

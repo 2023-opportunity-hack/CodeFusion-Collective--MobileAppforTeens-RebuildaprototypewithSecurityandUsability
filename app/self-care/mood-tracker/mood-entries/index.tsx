@@ -119,75 +119,76 @@ const MoodEntries = () => {
 
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Modal
-        animationType='fade'
-        transparent={true}
-        visible={showModal}
-        onRequestClose={() => setShowModal(false)}
-        >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContents}>
-            <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 16 }}>Are you sure you want to delete all mood entries?</Text>
-            <View style={styles.modalButtons}>
-              <Pressable style={styles.modalButtonWrapper} onPress={deleteAllMoodEntries}>
-                {({ pressed }) => (
-                  <View style={[styles.modalButton, { backgroundColor: '#D22F27', opacity: pressed ? 0.5 : 1}]}>
-                    <Text style={styles.modalButtonText}>Yes</Text>
-                  </View>
-                )}
-              </Pressable>
-              <Pressable style={styles.modalButtonWrapper} onPress={() => setShowModal(false)}>
-                {({ pressed }) => (
-                  <View style={[styles.modalButton, { backgroundColor: 'green', opacity: pressed ? 0.5 : 1}]}>
-                    <Text style={styles.modalButtonText}>No</Text>
-                  </View>
-                )}
-              </Pressable>
+    <View style={{ flex: 1, backgroundColor: '#F0EDF1' }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Modal
+          animationType='fade'
+          transparent={true}
+          visible={showModal}
+          onRequestClose={() => setShowModal(false)}
+          >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContents}>
+              <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 16 }}>Are you sure you want to delete all mood entries?</Text>
+              <View style={styles.modalButtons}>
+                <Pressable style={styles.modalButtonWrapper} onPress={deleteAllMoodEntries}>
+                  {({ pressed }) => (
+                    <View style={[styles.modalButton, { backgroundColor: '#D22F27', opacity: pressed ? 0.5 : 1}]}>
+                      <Text style={styles.modalButtonText}>Yes</Text>
+                    </View>
+                  )}
+                </Pressable>
+                <Pressable style={styles.modalButtonWrapper} onPress={() => setShowModal(false)}>
+                  {({ pressed }) => (
+                    <View style={[styles.modalButton, { backgroundColor: 'green', opacity: pressed ? 0.5 : 1}]}>
+                      <Text style={styles.modalButtonText}>No</Text>
+                    </View>
+                  )}
+                </Pressable>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
-      <PageHeader route="/self-care/mood-tracker" title="Saved Moods" />
-      <List.Section style={styles.listGroupContainer}>
-        <View style={styles.listGroup}>
-          {!loading && pastMoods.length > 0 ? (
-              pastMoods.map((day) => (
-                <List.Accordion
-                  key={day.date}
-                  id={day.date}
-                  title={new Date(day.date).toLocaleDateString('en-US', options)}
-                  theme={{ colors: { background: "#FFFFFF" } }}
-                  titleStyle={{ fontFamily: 'JakartaMed' }}
-                  >
-                  {day.moodInfo.map((mood, index) => (
-                    <List.Item key={index} title={<MoodEntry mood={mood.mood} time={mood.time} />} />
-                  ))}
-                </List.Accordion>
-              ))
-            ) : (
-              <List.Item title="No saved moods" titleStyle={{ fontFamily: "JakartaMed" }} />
-            )}
-        </View>
-      </List.Section>
-      {pastMoods.length > 0 ?
-        <View style={styles.deleteButton}>
-          <Pressable
-            onPress={() => setShowModal(true)}
-            style={({ pressed }) => [{ borderRadius: 100, width: '100%', backgroundColor: pressed ? '#ff3333' : '#D22F27' }]}
-            >
-            <Text style={styles.buttonText}>Delete Mood Entries</Text>
-          </Pressable>
-        </View>
-        : null}
-    </ScrollView>
+        </Modal>
+        <PageHeader route="/self-care/mood-tracker" title="Saved Moods" />
+        <List.Section style={styles.listGroupContainer}>
+          <View style={styles.listGroup}>
+            {!loading && pastMoods.length > 0 ? (
+                pastMoods.map((day) => (
+                  <List.Accordion
+                    key={day.date}
+                    id={day.date}
+                    title={new Date(day.date).toLocaleDateString('en-US', options)}
+                    theme={{ colors: { background: "#FFFFFF" } }}
+                    titleStyle={{ fontFamily: 'JakartaMed' }}
+                    >
+                    {day.moodInfo.map((mood, index) => (
+                      <List.Item key={index} title={<MoodEntry mood={mood.mood} time={mood.time} />} />
+                    ))}
+                  </List.Accordion>
+                ))
+              ) : (
+                <List.Item title="No saved moods" titleStyle={{ fontFamily: "JakartaMed" }} />
+              )}
+          </View>
+        </List.Section>
+        {pastMoods.length > 0 ?
+          <View style={styles.deleteButton}>
+            <Pressable
+              onPress={() => setShowModal(true)}
+              style={({ pressed }) => [{ borderRadius: 100, width: '100%', backgroundColor: pressed ? '#ff3333' : '#D22F27' }]}
+              >
+              <Text style={styles.buttonText}>Delete Mood Entries</Text>
+            </Pressable>
+          </View>
+          : null}
+      </ScrollView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F0EDF1',
-    flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
     padding: "5%"
