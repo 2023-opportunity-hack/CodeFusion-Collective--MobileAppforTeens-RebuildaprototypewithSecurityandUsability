@@ -39,7 +39,7 @@ export const ToastMessage = ({ entryName, type }: { entryName: string, type: str
         display: 'flex',
         flexDirection: 'row',
         backgroundColor: 'white',
-        borderColor: type === "success" || type === "delete" ? 'green' : 'red',
+        borderColor: type === "success" || type === "delete" || type === "email" ? 'green' : 'red',
         borderWidth: 1,
         borderRadius: 10,
         padding: 5,
@@ -55,10 +55,11 @@ export const ToastMessage = ({ entryName, type }: { entryName: string, type: str
         : <MaterialCommunityIcons name="alert-box" size={50} color="red" />
       }
       <View style={{ display: 'flex', flexDirection: 'column', marginLeft: 5 }}>
-        <Text style={{ fontFamily: 'JakartaBold', fontSize: 14 }}>{type === "success" || type === "delete" ? "Success!" : "Error"}</Text>
+        <Text style={{ fontFamily: 'JakartaBold', fontSize: 14 }}>{type === "success" || type === "delete" || type === "email" ? "Success!" : "Error"}</Text>
         <Text style={{ fontFamily: 'JakartaMed', fontSize: 14 }}>
           { type === "success" ? `${entryName} has been saved`
             : type === "delete" ? `${entryName} have been deleted`
+            : type === "email" ? "Email has been sent"
             : "Please try again"
           }
         </Text>

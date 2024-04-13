@@ -1,10 +1,11 @@
 import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
-import { Alert, Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Button } from 'react-native-paper';
 import { PageHeader } from '../../../components/PageHeader';
+import { ToastMessage } from '../../../components/ToastMessage';
 
 
 const items = [
@@ -22,9 +23,10 @@ export default function GratitiudeJournal() {
   const [journalEntryLabel, setJournalEntryLabel] = useState('');
   const [gratefulEntry, setGratefulEntry] = useState('');
   const [promptEntry, setPromptEntry] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
   const [activeInput, setActiveInput] = useState('');
   const [labelAlert, setLabelAlert] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
 
   const handleGratefulChange = (newEntry: string) => {
@@ -48,14 +50,28 @@ export default function GratitiudeJournal() {
           if (resultSet.rows.length > 0) {
             const journalId = resultSet.rows.item(0).id;
 
-            tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, gratefulEntry, promptValue])
+            tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, gratefulEntry, promptValue], undefined, (_, error) => {
+              console.error('Error inserting grateful entry:', error);
+              setShowErrorToast(true);
+              return false;
+            });
+            setShowSuccessToast(true);
           } else {
             tx.executeSql('INSERT INTO journal_entries (date) VALUES (?)', [currentDate], (_, resultSet) => {
               const journalId = resultSet.insertId;
 
-              tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, gratefulEntry, promptValue])
+              tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, gratefulEntry, promptValue]);
+              setShowSuccessToast(true);
+            }, (_, error) => {
+              console.error('Error inserting grateful entry:', error);
+              setShowErrorToast(true);
+              return false;
             })
           }
+        }, (_, error) => {
+          console.error('Error finding entries:', error);
+          setShowErrorToast(true);
+          return false;
         })
       })
     } else if (activeInput === 'promptEntry' && promptEntry.length > 0 && journalEntryLabel.length > 0) {
@@ -65,30 +81,49 @@ export default function GratitiudeJournal() {
           if (resultSet.rows.length > 0) {
             const journalId = resultSet.rows.item(0).id;
 
-            tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, promptEntry, promptValue])
+            tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, promptEntry, promptValue], undefined, (_, error) => {
+              console.error('Error inserting prompt entry:', error);
+              setShowErrorToast(true);
+              return false;
+            });
+            setShowSuccessToast(true);
           } else {
             tx.executeSql('INSERT INTO journal_entries (date) VALUES (?)', [currentDate], (_, resultSet) => {
               const journalId = resultSet.insertId;
 
-              tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, promptEntry, journalEntryLabel])
+              tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, promptEntry, journalEntryLabel]);
+              setShowSuccessToast(true);
+            }, (_, error) => {
+              console.error('Error inserting prompt entry:', error);
+              setShowErrorToast(true);
+              return false;
             })
           }
+        }, (_, error) => {
+          console.error('Error finding entries:', error);
+          setShowErrorToast(true);
+          return false;
         })
       })
     } else if (activeInput === 'promptEntry' && promptEntry.length > 0 && journalEntryLabel.length === 0) {
       setLabelAlert(true);
       return;
     } else {
-      Alert.alert('Error', 'Something went wrong', [
-        {text: 'OK'},
-      ])
+      setShowErrorToast(true);
+      return;
     };
 
-    setIsOpen(false);
     setActiveInput('');
     setGratefulEntry('');
     setPromptEntry('');
     setJournalEntryLabel('');
+
+    setTimeout(() => {
+      if (showErrorToast) {
+        setShowErrorToast(false);
+      }
+      setShowSuccessToast(false);
+    }, 3000);
   };
 
   useEffect(() => {
@@ -104,6 +139,8 @@ export default function GratitiudeJournal() {
 
   return (
     <View style={styles.container}>
+      {showSuccessToast ? <ToastMessage type='success' entryName='Entry' /> : null}
+      {showErrorToast ? <ToastMessage type='error' entryName='Entry' /> : null}
       <PageHeader route="/self-care" title="Gratitude Journal" />
       <Modal
         visible={labelAlert}

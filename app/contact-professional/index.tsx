@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { TextInput } from 'react-native-gesture-handler';
 import { List, RadioButton } from 'react-native-paper';
 import { PageHeader } from '../../components/PageHeader';
+import { ToastMessage } from '../../components/ToastMessage';
 
 type Timezones = {
   [key: string]: string;
@@ -21,6 +21,8 @@ export default function ContactProfessional() {
   const [contactChoice, setContactChoice] = useState('');
   const [chosenTime, setChosenTime] = useState('');
   const [expandedList, setExpandedList] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
   const [error, setError] = useState(0);
 
   const timezones: Timezones = {
@@ -77,10 +79,26 @@ export default function ContactProfessional() {
         checked: contactChoice,
         availability: chosenTime + timeZone,
       });
-      console.log('Email sent');
-      router.back();
+
+      setShowSuccessToast(true);
+      setSelected('');
+      setText('');
+      setName('');
+      setPhone('');
+      setEmail('');
+      setContactChoice('');
+      setChosenTime('');
+
+      setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 3000);
     } catch (err) {
+      setShowErrorToast(true);
       console.log(err);
+
+      setTimeout(() => {
+        setShowErrorToast(false);
+      }, 3000);
     }
   };
 
@@ -112,6 +130,8 @@ export default function ContactProfessional() {
 
   return (
     <ScrollView nestedScrollEnabled={true}>
+      {showSuccessToast ? <ToastMessage type='email' entryName='Email' /> : null}
+      {showErrorToast ? <ToastMessage type='error' entryName='Error' /> : null}
       <View style={styles.container}>
         <PageHeader route="/homepage" title="Contact Professional" />
         <View style={styles.form}>

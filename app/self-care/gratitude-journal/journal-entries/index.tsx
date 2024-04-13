@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
 import { PageHeader } from '../../../../components/PageHeader';
+import { ToastMessage } from '../../../../components/ToastMessage';
 
 
 type JournalEntryType = {
@@ -50,14 +51,21 @@ export default function JournalEntries() {
   const [journalEntries, setJournalEntries] = useState<JournalEntryType[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const deleteAllJournalEntries = () => {
     db.transaction((tx) => {
       tx.executeSql('DELETE FROM journal_entries;');
       tx.executeSql('DELETE FROM journal_details;');
+      setShowSuccessToast(true);
       setJournalEntries([]);
       setShowModal(false);
     })
+
+    setTimeout(() => {
+      setShowSuccessToast(false);
+    }, 3000)
   }
 
   useEffect(() => {
@@ -72,6 +80,7 @@ export default function JournalEntries() {
         setJournalEntries(sortedEntries);
         setLoading(false);
       }, (_, error) => {
+        setShowErrorToast(true);
         setLoading(false);
         console.log('Error in Journal Entries: ' + error);
         return false;
@@ -82,6 +91,8 @@ export default function JournalEntries() {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#F0EDF1' }}>
+      {showSuccessToast ? <ToastMessage entryName='Entries' type='delete' /> : null}
+      {showErrorToast ? <ToastMessage entryName='journal entries' type="error" /> : null}
       <ScrollView contentContainerStyle={styles.container}>
         <Modal
           animationType='fade'
