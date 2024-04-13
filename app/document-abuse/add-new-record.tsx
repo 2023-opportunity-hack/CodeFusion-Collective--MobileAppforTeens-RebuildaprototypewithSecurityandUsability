@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import MediaUploadModal from "../../components/MediaUploadModal";
 import { PageHeader } from '../../components/PageHeader';
-import { SuccessToast } from '../../components/SuccessToast';
+import { ToastMessage } from '../../components/ToastMessage';
 
 export default function AddNewRecordPage() {
   const db = SQLite.openDatabase('safespace.db');
@@ -104,8 +104,8 @@ export default function AddNewRecordPage() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {showSuccessToast ? <SuccessToast entryName="Record" type="success" /> : null}
-      {showErrorToast ? <SuccessToast entryName="Record" type="error" /> : null}
+      {showSuccessToast ? <ToastMessage entryName="Record" type="success" /> : null}
+      {showErrorToast ? <ToastMessage entryName="Record" type="error" /> : null}
       <Modal
         animationType="fade"
         transparent={true}

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { List } from 'react-native-paper';
 import { PageHeader } from '../../components/PageHeader';
+import { ToastMessage } from '../../components/ToastMessage';
 
 type RecordEntryType = {
   record_date: string,
@@ -45,6 +46,8 @@ export default function NewRecordPage() {
   const [recordEntries, setRecordEntries] = useState<RecordEntryType[]>([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const sqlQuery = `SELECT
                       r.id AS record_id,
@@ -63,11 +66,26 @@ export default function NewRecordPage() {
 
   const deleteAllRecords = () => {
     db.transaction((tx) => {
-      tx.executeSql('DELETE FROM records;');
-      tx.executeSql('DELETE FROM record_details;');
+      tx.executeSql('DELETE FROM records;', undefined, undefined, (_, error) => {
+        console.error('Error deleting records:', error);
+        setShowErrorToast(true);
+        return false;
+      });
+      tx.executeSql('DELETE FROM record_details;', undefined, undefined, (_, error) => {
+        console.error('Error deleting record details:', error);
+        setShowErrorToast(true);
+        return false;
+      });
       setRecordEntries([]);
       setShowModal(false);
+      setShowSuccessToast(true);
     })
+    setTimeout(() => {
+      if (showErrorToast) {
+        setShowErrorToast(false);
+      }
+      setShowSuccessToast(false);
+    }, 3000);
   }
 
   useEffect(() => {
@@ -88,13 +106,20 @@ export default function NewRecordPage() {
           setRecordEntries(sortedRecords);
           setLoading(false);
         }
-      }, );
+      }, (_, error) => {
+        setLoading(false);
+        console.log('Error in Journal Entries: ' + error);
+        setShowErrorToast(true);
+        return false;
+      });
     });
   }, [])
 
 
   return (
     <View style={{ flex: 1, backgroundColor: '#F0EDF1' }}>
+      {showSuccessToast ? <ToastMessage entryName='Records' type='delete' /> : null}
+      {showErrorToast ? <ToastMessage entryName='records' type="error" /> : null}
       <ScrollView contentContainerStyle={styles.container}>
         <Modal
           animationType='fade'
