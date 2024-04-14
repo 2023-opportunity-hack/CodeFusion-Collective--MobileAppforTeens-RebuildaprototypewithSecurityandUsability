@@ -51,7 +51,7 @@ export default function MoodTracker () {
           });
           setShowSuccessToast(true);
         } else {
-          tx.executeSql('INSERT INTO mood_entries (date_title, date_value) VALUES (?, ?)', [dateTitle ,currentDate], (_, resultSet) => {
+          tx.executeSql('INSERT INTO mood_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, currentDate], (_, resultSet) => {
             const moodId = resultSet.insertId;
 
             tx.executeSql('INSERT INTO mood_details (mood_id, mood, time) VALUES (?, ?, ?)', [moodId!, selectedMood, currentTime], undefined, (_, error) => {

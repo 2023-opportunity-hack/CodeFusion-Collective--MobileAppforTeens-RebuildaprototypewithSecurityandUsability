@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { ActivityIndicator, List } from "react-native-paper";
 import { PageHeader } from "../../../../components/PageHeader";
+import { ToastMessage } from '../../../../components/ToastMessage';
 
 
 const sqlQuery = `SELECT
@@ -17,6 +18,8 @@ const MySavedStrategies = () => {
   const [selected, setSelected] = useState<string[]>([]);
   const [newStrategy, setNewStrategy] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const handleDeselect = (label: string) => {
     setSelected(selected.filter((title) => title !== label));
@@ -30,9 +33,22 @@ const MySavedStrategies = () => {
     setSelected([...selected, newStrategy]);
     setNewStrategy("");
     db.transaction((tx) => {
-      tx.executeSql('INSERT INTO strategies (strategy) VALUES (?)', [newStrategy]);
+      tx.executeSql('INSERT INTO strategies (strategy) VALUES (?)', [newStrategy], () => {
+        setShowSuccessToast(true);
+      }, (_, error) => {
+        console.error('Error saving custom strategy:', error);
+        setShowErrorToast(true);
+        return false;
+      });
     })
     setLoading(false);
+
+    setTimeout(() => {
+      if (showErrorToast) {
+        setShowErrorToast(false);
+      }
+      setShowSuccessToast(false);
+    }, 3000);
   }
 
   useEffect(() => {
@@ -45,6 +61,10 @@ const MySavedStrategies = () => {
         } else {
           setSelected(parsedStrategies);
         }
+      }, (_, error) => {
+        console.error('Error fetching saved strategies:', error);
+        setShowErrorToast(true);
+        return false;
       })
     })
     setLoading(false);
@@ -52,6 +72,8 @@ const MySavedStrategies = () => {
 
   return (
     <ScrollView style={styles.container}>
+      {showSuccessToast ? <ToastMessage entryName="Strategy" type="success" /> : null}
+      {showErrorToast ? <ToastMessage entryName="Strategy" type="error" /> : null}
       <PageHeader route="/self-care/my-strategies" title="Saved Strategies" />
       <Text style={styles.pagedescription}>My strategies for when I'm feeling stressed or anxious</Text>
       <List.Section style={styles.listItemsSection}>
