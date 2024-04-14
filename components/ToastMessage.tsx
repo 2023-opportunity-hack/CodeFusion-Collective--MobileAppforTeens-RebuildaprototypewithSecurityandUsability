@@ -47,6 +47,7 @@ export const ToastMessage = ({ entryName, type }: { entryName: string, type: str
         position: 'absolute',
         top: 50,
         zIndex: 100,
+        alignSelf: 'center',
         width: '80%',
       }}
     >

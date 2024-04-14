@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
 import { PageHeader } from '../../../../components/PageHeader';
+import { ToastMessage } from '../../../../components/ToastMessage';
 
 
 type MoodEntryType = {
   date_id: number,
   date: string,
+  date_value: string,
   moodInfo: {
     mood: string,
     time: string
@@ -28,7 +30,8 @@ const moodEntryImagePaths: Record<string, any> = {
 
 const sqlQuery = `SELECT
                     me.id AS date_id,
-                    me.date AS date,
+                    me.date_title AS date,
+                    me.date_value AS date_value,
                     '[' || GROUP_CONCAT(
                         '{"mood": "' || md.mood || '", "time": "' || md.time || '"}'
                     ) || ']' AS moodInfo
@@ -64,6 +67,8 @@ const MoodEntries = () => {
   const [pastMoods, setPastMoods] = useState<MoodEntryType[]>([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const deleteAllMoodEntries = () => {
     db.transaction((tx) => {
@@ -71,6 +76,7 @@ const MoodEntries = () => {
       tx.executeSql('DELETE FROM mood_details;');
       setPastMoods([]);
       setShowModal(false);
+      setShowSuccessToast(true);
     })
   }
 
@@ -111,6 +117,7 @@ const MoodEntries = () => {
         setLoading(false);
       }, (_, error) => {
         setLoading(false);
+        setShowErrorToast(true);
         console.log("Error in mood entries: " + error);
         return false;
       });
@@ -121,6 +128,8 @@ const MoodEntries = () => {
   return (
     <View style={{ flex: 1, backgroundColor: '#F0EDF1' }}>
       <ScrollView contentContainerStyle={styles.container}>
+        {showSuccessToast ? <ToastMessage entryName='Entries' type='delete' /> : null}
+        {showErrorToast ? <ToastMessage entryName='mood entries' type="error" /> : null}
         <Modal
           animationType='fade'
           transparent={true}
@@ -157,7 +166,7 @@ const MoodEntries = () => {
                   <List.Accordion
                     key={day.date}
                     id={day.date}
-                    title={new Date(day.date).toLocaleDateString('en-US', options)}
+                    title={new Date(day.date_value).toLocaleDateString('en-US', options)}
                     theme={{ colors: { background: "#FFFFFF" } }}
                     titleStyle={{ fontFamily: 'JakartaMed' }}
                     >
