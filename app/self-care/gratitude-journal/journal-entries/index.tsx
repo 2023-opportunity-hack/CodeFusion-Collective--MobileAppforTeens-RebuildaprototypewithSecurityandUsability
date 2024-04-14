@@ -9,6 +9,7 @@ import { ToastMessage } from '../../../../components/ToastMessage';
 type JournalEntryType = {
   date_id: number,
   date: string,
+  date_value: string,
   entries: {
     entry_id: number,
     prompt: string,
@@ -18,7 +19,8 @@ type JournalEntryType = {
 
 const sqlQuery = `SELECT
                     je.id AS date_id,
-                    je.date AS date,
+                    je.date_title AS date,
+                    je.date_value AS date_value,
                     '[' || GROUP_CONCAT(
                         '{"entry_id": ' || jd.id || ', "prompt": "' || jd.prompt || '", "entry": "' || jd.description || '"}'
                     ) || ']' AS entries
@@ -76,7 +78,7 @@ export default function JournalEntries() {
         resultSet.rows._array.forEach((day) => {
           day.entries = JSON.parse(day.entries);
         });
-        const sortedEntries: JournalEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        const sortedEntries: JournalEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.date_value).getTime() - new Date(a.date_value).getTime());
         setJournalEntries(sortedEntries);
         setLoading(false);
       }, (_, error) => {
@@ -129,7 +131,7 @@ export default function JournalEntries() {
               journalEntries.map((day) => (
                 <List.Accordion
                   key={day.date}
-                  title={new Date(day.date).toLocaleDateString('en-US', options)}
+                  title={new Date(day.date_value).toLocaleDateString('en-US', options)}
                   theme={{ colors: { background: "#FFFFFF" } }}
                   titleStyle={{ fontFamily: 'JakartaMed' }}
                   >

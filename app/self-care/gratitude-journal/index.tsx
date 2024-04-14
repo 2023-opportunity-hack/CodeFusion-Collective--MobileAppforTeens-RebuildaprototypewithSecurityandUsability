@@ -40,13 +40,14 @@ export default function GratitiudeJournal() {
   const handleSubmit = () => {
     const newDate = new Date();
     const currentDate = newDate.toISOString();
+    const dateTitle = currentDate.slice(0, 10);
     let promptValue = '';
 
     if (activeInput === 'gratefulEntry' && gratefulEntry.length > 0) {
       promptValue = 'Today I am grateful for';
 
       db.transaction((tx) => {
-        tx.executeSql('SELECT id FROM journal_entries WHERE date = ?', [currentDate], (_, resultSet) => {
+        tx.executeSql('SELECT id FROM journal_entries WHERE date_title = ?', [dateTitle], (_, resultSet) => {
           if (resultSet.rows.length > 0) {
             const journalId = resultSet.rows.item(0).id;
 
@@ -57,7 +58,7 @@ export default function GratitiudeJournal() {
             });
             setShowSuccessToast(true);
           } else {
-            tx.executeSql('INSERT INTO journal_entries (date) VALUES (?)', [currentDate], (_, resultSet) => {
+            tx.executeSql('INSERT INTO journal_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, currentDate], (_, resultSet) => {
               const journalId = resultSet.insertId;
 
               tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, gratefulEntry, promptValue]);
@@ -77,7 +78,7 @@ export default function GratitiudeJournal() {
     } else if (activeInput === 'promptEntry' && promptEntry.length > 0 && journalEntryLabel.length > 0) {
       promptValue = journalEntryLabel;
       db.transaction((tx) => {
-        tx.executeSql('SELECT id FROM journal_entries WHERE date = ?', [currentDate], (_, resultSet) => {
+        tx.executeSql('SELECT id FROM journal_entries WHERE date_title = ?', [dateTitle], (_, resultSet) => {
           if (resultSet.rows.length > 0) {
             const journalId = resultSet.rows.item(0).id;
 
@@ -88,7 +89,7 @@ export default function GratitiudeJournal() {
             });
             setShowSuccessToast(true);
           } else {
-            tx.executeSql('INSERT INTO journal_entries (date) VALUES (?)', [currentDate], (_, resultSet) => {
+            tx.executeSql('INSERT INTO journal_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, currentDate], (_, resultSet) => {
               const journalId = resultSet.insertId;
 
               tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, promptEntry, journalEntryLabel]);
@@ -130,7 +131,7 @@ export default function GratitiudeJournal() {
     db.transaction((tx) => {
       // tx.executeSql('DROP TABLE IF EXISTS journal_entries');
       // tx.executeSql('DROP TABLE IF EXISTS journal_details');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS journal_entries (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS journal_entries (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT)');
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS journal_details (id INTEGER PRIMARY KEY AUTOINCREMENT, journal_id INTEGER, prompt TEXT, description TEXT, FOREIGN KEY (journal_id) REFERENCES Journal_entries(id))'
       );
