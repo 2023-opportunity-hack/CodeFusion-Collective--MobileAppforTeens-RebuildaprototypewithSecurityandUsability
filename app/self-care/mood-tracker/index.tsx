@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
 import { PageHeader } from '../../../components/PageHeader';
+import { ToastMessage } from '../../../components/ToastMessage';
 
 const sqlQuery = `SELECT
                     '[' || GROUP_CONCAT('"' || strategy || '"') || ']' AS strategies
@@ -29,29 +30,52 @@ export default function MoodTracker () {
   const db = SQLite.openDatabase('safespace.db');
   const [selectedMood, setSelectedMood] = useState('');
   const [savedStrategies, setSavedStrategies] = useState([]);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const saveMoodEntry = () => {
     const newDate = new Date();
     const currentDate = newDate.toISOString();
     const currentTime = newDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    const dateTitle = currentDate.slice(0, 10);
 
     db.transaction((tx) => {
-      tx.executeSql('SELECT id FROM mood_entries WHERE date = ?', [currentDate], (_, resultSet) => {
+      tx.executeSql('SELECT id FROM mood_entries WHERE date_title = ?', [dateTitle], (_, resultSet) => {
         if (resultSet.rows.length > 0) {
           const moodId = resultSet.rows.item(0).id;
 
-          tx.executeSql('INSERT INTO mood_details (mood_id, mood, time) VALUES (?, ?, ?)', [moodId, selectedMood, currentTime]);
+          tx.executeSql('INSERT INTO mood_details (mood_id, mood, time) VALUES (?, ?, ?)', [moodId, selectedMood, currentTime], undefined, (_, error) => {
+            console.error('Error inserting mood entry:', error);
+            setShowErrorToast(true);
+            return false;
+          });
+          setShowSuccessToast(true);
         } else {
-          tx.executeSql('INSERT INTO mood_entries (date) VALUES (?)', [currentDate], (_, resultSet) => {
+          tx.executeSql('INSERT INTO mood_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, currentDate], (_, resultSet) => {
             const moodId = resultSet.insertId;
 
-            tx.executeSql('INSERT INTO mood_details (mood_id, mood, time) VALUES (?, ?, ?)', [moodId!, selectedMood, currentTime]);
+            tx.executeSql('INSERT INTO mood_details (mood_id, mood, time) VALUES (?, ?, ?)', [moodId!, selectedMood, currentTime], undefined, (_, error) => {
+              console.error('Error inserting mood entry:', error);
+              setShowErrorToast(true);
+              return false;
+            });
+            setShowSuccessToast(true);
           })
         }
+      }, (_, error) => {
+        console.error('Error finding mood entries:', error);
+        setShowErrorToast(true);
+        return false;
       })
     });
 
     setSelectedMood('');
+    setTimeout(() => {
+      if (showErrorToast) {
+        setShowErrorToast(false);
+      }
+      setShowSuccessToast(false);
+    }, 3000);
   }
 
   useEffect(() => {
@@ -65,11 +89,15 @@ export default function MoodTracker () {
         } else {
           setSavedStrategies(parsedStrategies);
         }
+      }, (_, error) => {
+        console.error('Error fetching strategies:', error);
+        setShowErrorToast(true);
+        return false;
       })
     });
 
     db.transaction((tx) => {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS mood_entries (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS mood_entries (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT)');
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS mood_details (id INTEGER PRIMARY KEY AUTOINCREMENT, mood_id INTEGER, mood TEXT, time TEXT, FOREIGN KEY (mood_id) REFERENCES mood_entries(id))'
       );
@@ -79,6 +107,8 @@ export default function MoodTracker () {
   return (
     <ScrollView>
       <View style={styles.container}>
+        {showSuccessToast ? <ToastMessage type='success' entryName='Mood' /> : null}
+        {showErrorToast ? <ToastMessage type='error' entryName='Mood'/> : null}
         <PageHeader route="/self-care" title="Mood Tracker"/>
         <Text style={{ fontFamily: "JakartaSemiBold" }}>How are you feeling today?</Text>
         <View style={styles.moodGrid}>

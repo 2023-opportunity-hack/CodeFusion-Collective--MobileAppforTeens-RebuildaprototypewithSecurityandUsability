@@ -1,10 +1,10 @@
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { router } from "expo-router";
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from "react";
 import { Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import MediaUploadModal from "../../components/MediaUploadModal";
 import { PageHeader } from '../../components/PageHeader';
+import { ToastMessage } from '../../components/ToastMessage';
 
 export default function AddNewRecordPage() {
   const db = SQLite.openDatabase('safespace.db');
@@ -12,6 +12,8 @@ export default function AddNewRecordPage() {
   const [date, setDate] = useState<Date>();
   const [show, setShow] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
+  const [showSuccessToast, setShowSuccessToast] = useState<boolean>(false);
+  const [showErrorToast, setShowErrorToast] = useState<boolean>(false);
 
 
   const onChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
@@ -34,38 +36,66 @@ export default function AddNewRecordPage() {
   const handleSubmit = () => {
     const newDate = new Date();
     const currentDate = newDate.toISOString();
+    const dateTitle = currentDate.slice(0, 10);
 
     if (date && text.length > 0) {
       db.transaction((tx) => {
-        tx.executeSql('SELECT id FROM records WHERE date = ?;', [currentDate], (_, resultSet) => {
+        tx.executeSql('SELECT id FROM records WHERE date_title = ?;', [dateTitle], (_, resultSet) => {
           if (resultSet.rows.length > 0) {
             const recordId = resultSet.rows.item(0).id;
 
             tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, text, date.toISOString()], (_, resultSetDetails) => {
-              router.back();
+              setDate(new Date());
+              setText('');
+              setShowSuccessToast(true);
+            }, (_, error) => {
+              console.error('Error inserting record details:', error);
+              setShowErrorToast(true);
+              return false;
             })
           } else {
-            tx.executeSql('INSERT INTO records (date) VALUES (?)', [currentDate],
-            (_, resultSet) => {
-              const recordId = resultSet.insertId;
+            tx.executeSql('INSERT INTO records (date_title, date_value) VALUES (?, ?)', [dateTitle ,currentDate],
+              (_, resultSet) => {
+                const recordId = resultSet.insertId;
 
-              tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString()],
-              (_, resultSetDetails) => {
-                router.back();
-              })
-            },
+                tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString()],
+                (_, resultSetDetails) => {
+                  setDate(new Date());
+                  setText('');
+                  setShowSuccessToast(true);
+                }, (_, error) => {
+                  console.error('Error inserting record details:', error);
+                  setShowErrorToast(true);
+                  return false;
+                })
+              },
+              (_, error) => {
+                console.error('Error inserting record:', error);
+                setShowErrorToast(true);
+                return false;
+              }
             );
           }
+        }, (_, error) => {
+          console.error('Error selecting record:', error);
+          setShowErrorToast(true);
+          return false;
         });
       });
     }
-  }
+    setTimeout(() => {
+      if (showErrorToast) {
+        setShowErrorToast(false);
+      }
+      setShowSuccessToast(false);
+    }, 3000);
+  };
 
   useEffect(() => {
     db.transaction((tx) => {
       // tx.executeSql('DROP TABLE IF EXISTS records');
       // tx.executeSql('DROP TABLE IF EXISTS record_details');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS records (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS records (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT)');
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS record_details (id INTEGER PRIMARY KEY AUTOINCREMENT, record_id INTEGER, description TEXT, date TEXT, FOREIGN KEY (record_id) REFERENCES Records(id))'
       );
@@ -74,6 +104,8 @@ export default function AddNewRecordPage() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {showSuccessToast ? <ToastMessage entryName="Record" type="success" /> : null}
+      {showErrorToast ? <ToastMessage entryName="Record" type="error" /> : null}
       <Modal
         animationType="fade"
         transparent={true}
@@ -96,6 +128,7 @@ export default function AddNewRecordPage() {
           textAlignVertical="top"
           placeholder="Describe what happened here. Provide as much detail as possible"
           onChangeText={setText}
+          value={text}
         />
       </View>
       <View style={styles.descriptionContainer}>

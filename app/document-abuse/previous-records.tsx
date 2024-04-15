@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { List } from 'react-native-paper';
 import { PageHeader } from '../../components/PageHeader';
+import { ToastMessage } from '../../components/ToastMessage';
 
 type RecordEntryType = {
   record_date: string,
   record_id: number,
+  date_value: string,
   records: {
     description: string,
     event_date: string,
@@ -44,10 +46,13 @@ export default function NewRecordPage() {
   const [recordEntries, setRecordEntries] = useState<RecordEntryType[]>([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const sqlQuery = `SELECT
                       r.id AS record_id,
-                      r.date AS record_date,
+                      r.date_title AS record_date,
+                      r.date_value AS date_value,
                       '[' || GROUP_CONCAT(
                           '{"detail_id": ' || rd.id || ', "event_date": "' || rd.date || '", "description": "' || rd.description || '"}'
                       ) || ']' AS records
@@ -61,11 +66,26 @@ export default function NewRecordPage() {
 
   const deleteAllRecords = () => {
     db.transaction((tx) => {
-      tx.executeSql('DELETE FROM records;');
-      tx.executeSql('DELETE FROM record_details;');
+      tx.executeSql('DELETE FROM records;', undefined, undefined, (_, error) => {
+        console.error('Error deleting records:', error);
+        setShowErrorToast(true);
+        return false;
+      });
+      tx.executeSql('DELETE FROM record_details;', undefined, undefined, (_, error) => {
+        console.error('Error deleting record details:', error);
+        setShowErrorToast(true);
+        return false;
+      });
       setRecordEntries([]);
       setShowModal(false);
+      setShowSuccessToast(true);
     })
+    setTimeout(() => {
+      if (showErrorToast) {
+        setShowErrorToast(false);
+      }
+      setShowSuccessToast(false);
+    }, 3000);
   }
 
   useEffect(() => {
@@ -79,93 +99,102 @@ export default function NewRecordPage() {
           resultSet.rows._array.forEach((day) => {
             day.records = JSON.parse(day.records);
           })
-          const sortedRecords: RecordEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.record_date).getTime() - new Date(a.record_date).getTime());
+          const sortedRecords: RecordEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.date_value).getTime() - new Date(a.date_value).getTime());
           sortedRecords.forEach((day) => {
             day.records.sort((a, b) => new Date(b.event_date).getTime() - new Date(a.event_date).getTime());
           })
           setRecordEntries(sortedRecords);
           setLoading(false);
         }
-      }, );
+      }, (_, error) => {
+        setLoading(false);
+        console.log('Error in Journal Entries: ' + error);
+        setShowErrorToast(true);
+        return false;
+      });
     });
   }, [])
 
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Modal
-        animationType='fade'
-        transparent={true}
-        visible={showModal}
-        onRequestClose={() => setShowModal(false)}
-        >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContents}>
-            <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 16 }}>Are you sure you want to delete all records?</Text>
-            <View style={styles.modalButtons}>
-              <Pressable style={styles.modalButtonWrapper} onPress={deleteAllRecords}>
-                {({ pressed }) => (
-                  <View style={[styles.modalButton, { backgroundColor: '#D22F27', opacity: pressed ? 0.5 : 1}]}>
-                    <Text style={styles.modalButtonText}>Yes</Text>
-                  </View>
-                )}
-              </Pressable>
-              <Pressable style={styles.modalButtonWrapper} onPress={() => setShowModal(false)}>
-                {({ pressed }) => (
-                  <View style={[styles.modalButton, { backgroundColor: 'green', opacity: pressed ? 0.5 : 1}]}>
-                    <Text style={styles.modalButtonText}>No</Text>
-                  </View>
-                )}
-              </Pressable>
+    <View style={{ flex: 1, backgroundColor: '#F0EDF1' }}>
+      {showSuccessToast ? <ToastMessage entryName='Records' type='delete' /> : null}
+      {showErrorToast ? <ToastMessage entryName='records' type="error" /> : null}
+      <ScrollView contentContainerStyle={styles.container}>
+        <Modal
+          animationType='fade'
+          transparent={true}
+          visible={showModal}
+          onRequestClose={() => setShowModal(false)}
+          >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContents}>
+              <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 16 }}>Are you sure you want to delete all records?</Text>
+              <View style={styles.modalButtons}>
+                <Pressable style={styles.modalButtonWrapper} onPress={deleteAllRecords}>
+                  {({ pressed }) => (
+                    <View style={[styles.modalButton, { backgroundColor: '#D22F27', opacity: pressed ? 0.5 : 1}]}>
+                      <Text style={styles.modalButtonText}>Yes</Text>
+                    </View>
+                  )}
+                </Pressable>
+                <Pressable style={styles.modalButtonWrapper} onPress={() => setShowModal(false)}>
+                  {({ pressed }) => (
+                    <View style={[styles.modalButton, { backgroundColor: 'green', opacity: pressed ? 0.5 : 1}]}>
+                      <Text style={styles.modalButtonText}>No</Text>
+                    </View>
+                  )}
+                </Pressable>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
-      <PageHeader route="/document-abuse" title="Previous Records" />
-      <List.Section style={styles.listGroupContainer}>
-        <View style={styles.listGroup}>
-          {!loading && recordEntries.length > 0 ? (
-            recordEntries.map((day) => (
-              <List.Accordion
-                key={day.record_id}
-                title={new Date(day.record_date).toLocaleString('en-US', options)}
-                theme={{ colors: { background: "#FFFFFF" } }}
-                titleStyle={{ fontFamily: 'JakartaMed' }}
-              >
-                {day.records.map((entry) => (
-                  <List.Item
-                    key={entry.event_date}
-                    title={<RecordEntry description={entry.description} date={entry.event_date} />}
-                  />
-                ))}
-              </List.Accordion>
-            ))
-          ): (
-            <List.Item title="No saved records" titleStyle={{ fontFamily: "JakartaMed" }} />
-          )}
-        </View>
-      </List.Section>
-      {recordEntries.length > 0 ?
-        <Pressable onPress={() => setShowModal(true)} style={styles.buttonWrapper}>
-          {({ pressed }) => (
-            <View style={[styles.deleteButton, { opacity: pressed ? 0.5 : 1 }]}>
-              <Text style={styles.buttonText}>Delete Records</Text>
-            </View>
-          )}
-        </Pressable>
-        : null}
-    </ScrollView>
+        </Modal>
+        <PageHeader route="/document-abuse" title="Previous Records" />
+        <List.Section style={styles.listGroupContainer}>
+          <View style={styles.listGroup}>
+            {!loading && recordEntries.length > 0 ? (
+              recordEntries.map((day) => (
+                <List.Accordion
+                  key={day.record_id}
+                  title={new Date(day.date_value).toLocaleString('en-US', options)}
+                  theme={{ colors: { background: "#FFFFFF" } }}
+                  titleStyle={{ fontFamily: 'JakartaMed' }}
+                >
+                  {day.records.map((entry) => (
+                    <List.Item
+                      key={entry.event_date}
+                      title={<RecordEntry description={entry.description} date={entry.event_date} />}
+                    />
+                  ))}
+                </List.Accordion>
+              ))
+            ): (
+              <List.Item title="No saved records" titleStyle={{ fontFamily: "JakartaMed" }} />
+            )}
+          </View>
+        </List.Section>
+        {recordEntries.length > 0 ?
+          <Pressable onPress={() => setShowModal(true)} style={styles.buttonWrapper}>
+            {({ pressed }) => (
+              <View style={[styles.deleteButton, { opacity: pressed ? 0.5 : 1 }]}>
+                <Text style={styles.buttonText}>Delete Records</Text>
+              </View>
+            )}
+          </Pressable>
+          : null}
+      </ScrollView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: "#F0EDF1",
-    padding: "5%"
+    padding: "5%",
   },
   listGroupContainer: {
     width: "100%",
@@ -196,7 +225,7 @@ const styles = StyleSheet.create({
   entrytext: {
     fontFamily: "JakartaLight",
     fontSize: 15,
-    width: 340
+    width: 320
   },
   buttonWrapper: {
     width: '100%',

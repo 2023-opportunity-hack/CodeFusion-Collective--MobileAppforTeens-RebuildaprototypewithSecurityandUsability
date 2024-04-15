@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { ActivityIndicator, List } from "react-native-paper";
 import { PageHeader } from "../../../components/PageHeader";
+import { ToastMessage } from "../../../components/ToastMessage";
 
 const labelTitles = [
   {title: "Listen to your favorite artist"},
@@ -30,6 +31,8 @@ const MyStrategies = () => {
   const [selected, setSelected] = useState<string[]>([]);
   const [showList, setShowList] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const handleSelect = (label: string) => {
     if (selected.includes(label)) {
@@ -48,16 +51,33 @@ const MyStrategies = () => {
           if (resultSet.rows.length > 0) {
             setSelected([]);
             setShowList(false);
+            setShowSuccessToast(true);
           } else {
             tx.executeSql('INSERT INTO strategies (strategy) VALUES (?)', [label], () => {
               setSelected([]);
               setShowList(false);
+              setShowSuccessToast(true);
+            }, (_, error) => {
+              console.error('Error inserting strategy:', error);
+              setShowErrorToast(true);
+              return false;
             });
           }
+        }, (_, error) => {
+          console.error('Error selecting strategy:', error);
+          setShowErrorToast(true);
+          return false;
         })
       })
     });
     setLoading(false);
+
+    setTimeout(() => {
+      if (showErrorToast) {
+        setShowErrorToast(false);
+      }
+      setShowSuccessToast(false);
+    }, 3000);
   }
 
   useEffect(() => {
@@ -68,6 +88,8 @@ const MyStrategies = () => {
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { position: "relative", }]}>
+      {showSuccessToast ? <ToastMessage entryName="Strategy" type="success" /> : null}
+      {showErrorToast ? <ToastMessage entryName="Strategy" type="error" /> : null}
       {loading
         ? <View style={styles.overlay}>
             <ActivityIndicator size="large" color="#420C5C" />

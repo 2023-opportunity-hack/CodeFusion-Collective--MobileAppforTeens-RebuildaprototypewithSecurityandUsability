@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
 import { PageHeader } from '../../../../components/PageHeader';
+import { ToastMessage } from '../../../../components/ToastMessage';
 
 
 type JournalEntryType = {
   date_id: number,
   date: string,
+  date_value: string,
   entries: {
     entry_id: number,
     prompt: string,
@@ -17,7 +19,8 @@ type JournalEntryType = {
 
 const sqlQuery = `SELECT
                     je.id AS date_id,
-                    je.date AS date,
+                    je.date_title AS date,
+                    je.date_value AS date_value,
                     '[' || GROUP_CONCAT(
                         '{"entry_id": ' || jd.id || ', "prompt": "' || jd.prompt || '", "entry": "' || jd.description || '"}'
                     ) || ']' AS entries
@@ -50,14 +53,21 @@ export default function JournalEntries() {
   const [journalEntries, setJournalEntries] = useState<JournalEntryType[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const deleteAllJournalEntries = () => {
     db.transaction((tx) => {
       tx.executeSql('DELETE FROM journal_entries;');
       tx.executeSql('DELETE FROM journal_details;');
+      setShowSuccessToast(true);
       setJournalEntries([]);
       setShowModal(false);
     })
+
+    setTimeout(() => {
+      setShowSuccessToast(false);
+    }, 3000)
   }
 
   useEffect(() => {
@@ -68,10 +78,11 @@ export default function JournalEntries() {
         resultSet.rows._array.forEach((day) => {
           day.entries = JSON.parse(day.entries);
         });
-        const sortedEntries: JournalEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        const sortedEntries: JournalEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.date_value).getTime() - new Date(a.date_value).getTime());
         setJournalEntries(sortedEntries);
         setLoading(false);
       }, (_, error) => {
+        setShowErrorToast(true);
         setLoading(false);
         console.log('Error in Journal Entries: ' + error);
         return false;
@@ -81,74 +92,77 @@ export default function JournalEntries() {
 
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Modal
-        animationType='fade'
-        transparent={true}
-        visible={showModal}
-        onRequestClose={() => setShowModal(false)}
-        >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContents}>
-            <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 16 }}>Are you sure you want to delete all journal entries?</Text>
-            <View style={styles.modalButtons}>
-              <Pressable style={styles.modalButtonWrapper} onPress={deleteAllJournalEntries}>
-                {({ pressed }) => (
-                  <View style={[styles.modalButton, { backgroundColor: '#D22F27', opacity: pressed ? 0.5 : 1}]}>
-                    <Text style={styles.modalButtonText}>Yes</Text>
-                  </View>
-                )}
-              </Pressable>
-              <Pressable style={styles.modalButtonWrapper} onPress={() => setShowModal(false)}>
-                {({ pressed }) => (
-                  <View style={[styles.modalButton, { backgroundColor: 'green', opacity: pressed ? 0.5 : 1}]}>
-                    <Text style={styles.modalButtonText}>No</Text>
-                  </View>
-                )}
-              </Pressable>
+    <View style={{ flex: 1, backgroundColor: '#F0EDF1' }}>
+      {showSuccessToast ? <ToastMessage entryName='Entries' type='delete' /> : null}
+      {showErrorToast ? <ToastMessage entryName='journal entries' type="error" /> : null}
+      <ScrollView contentContainerStyle={styles.container}>
+        <Modal
+          animationType='fade'
+          transparent={true}
+          visible={showModal}
+          onRequestClose={() => setShowModal(false)}
+          >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContents}>
+              <Text style={{ fontFamily: 'JakartaSemiBold', fontSize: 16 }}>Are you sure you want to delete all journal entries?</Text>
+              <View style={styles.modalButtons}>
+                <Pressable style={styles.modalButtonWrapper} onPress={deleteAllJournalEntries}>
+                  {({ pressed }) => (
+                    <View style={[styles.modalButton, { backgroundColor: '#D22F27', opacity: pressed ? 0.5 : 1}]}>
+                      <Text style={styles.modalButtonText}>Yes</Text>
+                    </View>
+                  )}
+                </Pressable>
+                <Pressable style={styles.modalButtonWrapper} onPress={() => setShowModal(false)}>
+                  {({ pressed }) => (
+                    <View style={[styles.modalButton, { backgroundColor: 'green', opacity: pressed ? 0.5 : 1}]}>
+                      <Text style={styles.modalButtonText}>No</Text>
+                    </View>
+                  )}
+                </Pressable>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
-      <PageHeader route="/self-care/gratitude-journal" title="Journal Entries" />
-      <List.Section style={styles.listGroupContainer}>
-        <View style={styles.listGroup}>
-          {!loading && journalEntries.length > 0 ? (
-            journalEntries.map((day) => (
-              <List.Accordion
-                key={day.date}
-                title={new Date(day.date).toLocaleDateString('en-US', options)}
-                theme={{ colors: { background: "#FFFFFF" } }}
-                titleStyle={{ fontFamily: 'JakartaMed' }}
-                >
-                {day.entries && day.entries.map((entry) => (
-                  <List.Item
-                    key={entry.entry}
-                    title={<JournalEntry entry={entry.entry} prompt={entry.prompt} />}
-                  />
-                ))}
-             </List.Accordion>
-            ))
-          ) : (
-            <List.Item title={"No saved journal entries"} titleStyle={{ fontFamily: "JakartaMed" }} />
-          )}
-        </View>
-      </List.Section>
-      {journalEntries.length > 0 ?
-        <View style={styles.buttonWrapper}>
-          <Pressable onPress={() => setShowModal(true)} style={({ pressed }) => ([{ opacity: pressed ? 0.5 : 1 }, styles.deleteButton])}>
-            <Text style={styles.buttonText}>Delete Journal Entries</Text>
-          </Pressable>
-        </View>
-        : null}
-    </ScrollView>
+        </Modal>
+        <PageHeader route="/self-care/gratitude-journal" title="Journal Entries" />
+        <List.Section style={styles.listGroupContainer}>
+          <View style={styles.listGroup}>
+            {!loading && journalEntries.length > 0 ? (
+              journalEntries.map((day) => (
+                <List.Accordion
+                  key={day.date}
+                  title={new Date(day.date_value).toLocaleDateString('en-US', options)}
+                  theme={{ colors: { background: "#FFFFFF" } }}
+                  titleStyle={{ fontFamily: 'JakartaMed' }}
+                  >
+                  {day.entries && day.entries.map((entry) => (
+                    <List.Item
+                      key={entry.entry}
+                      title={<JournalEntry entry={entry.entry} prompt={entry.prompt} />}
+                    />
+                  ))}
+              </List.Accordion>
+              ))
+            ) : (
+              <List.Item title={"No saved journal entries"} titleStyle={{ fontFamily: "JakartaMed" }} />
+            )}
+          </View>
+        </List.Section>
+        {journalEntries.length > 0 ?
+          <View style={styles.buttonWrapper}>
+            <Pressable onPress={() => setShowModal(true)} style={({ pressed }) => ([{ opacity: pressed ? 0.5 : 1 }, styles.deleteButton])}>
+              <Text style={styles.buttonText}>Delete Journal Entries</Text>
+            </Pressable>
+          </View>
+          : null}
+      </ScrollView>
+    </View>
   );
 }
 
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',

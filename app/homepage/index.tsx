@@ -2,11 +2,13 @@ import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { useState } from 'react';
 import { Image, Modal, Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { ToastMessage } from '../../components/ToastMessage';
 
 export default function Homepage() {
   const db = SQLite.openDatabase('safespace.db');
   const colorScheme = useColorScheme();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
 
   const deleteAllData = () => {
     db.transaction((tx) => {
@@ -18,10 +20,16 @@ export default function Homepage() {
       tx.executeSql('DELETE FROM record_details;');
     });
     setShowDeleteModal(false);
+    setShowSuccessToast(true);
+
+    setTimeout(() => {
+      setShowSuccessToast(false);
+    }, 3000);
   };
 
   return (
     <View style={styles.container}>
+      {showSuccessToast ? <ToastMessage type='delete' entryName='Records' /> : null}
       <Modal
         animationType='fade'
         transparent={true}
