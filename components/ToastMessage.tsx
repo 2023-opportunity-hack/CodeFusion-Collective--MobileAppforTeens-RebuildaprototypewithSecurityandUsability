@@ -51,7 +51,7 @@ export const ToastMessage = ({ entryName, type }: { entryName: string, type: str
         width: '80%',
       }}
     >
-      {type === "success" || type === "delete"
+      {type === "success" || type === "delete" || type === "email"
         ? <Ionicons name="checkbox" size={50} color="green" />
         : <MaterialCommunityIcons name="alert-box" size={50} color="red" />
       }

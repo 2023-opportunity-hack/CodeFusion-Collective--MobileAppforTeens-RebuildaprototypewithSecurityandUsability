@@ -7,8 +7,15 @@ import { List, RadioButton } from 'react-native-paper';
 import { PageHeader } from '../../components/PageHeader';
 import { ToastMessage } from '../../components/ToastMessage';
 
+type TimezoneKey = 'GMT-4' | 'GMT-5' | 'GMT-6' | 'GMT-7' | 'GMT-8';
+
+type TimezoneInfo = {
+  ST: string;
+  DT: string;
+};
+
 type Timezones = {
-  [key: string]: string;
+  [key in TimezoneKey]: TimezoneInfo;
 };
 
 export default function ContactProfessional() {
@@ -23,16 +30,28 @@ export default function ContactProfessional() {
   const [expandedList, setExpandedList] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
-  const [error, setError] = useState(0);
+  const [emailError, setEmailError] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
+  const [requiredError, setRequiredError] = useState(false);
 
   const timezones: Timezones = {
-    'GMT-5': 'EST',
-    'GMT-6': 'CST',
-    'GMT-7': 'MST',
-    'GMT-8': 'PST',
+    'GMT-4': { ST: '', DT: 'EDT' },
+    'GMT-5': { ST: 'EST', DT: 'CDT' },
+    'GMT-6': { ST: 'CST', DT: 'MDT' },
+    'GMT-7': { ST: 'MST', DT: 'PDT' },
+    'GMT-8': { ST: 'PST', DT: '' },
   };
 
   const formatTimeZone = () => {
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const isDST = month > 3 && month < 11;
+    let season: string = 'ST';
+
+    if (isDST) {
+      season = 'DT';
+    }
+
     let timeZone = new Intl.DateTimeFormat('en-us', { timeZoneName: 'short' })
     .formatToParts(new Date())
     .find(part => part.type == "timeZoneName")?.value;
@@ -41,8 +60,8 @@ export default function ContactProfessional() {
       return 'Error getting time zone';
     }
 
-    if (timezones[timeZone]) {
-      return timezones[timeZone];
+    if (timezones[timeZone as TimezoneKey]) {
+      return timezones[timeZone as TimezoneKey][season as 'ST' | 'DT'];
     }
 
     return timeZone;
@@ -70,7 +89,7 @@ export default function ContactProfessional() {
 
   const sendEmail = async () => {
     try {
-      await axios.post('http://192.168.68.69:3000/contactProfessional', {
+      await axios.post('http://192.168.68.77:3000/contactProfessional', {
         name,
         phone,
         email,
@@ -94,7 +113,7 @@ export default function ContactProfessional() {
       }, 3000);
     } catch (err) {
       setShowErrorToast(true);
-      console.log(err);
+      console.log("Error sending email from frontend: ", err);
 
       setTimeout(() => {
         setShowErrorToast(false);
@@ -102,26 +121,35 @@ export default function ContactProfessional() {
     }
   };
 
+  const validateInputs = () => {
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (name.length === 0 || contactChoice.length === 0 || text.length === 0 || selected.length === 0) {
+      setRequiredError(true);
+      return;
+    } else if (email.length === 0 && phone.length === 0) {
+      setRequiredError(true);
+      return;
+    } else if (email.length > 0 && !emailRegex.test(email)) {
+      setEmailError(true);
+      return;
+    } else if (phone.length > 0 && (phone.length < 10 || phone.length > 11)) {
+      setPhoneError(true);
+      return;
+    } else if (contactChoice === 'Call' && chosenTime.length === 0) {
+      setRequiredError(true);
+      return;
+    } else  {
+      setRequiredError(false);
+      setEmailError(false);
+      setPhoneError(false);
+      sendEmail();
+    }
+  };
+
   const selectTime = (selected: string) => {
     setExpandedList(false);
     setChosenTime(selected);
-    console.log("chosen time: ", selected);
-  };
-
-  const handleTextChange = (newText: string) => {
-    setText(newText);
-  };
-
-  const handleNameChange = (newName: string) => {
-    setName(newName);
-  };
-
-  const handlePhoneChange = (newPhone: string) => {
-    setPhone(newPhone);
-  };
-
-  const handleEmailChange = (newEmail: string) => {
-    setEmail(newEmail);
   };
 
   useEffect(() => {
@@ -152,7 +180,7 @@ export default function ContactProfessional() {
           </View>
           <View>
             <View style={styles.messagecontent}>
-              <Text style={styles.areatitle}>Type your message here</Text>
+              <Text style={styles.areatitle}>Type your message here<Text style={{ color: 'red' }}>*</Text></Text>
               <Text style={styles.remainingText}>{count} remaining</Text>
             </View>
             <TextInput
@@ -160,17 +188,17 @@ export default function ContactProfessional() {
               multiline={true}
               maxLength={160}
               value={text}
-              onChangeText={handleTextChange}
+              onChangeText={(newText) => setText(newText)}
               style={styles.textinput}
             />
           </View>
           <View>
-            <Text style={styles.areatitle}>Preferred Name</Text>
+            <Text style={styles.areatitle}>Preferred Name<Text style={{ color: 'red' }}>*</Text></Text>
             <TextInput
               multiline={false}
               maxLength={20}
               value={name}
-              onChangeText={handleNameChange}
+              onChangeText={(newName) => setName(newName)}
               placeholder='Name'
               placeholderTextColor="gray"
               style={styles.infoinput}
@@ -178,30 +206,33 @@ export default function ContactProfessional() {
           </View>
           <View>
             <Text style={styles.areatitle}>Your Phone Number</Text>
+            {phoneError ? <Text style={{ color: 'red', fontFamily: 'JakartaMed', fontSize: 12 }}>Please list a valid phone number</Text> : null}
             <TextInput
               multiline={false}
               maxLength={20}
               value={phone}
-              onChangeText={handlePhoneChange}
+              onChangeText={(newPhone) => setPhone(newPhone)}
               placeholder='+1'
               placeholderTextColor="gray"
               style={styles.infoinput}
             />
           </View>
+          <Text style={styles.areatitle}>- or -</Text>
           <View>
             <Text style={styles.areatitle}>Your Email Address</Text>
+            {emailError ? <Text style={{ color: 'red', fontFamily: 'JakartaMed', fontSize: 12 }}>Please list a valid email address</Text> : null}
             <TextInput
               multiline={false}
               maxLength={20}
               value={email}
-              onChangeText={handleEmailChange}
+              onChangeText={(newEmail) => setEmail(newEmail)}
               placeholder='Email address'
               placeholderTextColor="gray"
               style={styles.infoinput}
             />
           </View>
           <View>
-            <Text style={styles.areatitle}>Choose how you want to be contacted</Text>
+            <Text style={styles.areatitle}>Choose how you want to be contacted<Text style={{ color: 'red' }}>*</Text></Text>
             <View style={styles.radio}>
               <View style={styles.radiooption}>
                 <RadioButton.Android
@@ -253,11 +284,14 @@ export default function ContactProfessional() {
                 <Text style={{ fontFamily: 'JakartaMed' }}>Email</Text>
               </View>
             </View>
-            {error === 0 ? <Text></Text> :
-            <Text style={{ color:'red', fontFamily: 'JakartaMed', textAlign: 'center' }}>Please ensure all required information is filled.</Text>
+            {requiredError
+              ? <Text style={{ color:'red', fontFamily: 'JakartaMed', textAlign: 'center' }}>
+                  Please ensure all required information is filled
+                </Text>
+              : null
             }
           </View>
-          <TouchableOpacity style={styles.submitbutton} onPress={sendEmail}>
+          <TouchableOpacity style={styles.submitbutton} onPress={validateInputs}>
             <Text style={styles.submittext}>Submit</Text>
           </TouchableOpacity>
         </View>
