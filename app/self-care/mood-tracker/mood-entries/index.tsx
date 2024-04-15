@@ -128,7 +128,7 @@ const MoodEntries = () => {
   return (
     <View style={{ flex: 1, backgroundColor: '#F0EDF1' }}>
       <ScrollView contentContainerStyle={styles.container}>
-        {showSuccessToast ? <ToastMessage entryName='Entries' type='delete' /> : null}
+        {showSuccessToast ? <ToastMessage entryName='Moods' type='delete' /> : null}
         {showErrorToast ? <ToastMessage entryName='mood entries' type="error" /> : null}
         <Modal
           animationType='fade'

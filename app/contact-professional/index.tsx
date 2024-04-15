@@ -165,7 +165,7 @@ export default function ContactProfessional() {
         <View style={styles.form}>
           <View>
             <Text style={[styles.areatitle, { marginTop: 0 }]}>
-              The dropdown menu provides a list of national hotlines you can text or call for information
+              The dropdown menu provides a list of national hotlines you can anonymously contact for support. Please ensure the information you enter is safe to share.
             </Text>
             <SelectList
               placeholder='Please select'
@@ -230,6 +230,7 @@ export default function ContactProfessional() {
               placeholderTextColor="gray"
               style={styles.infoinput}
             />
+            <Text style={{ fontFamily: 'JakartaMed', fontSize: 12, color: 'gray', marginTop: 5 }}>If your email is being monitored, consider creating a new one</Text>
           </View>
           <View>
             <Text style={styles.areatitle}>Choose how you want to be contacted<Text style={{ color: 'red' }}>*</Text></Text>
