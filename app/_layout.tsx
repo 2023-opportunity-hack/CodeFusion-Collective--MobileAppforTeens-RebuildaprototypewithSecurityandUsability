@@ -2,8 +2,8 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { CommonActions } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack, useNavigation } from "expo-router";
-import { useEffect, useState } from "react";
-import { AppState, AppStateStatus, useColorScheme } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { AppState, AppStateStatus, Image, StyleSheet, View } from "react-native";
 import EmergencyContactContextProvider from "../context/contactContext";
 
 export {
@@ -20,7 +20,8 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [appState, setAppState] = useState(AppState.currentState);
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const navigation = useNavigation();
 
   const [loaded, error] = useFonts({
@@ -47,11 +48,12 @@ export default function RootLayout() {
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
-      if (nextAppState === 'background') {
+      if (nextAppState === 'background' || nextAppState === 'inactive') {
         navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'lockscreen/index' }] }));
       }
 
-      setAppState(nextAppState);
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
     };
 
     const subscription = AppState.addEventListener('change', handleAppStateChange);
@@ -59,26 +61,44 @@ export default function RootLayout() {
     return () => {
       subscription.remove();
     };
-  }, [appState])
+  }, []);
 
   if (!loaded) {
     return null;
   }
 
-  return <RootLayoutNav />;
-}
+  return (
+    <View style={styles.container}>
+      {appStateVisible === 'background'
+        ? <Image
+            source={require('../assets/images/splash.png')}
+            resizeMode="cover"
+            style={styles.overlayImage}
+          />
+        : null
+      }
+      <RootLayoutNav />
+    </View>
+  );
+};
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
 
   return (
       <EmergencyContactContextProvider>
-        {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
-          <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
-            <Stack.Screen name="lockscreen/index" />
-            {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
-          </Stack>
-        {/* </ThemeProvider> */}
+        <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
+          <Stack.Screen name="lockscreen/index" />
+        </Stack>
       </EmergencyContactContextProvider>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'relative',
+  },
+  overlayImage: {
+    ...StyleSheet.absoluteFillObject,
+  }
+})

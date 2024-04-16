@@ -11,11 +11,10 @@ export default function TabOneScreen() {
   const componentDidMount = async () => {
     try {
       const firstTime = await AsyncStorage.getItem("isFirstTime")
-      if (firstTime == null) {
+      if (firstTime !== null) {
         router.replace('/lockscreen')
       } else {
         router.replace('/onboarding/')
-        await AsyncStorage.setItem("isFirstTime", 'true')
       }
     } catch (error) {
       console.error("Error in componentDidMount function: ", error);

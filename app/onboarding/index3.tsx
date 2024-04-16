@@ -1,10 +1,20 @@
 import { FontAwesome } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Link } from 'expo-router';
+import { useEffect } from 'react';
 import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const Onboarding3 = () => {
   const { width } = Dimensions.get('window');
   const descriptionFontSize = width < 391 ? 21 : 24;
+
+  useEffect(() => {
+    const setFirstTime = async () => {
+      await AsyncStorage.setItem("isFirstTime", 'true');
+    };
+
+    setFirstTime();
+  }, []);
 
   return (
     <View style={styles.container}>
