@@ -164,7 +164,7 @@ export default function ContactProfessional() {
         <PageHeader route="/homepage" title="Contact Professional" />
         <View style={styles.form}>
           <View>
-            <Text style={[styles.areatitle, { marginTop: 0 }]}>
+            <Text style={[styles.areatitle, { marginTop: 0, marginBottom: 10 }]}>
               The dropdown menu provides a list of national hotlines you can anonymously contact for support. Please ensure the information you enter is safe to share.
             </Text>
             <SelectList
@@ -353,6 +353,7 @@ const styles = StyleSheet.create({
   },
   submitbutton: {
     marginBottom: 50,
+    marginTop: 10,
     borderWidth: 1,
     borderRadius: 100,
     alignItems: 'center',

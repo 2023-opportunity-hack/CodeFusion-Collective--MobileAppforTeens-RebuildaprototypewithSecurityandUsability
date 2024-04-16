@@ -39,11 +39,8 @@ const sendMail = async (request) => {
       if (error) {
         console.log('Error sending email:', error);
         throw error;
-      } else {
-        console.log('Email sent:', info.response);
       }
     });
-    console.log('Email sent');
   } catch (error) {
     console.log('Error sending email:', error);
     throw error;
