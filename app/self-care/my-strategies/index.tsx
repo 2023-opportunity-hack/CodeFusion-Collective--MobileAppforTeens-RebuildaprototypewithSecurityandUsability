@@ -26,7 +26,7 @@ const labelTitles = [
 ]
 
 const MyStrategies = () => {
-  const db = SQLite.openDatabase('safespace.db');
+  const db = SQLite.openDatabaseSync('safespace.db');
 
   const [selected, setSelected] = useState<string[]>([]);
   const [showList, setShowList] = useState(false);

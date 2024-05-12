@@ -18,7 +18,7 @@ const items = [
 
 
 export default function GratitiudeJournal() {
-  const db = SQLite.openDatabase('safespace.db');
+  const db = SQLite.openDatabaseSync('safespace.db');
 
   const [journalEntryLabel, setJournalEntryLabel] = useState('');
   const [gratefulEntry, setGratefulEntry] = useState('');

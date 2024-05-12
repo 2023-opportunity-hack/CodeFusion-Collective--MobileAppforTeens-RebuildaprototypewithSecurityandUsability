@@ -48,7 +48,7 @@ const JournalEntry = ({ entry, prompt }: { entry: string, prompt: string }) => {
 }
 
 export default function JournalEntries() {
-  const db = SQLite.openDatabase('safespace.db');
+  const db = SQLite.openDatabaseSync('safespace.db');
 
   const [journalEntries, setJournalEntries] = useState<JournalEntryType[]>([]);
   const [showModal, setShowModal] = useState(false);

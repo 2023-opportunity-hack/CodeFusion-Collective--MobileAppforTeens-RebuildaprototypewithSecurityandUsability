@@ -42,7 +42,7 @@ const RecordEntry = ({ description, date }: { description: string, date: string}
 
 
 export default function NewRecordPage() {
-  const db = SQLite.openDatabase('safespace.db');
+  const db = SQLite.openDatabaseSync('safespace.db');
   const [recordEntries, setRecordEntries] = useState<RecordEntryType[]>([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);

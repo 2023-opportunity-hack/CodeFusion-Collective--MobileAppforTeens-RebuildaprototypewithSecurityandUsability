@@ -13,7 +13,7 @@ const sqlQuery = `SELECT
                   `;
 
 const MySavedStrategies = () => {
-  const db = SQLite.openDatabase('safespace.db');
+  const db = SQLite.openDatabaseSync('safespace.db');
 
   const [selected, setSelected] = useState<string[]>([]);
   const [newStrategy, setNewStrategy] = useState("");

@@ -5,13 +5,13 @@ import { Image, Modal, Pressable, StyleSheet, Text, View, useColorScheme } from 
 import { ToastMessage } from '../../components/ToastMessage';
 
 export default function Homepage() {
-  const db = SQLite.openDatabase('safespace.db');
+  const db = SQLite.openDatabaseSync('safespace.db');
   const colorScheme = useColorScheme();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
 
   const deleteAllData = () => {
-    db.transaction((tx) => {
+    db.transaction((tx: { executeSql: (arg0: string) => void; }) => {
       tx.executeSql('DELETE FROM journal_entries;');
       tx.executeSql('DELETE FROM journal_details;');
       tx.executeSql('DELETE FROM mood_entries;');

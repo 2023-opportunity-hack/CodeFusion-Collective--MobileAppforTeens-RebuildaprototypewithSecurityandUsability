@@ -7,7 +7,7 @@ import { PageHeader } from '../../components/PageHeader';
 import { ToastMessage } from '../../components/ToastMessage';
 
 export default function AddNewRecordPage() {
-  const db = SQLite.openDatabase('safespace.db');
+  const db = SQLite.openDatabaseSync('safespace.db');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [date, setDate] = useState<Date>();
   const [show, setShow] = useState<boolean>(false);
@@ -39,44 +39,44 @@ export default function AddNewRecordPage() {
     const dateTitle = currentDate.slice(0, 10);
 
     if (date && text.length > 0) {
-      db.transaction((tx) => {
-        tx.executeSql('SELECT id FROM records WHERE date_title = ?;', [dateTitle], (_, resultSet) => {
+      db.transaction((tx: { executeSql: (arg0: string, arg1: any[], arg2: { (_: any, resultSet: any): void; (_: any, resultSetDetails: any): void; (_: any, resultSet: any): void; (_: any, resultSetDetails: any): void; }, arg3: { (_: any, error: any): boolean; (_: any, error: any): boolean; (_: any, error: any): boolean; (_: any, error: any): boolean; }) => void; }) => {
+        tx.executeSql('SELECT id FROM records WHERE date_title = ?;', [dateTitle], (_: any, resultSet: { rows: { length: number; item: (arg0: number) => { (): any; new(): any; id: any; }; }; }) => {
           if (resultSet.rows.length > 0) {
             const recordId = resultSet.rows.item(0).id;
 
-            tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, text, date.toISOString()], (_, resultSetDetails) => {
+            tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, text, date.toISOString()], (_: any, resultSetDetails: any) => {
               setDate(new Date());
               setText('');
               setShowSuccessToast(true);
-            }, (_, error) => {
+            }, (_: any, error: any) => {
               console.error('Error inserting record details:', error);
               setShowErrorToast(true);
               return false;
             })
           } else {
             tx.executeSql('INSERT INTO records (date_title, date_value) VALUES (?, ?)', [dateTitle ,currentDate],
-              (_, resultSet) => {
+              (_: any, resultSet: { insertId: any; }) => {
                 const recordId = resultSet.insertId;
 
                 tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString()],
-                (_, resultSetDetails) => {
+                (_: any, resultSetDetails: any) => {
                   setDate(new Date());
                   setText('');
                   setShowSuccessToast(true);
-                }, (_, error) => {
+                }, (_: any, error: any) => {
                   console.error('Error inserting record details:', error);
                   setShowErrorToast(true);
                   return false;
                 })
               },
-              (_, error) => {
+              (_: any, error: any) => {
                 console.error('Error inserting record:', error);
                 setShowErrorToast(true);
                 return false;
               }
             );
           }
-        }, (_, error) => {
+        }, (_: any, error: any) => {
           console.error('Error selecting record:', error);
           setShowErrorToast(true);
           return false;
@@ -92,15 +92,15 @@ export default function AddNewRecordPage() {
   };
 
   useEffect(() => {
-    db.transaction((tx) => {
-      // tx.executeSql('DROP TABLE IF EXISTS records');
-      // tx.executeSql('DROP TABLE IF EXISTS record_details');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS records (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT)');
-      tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS record_details (id INTEGER PRIMARY KEY AUTOINCREMENT, record_id INTEGER, description TEXT, date TEXT, FOREIGN KEY (record_id) REFERENCES Records(id))'
-      );
+  async function createTables() {
+    await db.withTransactionAsync(async () => {
+      // Execute SQL statement
+      await db.execAsync('CREATE TABLE IF NOT EXISTS records (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT)');
+      await db.execAsync('CREATE TABLE IF NOT EXISTS record_details (id INTEGER PRIMARY KEY AUTOINCREMENT, record_id INTEGER, description TEXT, date TEXT, FOREIGN KEY (record_id) REFERENCES Records(id))');            
     });
-  }, []);
+  }
+   createTables();
+  }, [db]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

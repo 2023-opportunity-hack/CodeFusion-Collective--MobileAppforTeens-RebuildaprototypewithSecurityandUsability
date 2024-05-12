@@ -27,7 +27,7 @@ const moodImagePaths: { [key: string]: any } = {
 };
 
 export default function MoodTracker () {
-  const db = SQLite.openDatabase('safespace.db');
+  const db = SQLite.openDatabaseSync('safespace.db');
   const [selectedMood, setSelectedMood] = useState('');
   const [savedStrategies, setSavedStrategies] = useState([]);
   const [showSuccessToast, setShowSuccessToast] = useState(false);

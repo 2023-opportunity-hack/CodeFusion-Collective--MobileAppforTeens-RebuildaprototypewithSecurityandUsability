@@ -24,9 +24,13 @@ npm install
 ```
 After that, you can start the Expo Go by running the following
 ```sh
-npm start
+npx expo start 
 ```
 The terminal will give directions to open the application on your preferred device (iOS, Android, or web).
+
+## Expo Errors
+- Try to upgrade Expo to the latest version `npm install expo@latest`
+- Fix any issues with `npx expo install --fix`
 
 ## Challenges
 - The first challenge was establishing development environments for different developers on different machines and running different emulations for iOS, Android, and web. Maintaining a codebase that did not introduce critical bugs in any one of these platforms was during development was difficult.

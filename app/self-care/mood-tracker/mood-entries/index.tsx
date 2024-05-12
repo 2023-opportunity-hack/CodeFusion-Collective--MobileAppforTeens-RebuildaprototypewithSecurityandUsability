@@ -62,7 +62,7 @@ const MoodEntry = ({mood, time}: {mood: string, time: string}) => {
 }
 
 const MoodEntries = () => {
-  const db = SQLite.openDatabase('safespace.db');
+  const db = SQLite.openDatabaseSync('safespace.db');
 
   const [pastMoods, setPastMoods] = useState<MoodEntryType[]>([]);
   const [loading, setLoading] = useState(false);
