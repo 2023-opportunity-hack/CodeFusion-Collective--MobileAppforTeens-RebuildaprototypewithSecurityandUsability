@@ -26,7 +26,7 @@ const labelTitles = [
 ]
 
 const MyStrategies = () => {
-  const db = SQLite.openDatabase('safespace.db');
+  const db = SQLite.openDatabaseSync('safespace.db');
 
   const [selected, setSelected] = useState<string[]>([]);
   const [showList, setShowList] = useState(false);
@@ -43,47 +43,41 @@ const MyStrategies = () => {
     }
   }
 
-  const saveStrategies = () => {
+  const saveStrategies = async () => {
     setLoading(true);
-    db.transaction((tx) => {
-      selected.forEach((label) => {
-        tx.executeSql('SELECT id FROM strategies WHERE strategy = ?', [label], (_, resultSet) => {
-          if (resultSet.rows.length > 0) {
-            setSelected([]);
-            setShowList(false);
-            setShowSuccessToast(true);
-          } else {
-            tx.executeSql('INSERT INTO strategies (strategy) VALUES (?)', [label], () => {
-              setSelected([]);
-              setShowList(false);
-              setShowSuccessToast(true);
-            }, (_, error) => {
-              console.error('Error inserting strategy:', error);
-              setShowErrorToast(true);
-              return false;
-            });
-          }
-        }, (_, error) => {
-          console.error('Error selecting strategy:', error);
-          setShowErrorToast(true);
-          return false;
-        })
-      })
-    });
-    setLoading(false);
 
-    setTimeout(() => {
-      if (showErrorToast) {
-        setShowErrorToast(false);
+    try {
+      for (const label of selected) {
+        const existingStrategy = await db.getFirstAsync('SELECT id FROM strategies WHERE strategy = ?', [label]);
+        if (existingStrategy) {
+          setSelected([]);
+          setShowList(false);
+          setShowSuccessToast(true);
+          console.log("strategy already exists")
+        } else {
+          await db.runAsync('INSERT INTO strategies (strategy) VALUES (?)', [label]);
+          console.log("new strategy saved")
+        }
       }
-      setShowSuccessToast(false);
-    }, 3000);
-  }
+      setSelected([]);
+      setShowList(false);
+      setShowSuccessToast(true);
+    } catch (error) {
+      console.error('Error saving strategies:', error);
+      setShowErrorToast(true);
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        if (showErrorToast) {
+          setShowErrorToast(false);
+        }
+        setShowSuccessToast(false);
+      }, 3000);
+    }
+  };
 
   useEffect(() => {
-    db.transaction((tx) => {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS strategies (id INTEGER PRIMARY KEY AUTOINCREMENT, strategy TEXT)');
-    });
+    db.execAsync('CREATE TABLE IF NOT EXISTS strategies (id INTEGER PRIMARY KEY AUTOINCREMENT, strategy TEXT)');
   }, [])
 
   return (
@@ -239,8 +233,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "transparent",
-    transitionProperty: "opacity, visibility",
-    transitionDuration: "0.75s",
     zIndex: 1,
   }
 })
