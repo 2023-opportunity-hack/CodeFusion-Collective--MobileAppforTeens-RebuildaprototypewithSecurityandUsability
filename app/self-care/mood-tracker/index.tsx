@@ -27,81 +27,73 @@ const moodImagePaths: { [key: string]: any } = {
 };
 
 export default function MoodTracker () {
-  const db = SQLite.openDatabase('safespace.db');
+  const db = SQLite.openDatabaseSync('safespace.db');
+
   const [selectedMood, setSelectedMood] = useState('');
   const [savedStrategies, setSavedStrategies] = useState([]);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
 
-  const saveMoodEntry = () => {
+  const saveMoodEntry = async () => {
     const newDate = new Date();
     const currentDate = newDate.toISOString();
     const currentTime = newDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
     const dateTitle = currentDate.slice(0, 10);
 
-    db.transaction((tx) => {
-      tx.executeSql('SELECT id FROM mood_entries WHERE date_title = ?', [dateTitle], (_, resultSet) => {
-        if (resultSet.rows.length > 0) {
-          const moodId = resultSet.rows.item(0).id;
-
-          tx.executeSql('INSERT INTO mood_details (mood_id, mood, time) VALUES (?, ?, ?)', [moodId, selectedMood, currentTime], undefined, (_, error) => {
-            console.error('Error inserting mood entry:', error);
-            setShowErrorToast(true);
-            return false;
-          });
-          setShowSuccessToast(true);
-        } else {
-          tx.executeSql('INSERT INTO mood_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, currentDate], (_, resultSet) => {
-            const moodId = resultSet.insertId;
-
-            tx.executeSql('INSERT INTO mood_details (mood_id, mood, time) VALUES (?, ?, ?)', [moodId!, selectedMood, currentTime], undefined, (_, error) => {
-              console.error('Error inserting mood entry:', error);
-              setShowErrorToast(true);
-              return false;
-            });
-            setShowSuccessToast(true);
-          })
-        }
-      }, (_, error) => {
-        console.error('Error finding mood entries:', error);
-        setShowErrorToast(true);
-        return false;
-      })
-    });
-
-    setSelectedMood('');
-    setTimeout(() => {
-      if (showErrorToast) {
-        setShowErrorToast(false);
+    try {
+      const existingDateEntry: { id: number } | null = await db.getFirstAsync('SELECT id FROM mood_entries WHERE date_title = ?', [dateTitle]);
+      if (existingDateEntry) {
+        const moodId = existingDateEntry.id;
+        await db.runAsync('INSERT INTO mood_details (mood_id, mood, time) VALUES (?, ?, ?)', [moodId, selectedMood, currentTime]);
+        setShowSuccessToast(true);
+      } else {
+        const result = await db.runAsync('INSERT INTO mood_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, currentDate]);
+        const moodId = result.lastInsertRowId;
+        await db.runAsync('INSERT INTO mood_details (mood_id, mood, time) VALUES (?, ?, ?)', [moodId, selectedMood, currentTime]);
+        setShowSuccessToast(true);
       }
-      setShowSuccessToast(false);
-    }, 3000);
-  }
+    } catch (error) {
+      console.error('Error saving mood entry:', error);
+      setShowErrorToast(true);
+    } finally {
+      setSelectedMood('');
+      setTimeout(() => {
+        if (showErrorToast) {
+          setShowErrorToast(false);
+        }
+        setShowSuccessToast(false);
+      }, 3000);
+    }
+  };
 
   useEffect(() => {
-    db.transaction((tx) => {
-      // tx.executeSql('DROP TABLE IF EXISTS mood_entries');
-      // tx.executeSql('DROP TABLE IF EXISTS mood_details');
-      tx.executeSql(sqlQuery, [], (_, resultSet) => {
-        const parsedStrategies = JSON.parse(resultSet.rows._array[0].strategies);
+    const fetchStrategies = async () => {
+      try {
+        const strategies = await db.getAllAsync(sqlQuery) as { strategies: string }[];
+        const parsedStrategies = JSON.parse(strategies[0].strategies);
         if (!parsedStrategies) {
           setSavedStrategies([]);
         } else {
           setSavedStrategies(parsedStrategies);
         }
-      }, (_, error) => {
+      } catch (error) {
         console.error('Error fetching strategies:', error);
         setShowErrorToast(true);
-        return false;
-      })
-    });
+      }
+    };
 
-    db.transaction((tx) => {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS mood_entries (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT)');
-      tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS mood_details (id INTEGER PRIMARY KEY AUTOINCREMENT, mood_id INTEGER, mood TEXT, time TEXT, FOREIGN KEY (mood_id) REFERENCES mood_entries(id))'
-      );
-    })
+    const createTables = async () => {
+      try {
+        db.execAsync('CREATE TABLE IF NOT EXISTS mood_entries (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT);');
+        db.execAsync('CREATE TABLE IF NOT EXISTS mood_details (id INTEGER PRIMARY KEY AUTOINCREMENT, mood_id INTEGER, mood TEXT, time TEXT, FOREIGN KEY (mood_id) REFERENCES mood_entries(id))');
+      } catch (error) {
+        console.error('Error creating tables:', error);
+        setShowErrorToast(true);
+      }
+    };
+
+    fetchStrategies();
+    createTables();
   }, []);
 
   return (
