@@ -77,8 +77,13 @@ export default function MoodTracker () {
           setSavedStrategies(parsedStrategies);
         }
       } catch (error) {
-        console.error('Error fetching strategies:', error);
         setShowErrorToast(true);
+        console.error('Error fetching strategies:', error);
+        setTimeout(() => {
+          if (showErrorToast) {
+            setShowErrorToast(false);
+          }
+        }, 3000);
       }
     };
 
@@ -87,8 +92,13 @@ export default function MoodTracker () {
         db.execAsync('CREATE TABLE IF NOT EXISTS mood_entries (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT);');
         db.execAsync('CREATE TABLE IF NOT EXISTS mood_details (id INTEGER PRIMARY KEY AUTOINCREMENT, mood_id INTEGER, mood TEXT, time TEXT, FOREIGN KEY (mood_id) REFERENCES mood_entries(id))');
       } catch (error) {
-        console.error('Error creating tables:', error);
         setShowErrorToast(true);
+        console.error('Error creating tables:', error);
+        setTimeout(() => {
+          if (showErrorToast) {
+            setShowErrorToast(false);
+          }
+        }, 3000);
       }
     };
 
