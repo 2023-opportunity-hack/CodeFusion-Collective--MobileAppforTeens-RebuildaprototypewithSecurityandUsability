@@ -111,9 +111,9 @@ export default function JournalEntries() {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#F0EDF1' }}>
-      {showSuccessToast ? <ToastMessage entryName='Entries' type='delete' /> : null}
-      {showErrorToast ? <ToastMessage entryName='journal entries' type="error" /> : null}
       <ScrollView contentContainerStyle={styles.container}>
+        {showSuccessToast ? <ToastMessage entryName='Entries' type='delete' /> : null}
+        {showErrorToast ? <ToastMessage entryName='journal entries' type="error" /> : null}
         <Modal
           animationType='fade'
           transparent={true}

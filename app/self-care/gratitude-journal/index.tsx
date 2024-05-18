@@ -8,6 +8,12 @@ import { PageHeader } from '../../../components/PageHeader';
 import { ToastMessage } from '../../../components/ToastMessage';
 
 
+const options: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+};
+
 const items = [
   {label: 'List 10 things that you are grateful for in your life right now.', value: 'List 10 things that you are grateful for in your life right now.'},
   {label: 'What talent or skill do you have that you are grateful for?', value: 'What talent or skill do you have that you are grateful for?'},
@@ -39,8 +45,7 @@ export default function GratitiudeJournal() {
 
   const handleSubmit = async () => {
     const newDate = new Date();
-    const currentDate = newDate.toISOString();
-    const dateTitle = currentDate.slice(0, 10);
+    const dateTitle = newDate.toLocaleDateString('en-US', options);
     let promptValue = '';
 
     try {
@@ -54,7 +59,7 @@ export default function GratitiudeJournal() {
           await db.runAsync('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [existingEntryId, gratefulEntry, promptValue]);
           setShowSuccessToast(true);
         } else {
-          const result = await db.runAsync('INSERT INTO journal_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, currentDate]);
+          const result = await db.runAsync('INSERT INTO journal_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, newDate.toISOString()]);
           const journalId = result.lastInsertRowId;
           await db.runAsync('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, gratefulEntry, promptValue]);
           setShowSuccessToast(true);
@@ -67,7 +72,7 @@ export default function GratitiudeJournal() {
           await db.runAsync('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [existingEntryId, promptEntry, promptValue]);
           setShowSuccessToast(true);
         } else {
-          const result = await db.runAsync('INSERT INTO journal_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, currentDate]);
+          const result = await db.runAsync('INSERT INTO journal_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, newDate.toISOString()]);
           const journalId = result.lastInsertRowId;
           await db.runAsync('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, promptEntry, journalEntryLabel]);
           setShowSuccessToast(true);
