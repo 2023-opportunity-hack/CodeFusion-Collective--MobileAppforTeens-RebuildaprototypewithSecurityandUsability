@@ -12,6 +12,7 @@ type RecordEntryType = {
   records: {
     description: string,
     event_date: string,
+    detail_id: number
   }[]
 };
 
@@ -38,11 +39,11 @@ const RecordEntry = ({ description, date }: { description: string, date: string}
       </View>
     </View>
   )
-}
+};
 
 
 export default function NewRecordPage() {
-  const db = SQLite.openDatabase('safespace.db');
+  const db = SQLite.openDatabaseSync('safespace.db');
   const [recordEntries, setRecordEntries] = useState<RecordEntryType[]>([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -64,55 +65,56 @@ export default function NewRecordPage() {
                       r.id;
                     `;
 
-  const deleteAllRecords = () => {
-    db.transaction((tx) => {
-      tx.executeSql('DELETE FROM records;', undefined, undefined, (_, error) => {
-        console.error('Error deleting records:', error);
-        setShowErrorToast(true);
-        return false;
-      });
-      tx.executeSql('DELETE FROM record_details;', undefined, undefined, (_, error) => {
-        console.error('Error deleting record details:', error);
-        setShowErrorToast(true);
-        return false;
-      });
+  const deleteAllRecords = async () => {
+    try {
+      await db.execAsync('DELETE FROM records; DELETE FROM record_details;');
+    } catch (error) {
+      console.error('Error deleting records:', error);
+      setShowErrorToast(true);
+    } finally {
+      setShowSuccessToast(true);
       setRecordEntries([]);
       setShowModal(false);
-      setShowSuccessToast(true);
-    })
-    setTimeout(() => {
-      if (showErrorToast) {
-        setShowErrorToast(false);
-      }
-      setShowSuccessToast(false);
-    }, 3000);
-  }
+      setTimeout(() => {
+        if (showErrorToast) {
+          setShowErrorToast(false);
+        }
+        setShowSuccessToast(false);
+      }, 3000);
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
-    db.transaction((tx) => {
-      tx.executeSql(sqlQuery, undefined, (_, resultSet) => {
-        if (!resultSet.rows._array[0]) {
-          setRecordEntries([]);
-          setLoading(false);
-        } else {
-          resultSet.rows._array.forEach((day) => {
-            day.records = JSON.parse(day.records);
+
+    const getRecords = async () => {
+      try {
+        const fetchedRecords = await db.getAllAsync(sqlQuery) as RecordEntryType[];
+        if (fetchedRecords.length > 0) {
+          fetchedRecords.forEach((day) => {
+            if (typeof day.records === 'string') {
+              day.records = JSON.parse(day.records);
+              day.records.forEach((record) => {
+                record.description = record.description.replace(/\\n/g, '\n').replace(/\\r/g, '\r');
+              })
+            }
           })
-          const sortedRecords: RecordEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.date_value).getTime() - new Date(a.date_value).getTime());
+          const sortedRecords = fetchedRecords.sort((a, b) => new Date(b.date_value).getTime() - new Date(a.date_value).getTime());
           sortedRecords.forEach((day) => {
             day.records.sort((a, b) => new Date(b.event_date).getTime() - new Date(a.event_date).getTime());
-          })
+          });
           setRecordEntries(sortedRecords);
-          setLoading(false);
         }
-      }, (_, error) => {
+      } catch (error) {
         setLoading(false);
-        console.log('Error in Journal Entries: ' + error);
+        console.error('Error fetching records:', error);
         setShowErrorToast(true);
-        return false;
-      });
-    });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getRecords();
   }, [])
 
 
@@ -156,13 +158,13 @@ export default function NewRecordPage() {
               recordEntries.map((day) => (
                 <List.Accordion
                   key={day.record_id}
-                  title={new Date(day.date_value).toLocaleString('en-US', options)}
+                  title={day.record_date}
                   theme={{ colors: { background: "#FFFFFF" } }}
                   titleStyle={{ fontFamily: 'JakartaMed' }}
                 >
                   {day.records.map((entry) => (
                     <List.Item
-                      key={entry.event_date}
+                      key={entry.detail_id} //FIX ERROR THAT HAPPENS WHEN USER USES THE SAME EVENT DATE FOR MULTIPLE ENTRIES
                       title={<RecordEntry description={entry.description} date={entry.event_date} />}
                     />
                   ))}

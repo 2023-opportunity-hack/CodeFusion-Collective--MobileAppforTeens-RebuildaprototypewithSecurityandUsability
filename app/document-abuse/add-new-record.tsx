@@ -6,6 +6,12 @@ import MediaUploadModal from "../../components/MediaUploadModal";
 import { PageHeader } from '../../components/PageHeader';
 import { ToastMessage } from '../../components/ToastMessage';
 
+const options: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+};
+
 export default function AddNewRecordPage() {
   const db = SQLite.openDatabaseSync('safespace.db');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -35,8 +41,8 @@ export default function AddNewRecordPage() {
 
   const handleSubmit = async () => {
     const newDate = new Date();
-    const currentDate = newDate.toISOString();
-    const dateTitle = currentDate.slice(0, 10);
+    const dateTitle = newDate.toLocaleDateString('en-US', options);
+    const sanitizedText = text.replace(/\n/g, '\\n').replace(/\r/g, '\\r');
 
     if (date && text.length > 0) {
       try {
@@ -44,11 +50,11 @@ export default function AddNewRecordPage() {
 
         if (existingRecord) {
           const recordId = existingRecord.id;
-          await db.runAsync('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, text, date.toISOString()]);
+          await db.runAsync('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, sanitizedText, date.toISOString()]);
         } else {
-          const result = await db.runAsync('INSERT INTO records (date_title, date_value) VALUES (?, ?)', [dateTitle, currentDate]);
+          const result = await db.runAsync('INSERT INTO records (date_title, date_value) VALUES (?, ?)', [dateTitle, newDate.toISOString()]);
           const recordId = result.lastInsertRowId;
-          await db.runAsync('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, text, date.toISOString()]);
+          await db.runAsync('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, sanitizedText, date.toISOString()]);
         }
       } catch (error) {
         console.error('Error inserting record:', error);

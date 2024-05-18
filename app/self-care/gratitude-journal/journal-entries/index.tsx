@@ -48,7 +48,7 @@ const JournalEntry = ({ entry, prompt }: { entry: string, prompt: string }) => {
 }
 
 export default function JournalEntries() {
-  const db = SQLite.openDatabase('safespace.db');
+  const db = SQLite.openDatabaseSync('safespace.db');
 
   const [journalEntries, setJournalEntries] = useState<JournalEntryType[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -56,38 +56,56 @@ export default function JournalEntries() {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
 
-  const deleteAllJournalEntries = () => {
-    db.transaction((tx) => {
-      tx.executeSql('DELETE FROM journal_entries;');
-      tx.executeSql('DELETE FROM journal_details;');
+  const deleteAllJournalEntries = async () => {
+    try {
+      await db.execAsync('DELETE FROM journal_entries; DELETE FROM journal_details;');
       setShowSuccessToast(true);
       setJournalEntries([]);
+    } catch (error) {
+      console.log('Error deleting journal entries: ', error);
+      setShowErrorToast(true);
+    } finally {
       setShowModal(false);
-    })
-
-    setTimeout(() => {
-      setShowSuccessToast(false);
-    }, 3000)
-  }
+      setTimeout(() => {
+        if (showErrorToast) {
+          setShowErrorToast(false);
+        }
+        setShowSuccessToast(false);
+      }, 3000);
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
-    db.transaction((tx) => {
-      tx.executeSql(sqlQuery, undefined,
-      (_, resultSet) => {
-        resultSet.rows._array.forEach((day) => {
-          day.entries = JSON.parse(day.entries);
-        });
-        const sortedEntries: JournalEntryType[] = resultSet.rows._array.sort((a, b) => new Date(b.date_value).getTime() - new Date(a.date_value).getTime());
-        setJournalEntries(sortedEntries);
-        setLoading(false);
-      }, (_, error) => {
+
+    const getEntries = async () => {
+      try {
+        const fetchedEntries = await db.getAllAsync(sqlQuery) as JournalEntryType[];
+        if (fetchedEntries.length > 0) {
+          fetchedEntries.forEach((day) => {
+            if (typeof day.entries === 'string') {
+              day.entries = JSON.parse(day.entries);
+            }
+          });
+
+          const sortedEntries: JournalEntryType[] = fetchedEntries.sort((a, b) => new Date(b.date_value).getTime() - new Date(a.date_value).getTime());
+          setJournalEntries(sortedEntries);
+        }
+      } catch (error) {
         setShowErrorToast(true);
+        console.error('Error fetching journal entries:', error);
+      } finally {
         setLoading(false);
-        console.log('Error in Journal Entries: ' + error);
-        return false;
-      })
-    })
+        setTimeout(() => {
+          if (showErrorToast) {
+            setShowErrorToast(false);
+          }
+          setShowSuccessToast(false);
+        }, 3000);
+      }
+    };
+
+    getEntries();
   }, []);
 
 
