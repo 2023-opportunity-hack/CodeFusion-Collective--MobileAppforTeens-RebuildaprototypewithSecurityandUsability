@@ -12,7 +12,6 @@ export default function Homepage() {
 
   const deleteAllData = async () => {
     if (!db) return;
-
     try {
       await db.execAsync(`
         DELETE FROM journal_entries;
