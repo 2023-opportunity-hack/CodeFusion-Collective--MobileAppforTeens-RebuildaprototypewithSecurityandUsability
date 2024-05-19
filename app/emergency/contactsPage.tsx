@@ -17,7 +17,7 @@ import { ContactItemProps } from "../../lib/types";
 
 export default function ContactsPage() {
   const [contactList, setContactList] = useState<ContactItemProps[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { setEmerContacts } = useEmergencyContactContext();
 
   const validateContacts = async (contacts?: EmergencyContactsType) => {
@@ -119,20 +119,21 @@ export default function ContactsPage() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {isLoading && (
+      <PageHeader route="/emergency" title="Contacts" />
+      {isLoading ? (
         <View style={styles.overlay}>
           <ActivityIndicator size="large" color="#683d7d" />
         </View>
+      ) : (
+          sortedContactList.map((contact, index) => (
+            <ContactItem
+              name={contact.name}
+              phoneNumbers={contact.phoneNumbers}
+              key={index}
+              emergency={contact.emergency}
+            />
+          ))
       )}
-      <PageHeader route="/emergency" title="Contacts" />
-      {sortedContactList.map((contact, index) => (
-        <ContactItem
-          name={contact.name}
-          phoneNumbers={contact.phoneNumbers}
-          key={index}
-          emergency={contact.emergency}
-        />
-      ))}
     </ScrollView>
   );
 }
@@ -154,8 +155,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "transparent",
-    transitionProperty: "opacity, visibility",
-    transitionDuration: "0.75s",
     zIndex: 1,
   },
 });

@@ -24,7 +24,6 @@ const options: Intl.DateTimeFormatOptions = {
 
 const RecordEntry = ({ description, date }: { description: string, date: string}) => {
 
-
   const formattedDate = new Date(date).toLocaleString('en-US', options);
 
   return (
@@ -115,7 +114,7 @@ export default function NewRecordPage() {
     };
 
     getRecords();
-  }, [])
+  }, []);
 
 
   return (

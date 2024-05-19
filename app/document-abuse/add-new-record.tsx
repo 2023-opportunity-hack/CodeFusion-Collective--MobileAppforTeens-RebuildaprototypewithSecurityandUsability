@@ -28,16 +28,16 @@ export default function AddNewRecordPage() {
     }
     const currentDate = selectedDate;
     setDate(currentDate);
-  }
+  };
 
   const showDatePicker = () => {
     setDate(new Date());
     setShow(true);
-  }
+  };
 
   const closeModal = () => {
     setModalVisible(!modalVisible);
-  }
+  };
 
   const handleSubmit = async () => {
     const newDate = new Date();

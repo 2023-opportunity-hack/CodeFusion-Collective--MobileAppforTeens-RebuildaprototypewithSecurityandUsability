@@ -9,7 +9,7 @@ const Resources = () => {
 
   const handleVideoReady = () => {
     setLoading(false);
-  }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

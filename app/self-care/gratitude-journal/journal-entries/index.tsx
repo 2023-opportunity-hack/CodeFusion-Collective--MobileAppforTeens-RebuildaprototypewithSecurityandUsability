@@ -45,7 +45,7 @@ const JournalEntry = ({ entry, prompt }: { entry: string, prompt: string }) => {
       <Text style={styles.entrytext}>{entry}</Text>
     </View>
   )
-}
+};
 
 export default function JournalEntries() {
   const db = SQLite.openDatabaseSync('safespace.db');

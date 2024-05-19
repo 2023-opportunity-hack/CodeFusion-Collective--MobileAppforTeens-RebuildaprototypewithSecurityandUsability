@@ -41,7 +41,7 @@ const MyStrategies = () => {
     } else {
       setSelected([...selected, label]);
     }
-  }
+  };
 
   const saveStrategies = async () => {
     setLoading(true);
@@ -53,10 +53,8 @@ const MyStrategies = () => {
           setSelected([]);
           setShowList(false);
           setShowSuccessToast(true);
-          console.log("strategy already exists")
         } else {
           await db.runAsync('INSERT INTO strategies (strategy) VALUES (?)', [label]);
-          console.log("new strategy saved")
         }
       }
       setSelected([]);
@@ -78,7 +76,7 @@ const MyStrategies = () => {
 
   useEffect(() => {
     db.execAsync('CREATE TABLE IF NOT EXISTS strategies (id INTEGER PRIMARY KEY AUTOINCREMENT, strategy TEXT)');
-  }, [])
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { position: "relative", }]}>

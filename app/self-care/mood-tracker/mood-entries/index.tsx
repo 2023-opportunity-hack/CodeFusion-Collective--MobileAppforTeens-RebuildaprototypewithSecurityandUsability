@@ -59,7 +59,7 @@ const MoodEntry = ({mood, time}: {mood: string, time: string}) => {
       <Text style={styles.timeText}>at {time}</Text>
     </View>
   )
-}
+};
 
 const MoodEntries = () => {
   const db = SQLite.openDatabaseSync('safespace.db');
@@ -75,7 +75,7 @@ const MoodEntries = () => {
     setPastMoods([]);
     setShowModal(false);
     setShowSuccessToast(true);
-  }
+  };
 
   useEffect(() => {
     setLoading(true);

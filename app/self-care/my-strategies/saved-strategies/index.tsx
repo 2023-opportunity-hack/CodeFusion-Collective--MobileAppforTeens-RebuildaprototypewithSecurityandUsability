@@ -66,7 +66,7 @@ const MySavedStrategies = () => {
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     getStrategies();
   }, []);
@@ -85,6 +85,7 @@ const MySavedStrategies = () => {
                 key={index}
                 title={strategy.slice(0, 1).toUpperCase() + strategy.slice(1)}
                 titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold" }}
+                titleNumberOfLines={3}
                 onPress={() => handleDeselect(strategy)}
                 left={() => <List.Icon
                               icon={selected.includes(strategy) ? "checkbox-marked" : "checkbox-blank-outline"}

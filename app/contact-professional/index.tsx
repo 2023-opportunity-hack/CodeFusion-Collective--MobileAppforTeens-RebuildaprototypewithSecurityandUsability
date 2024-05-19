@@ -113,7 +113,7 @@ export default function ContactProfessional() {
       }, 3000);
     } catch (err) {
       setShowErrorToast(true);
-      console.log("Error sending email from frontend: ", err);
+      console.error("Error sending email from frontend: ", err);
 
       setTimeout(() => {
         setShowErrorToast(false);

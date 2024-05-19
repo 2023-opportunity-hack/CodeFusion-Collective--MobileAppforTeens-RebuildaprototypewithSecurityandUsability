@@ -37,11 +37,11 @@ export default function GratitiudeJournal() {
 
   const handleGratefulChange = (newEntry: string) => {
     setGratefulEntry(newEntry)
-  }
+  };
 
   const handlePromptChange = (newEntry: string) => {
     setPromptEntry(newEntry);
-  }
+  };
 
   const handleSubmit = async () => {
     const newDate = new Date();

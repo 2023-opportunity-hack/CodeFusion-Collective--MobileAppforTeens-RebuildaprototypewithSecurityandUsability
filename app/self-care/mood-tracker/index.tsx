@@ -157,6 +157,7 @@ export default function MoodTracker () {
               key={index}
               title={strategy}
               titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold", textAlign: "left" }}
+              titleNumberOfLines={3}
               style={[{ borderBottomWidth: 1, borderColor: "#420C5C" }, index === savedStrategies.length - 1 && { borderBottomWidth: 0 }]}
               />
           ))}
