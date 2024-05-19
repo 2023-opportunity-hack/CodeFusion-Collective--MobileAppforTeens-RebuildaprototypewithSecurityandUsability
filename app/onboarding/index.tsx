@@ -1,6 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { Link } from 'expo-router';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 const Onboarding = () => {
 
@@ -8,8 +9,9 @@ const Onboarding = () => {
     <View style={styles.container}>
       <Image
         style={styles.logo}
-        source={require(`../../assets/images/onboard1.png`)}
-        resizeMode="contain"
+        source={require("../../assets/images/onboard1.png")}
+        contentFit="contain"
+        onError={(err) => console.log("error: ", err)}
         />
       <Link style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} href="/onboarding/index2" asChild>
         <Pressable style={{ marginTop: "5%" }}>

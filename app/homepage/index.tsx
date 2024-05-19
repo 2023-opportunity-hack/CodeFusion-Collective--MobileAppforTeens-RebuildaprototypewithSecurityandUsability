@@ -1,30 +1,35 @@
+import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { useState } from 'react';
-import { Image, Modal, Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { ToastMessage } from '../../components/ToastMessage';
 
 export default function Homepage() {
   const db = SQLite.openDatabaseSync('safespace.db');
-  const colorScheme = useColorScheme();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
 
-  const deleteAllData = () => {
-    db.transaction((tx: { executeSql: (arg0: string) => void; }) => {
-      tx.executeSql('DELETE FROM journal_entries;');
-      tx.executeSql('DELETE FROM journal_details;');
-      tx.executeSql('DELETE FROM mood_entries;');
-      tx.executeSql('DELETE FROM mood_details;');
-      tx.executeSql('DELETE FROM records;');
-      tx.executeSql('DELETE FROM record_details;');
-    });
-    setShowDeleteModal(false);
-    setShowSuccessToast(true);
+  const deleteAllData = async () => {
+    if (!db) return;
+    try {
+      await db.execAsync(`
+        DELETE FROM journal_entries;
+        DELETE FROM journal_details;
+        DELETE FROM mood_entries;
+        DELETE FROM mood_details;
+        DELETE FROM records;
+        DELETE FROM record_details;
+      `);
+      setShowDeleteModal(false);
+      setShowSuccessToast(true);
 
-    setTimeout(() => {
-      setShowSuccessToast(false);
-    }, 3000);
+      setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Error deleting data:', error);
+    }
   };
 
   return (
@@ -59,7 +64,7 @@ export default function Homepage() {
         </View>
       </Modal>
       <Text style={styles.title}>Home</Text>
-      <Image source={require('../../assets/images/safe-space-logo.png')} style={styles.logo} resizeMode='contain'/>
+      <Image source={require('../../assets/images/safe-space-logo.png')} style={styles.logo} contentFit='contain'/>
       <Link href="/emergency" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
         <Pressable style={{ marginBottom: 20 }}>
           {({ pressed }) => (

@@ -6,6 +6,12 @@ import MediaUploadModal from "../../components/MediaUploadModal";
 import { PageHeader } from '../../components/PageHeader';
 import { ToastMessage } from '../../components/ToastMessage';
 
+const options: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+};
+
 export default function AddNewRecordPage() {
   const db = SQLite.openDatabaseSync('safespace.db');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -33,74 +39,58 @@ export default function AddNewRecordPage() {
     setModalVisible(!modalVisible);
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newDate = new Date();
-    const currentDate = newDate.toISOString();
-    const dateTitle = currentDate.slice(0, 10);
+    const dateTitle = newDate.toLocaleDateString('en-US', options);
+    const sanitizedText = text.replace(/\n/g, '\\n').replace(/\r/g, '\\r');
 
     if (date && text.length > 0) {
-      db.transaction((tx: { executeSql: (arg0: string, arg1: any[], arg2: { (_: any, resultSet: any): void; (_: any, resultSetDetails: any): void; (_: any, resultSet: any): void; (_: any, resultSetDetails: any): void; }, arg3: { (_: any, error: any): boolean; (_: any, error: any): boolean; (_: any, error: any): boolean; (_: any, error: any): boolean; }) => void; }) => {
-        tx.executeSql('SELECT id FROM records WHERE date_title = ?;', [dateTitle], (_: any, resultSet: { rows: { length: number; item: (arg0: number) => { (): any; new(): any; id: any; }; }; }) => {
-          if (resultSet.rows.length > 0) {
-            const recordId = resultSet.rows.item(0).id;
+      try {
+        const existingRecord: { id: number } | null = await db.getFirstAsync('SELECT id FROM records WHERE date_title = ?', [dateTitle]);
 
-            tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, text, date.toISOString()], (_: any, resultSetDetails: any) => {
-              setDate(new Date());
-              setText('');
-              setShowSuccessToast(true);
-            }, (_: any, error: any) => {
-              console.error('Error inserting record details:', error);
-              setShowErrorToast(true);
-              return false;
-            })
-          } else {
-            tx.executeSql('INSERT INTO records (date_title, date_value) VALUES (?, ?)', [dateTitle ,currentDate],
-              (_: any, resultSet: { insertId: any; }) => {
-                const recordId = resultSet.insertId;
-
-                tx.executeSql('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?)', [recordId!, text, date.toISOString()],
-                (_: any, resultSetDetails: any) => {
-                  setDate(new Date());
-                  setText('');
-                  setShowSuccessToast(true);
-                }, (_: any, error: any) => {
-                  console.error('Error inserting record details:', error);
-                  setShowErrorToast(true);
-                  return false;
-                })
-              },
-              (_: any, error: any) => {
-                console.error('Error inserting record:', error);
-                setShowErrorToast(true);
-                return false;
-              }
-            );
+        if (existingRecord) {
+          const recordId = existingRecord.id;
+          await db.runAsync('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, sanitizedText, date.toISOString()]);
+        } else {
+          const result = await db.runAsync('INSERT INTO records (date_title, date_value) VALUES (?, ?)', [dateTitle, newDate.toISOString()]);
+          const recordId = result.lastInsertRowId;
+          await db.runAsync('INSERT INTO record_details (record_id, description, date) VALUES (?, ?, ?);', [recordId, sanitizedText, date.toISOString()]);
+        }
+      } catch (error) {
+        console.error('Error inserting record:', error);
+        setShowErrorToast(true);
+      } finally {
+        setShowSuccessToast(true);
+        setDate(new Date());
+        setText('');
+        setTimeout(() => {
+          if (showErrorToast) {
+            setShowErrorToast(false);
           }
-        }, (_: any, error: any) => {
-          console.error('Error selecting record:', error);
-          setShowErrorToast(true);
-          return false;
-        });
-      });
-    }
-    setTimeout(() => {
-      if (showErrorToast) {
-        setShowErrorToast(false);
+          setShowSuccessToast(false);
+        }, 3000);
       }
-      setShowSuccessToast(false);
-    }, 3000);
+    }
   };
 
   useEffect(() => {
-  async function createTables() {
-    await db.withTransactionAsync(async () => {
-      // Execute SQL statement
-      await db.execAsync('CREATE TABLE IF NOT EXISTS records (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT)');
-      await db.execAsync('CREATE TABLE IF NOT EXISTS record_details (id INTEGER PRIMARY KEY AUTOINCREMENT, record_id INTEGER, description TEXT, date TEXT, FOREIGN KEY (record_id) REFERENCES Records(id))');            
-    });
-  }
-   createTables();
-  }, [db]);
+    const createTables = async () => {
+      try {
+        db.execAsync('CREATE TABLE IF NOT EXISTS records (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT);');
+        db.execAsync('CREATE TABLE IF NOT EXISTS record_details (id INTEGER PRIMARY KEY AUTOINCREMENT, record_id INTEGER, description TEXT, date TEXT, FOREIGN KEY (record_id) REFERENCES records(id))');
+      } catch (error) {
+        setShowErrorToast(true);
+        console.error('Error creating tables:', error);
+        setTimeout(() => {
+          if (showErrorToast) {
+            setShowErrorToast(false);
+          }
+        }, 3000);
+      }
+    };
+
+    createTables();
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

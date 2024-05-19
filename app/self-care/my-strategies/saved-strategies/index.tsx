@@ -23,51 +23,52 @@ const MySavedStrategies = () => {
 
   const handleDeselect = (label: string) => {
     setSelected(selected.filter((title) => title !== label));
-    db.transaction((tx) => {
-      tx.executeSql('DELETE FROM strategies WHERE strategy = ?', [label]);
-    })
-  }
+    db.runAsync('DELETE FROM strategies WHERE strategy = ?', [label]);
+  };
 
-  const saveCustomStrategy = () => {
+  const saveCustomStrategy = async () => {
     setLoading(true);
     setSelected([...selected, newStrategy]);
     setNewStrategy("");
-    db.transaction((tx) => {
-      tx.executeSql('INSERT INTO strategies (strategy) VALUES (?)', [newStrategy], () => {
-        setShowSuccessToast(true);
-      }, (_, error) => {
-        console.error('Error saving custom strategy:', error);
-        setShowErrorToast(true);
-        return false;
-      });
-    })
-    setLoading(false);
 
-    setTimeout(() => {
-      if (showErrorToast) {
-        setShowErrorToast(false);
-      }
-      setShowSuccessToast(false);
-    }, 3000);
-  }
+    try {
+      db.runAsync('INSERT INTO strategies (strategy) VALUES (?)', [newStrategy]);
+    } catch (error) {
+      console.error('Error saving custom strategy:', error);
+      setShowErrorToast(true);
+    } finally {
+      setLoading(false);
+
+      setTimeout(() => {
+        if (showErrorToast) {
+          setShowErrorToast(false);
+        }
+        setShowSuccessToast(false);
+      }, 3000);
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
-    db.transaction((tx) => {
-      tx.executeSql(sqlQuery, [], (_, resultSet) => {
-        const parsedStrategies = JSON.parse(resultSet.rows._array[0].strategies);
-        if (!parsedStrategies) {
-          setSelected([]);
-        } else {
+
+    const getStrategies = async () => {
+      try {
+        const result = await db.getAllAsync(sqlQuery) as { strategies: string }[];
+        if (result[0].strategies.length > 0) {
+          const parsedStrategies = JSON.parse(result[0].strategies);
           setSelected(parsedStrategies);
+        } else {
+          setSelected([]);
         }
-      }, (_, error) => {
+      } catch (error) {
         console.error('Error fetching saved strategies:', error);
         setShowErrorToast(true);
-        return false;
-      })
-    })
-    setLoading(false);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getStrategies();
   }, []);
 
   return (

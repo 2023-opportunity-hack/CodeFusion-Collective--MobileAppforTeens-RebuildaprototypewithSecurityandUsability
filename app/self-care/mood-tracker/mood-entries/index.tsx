@@ -71,20 +71,19 @@ const MoodEntries = () => {
   const [showErrorToast, setShowErrorToast] = useState(false);
 
   const deleteAllMoodEntries = () => {
-    db.transaction((tx) => {
-      tx.executeSql('DELETE FROM mood_entries;');
-      tx.executeSql('DELETE FROM mood_details;');
-      setPastMoods([]);
-      setShowModal(false);
-      setShowSuccessToast(true);
-    })
+    db.execAsync('DELETE FROM mood_entries; DELETE FROM mood_details;');
+    setPastMoods([]);
+    setShowModal(false);
+    setShowSuccessToast(true);
   }
 
   useEffect(() => {
     setLoading(true);
-    db.transaction((tx) => {
-      tx.executeSql(sqlQuery, undefined, (_, resultSet) => {
-        const sortedMoods: MoodEntryType[] = resultSet.rows._array.map((day: MoodEntryType) => {
+
+    const getMoodEntries = async () => {
+      try {
+        const fetchedMoods: MoodEntryType[] = await db.getAllAsync(sqlQuery);
+        const sortedMoods: MoodEntryType[] = fetchedMoods.map((day: MoodEntryType) => {
           if (typeof day.moodInfo === 'string') {
             day.moodInfo = JSON.parse(day.moodInfo);
             day.moodInfo.sort((a, b) => {
@@ -113,15 +112,18 @@ const MoodEntries = () => {
         }).sort((a, b) => {
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
+
         setPastMoods(sortedMoods);
+      } catch (error) {
         setLoading(false);
-      }, (_, error) => {
-        setLoading(false);
+        console.error('Error getting mood entries:', error);
         setShowErrorToast(true);
-        console.log("Error in mood entries: " + error);
-        return false;
-      });
-    });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getMoodEntries();
   }, []);
 
 

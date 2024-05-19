@@ -8,6 +8,12 @@ import { PageHeader } from '../../../components/PageHeader';
 import { ToastMessage } from '../../../components/ToastMessage';
 
 
+const options: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+};
+
 const items = [
   {label: 'List 10 things that you are grateful for in your life right now.', value: 'List 10 things that you are grateful for in your life right now.'},
   {label: 'What talent or skill do you have that you are grateful for?', value: 'What talent or skill do you have that you are grateful for?'},
@@ -37,105 +43,77 @@ export default function GratitiudeJournal() {
     setPromptEntry(newEntry);
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newDate = new Date();
-    const currentDate = newDate.toISOString();
-    const dateTitle = currentDate.slice(0, 10);
+    const dateTitle = newDate.toLocaleDateString('en-US', options);
     let promptValue = '';
 
-    if (activeInput === 'gratefulEntry' && gratefulEntry.length > 0) {
-      promptValue = 'Today I am grateful for';
+    try {
+      const existingEntry: { id: number } | null = await db.getFirstAsync('SELECT id FROM journal_entries WHERE date_title = ?', [dateTitle]);
 
-      db.transaction((tx) => {
-        tx.executeSql('SELECT id FROM journal_entries WHERE date_title = ?', [dateTitle], (_, resultSet) => {
-          if (resultSet.rows.length > 0) {
-            const journalId = resultSet.rows.item(0).id;
+      if (activeInput === 'gratefulEntry' && gratefulEntry.length > 0) {
+        promptValue = 'Today I am grateful for';
 
-            tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, gratefulEntry, promptValue], undefined, (_, error) => {
-              console.error('Error inserting grateful entry:', error);
-              setShowErrorToast(true);
-              return false;
-            });
-            setShowSuccessToast(true);
-          } else {
-            tx.executeSql('INSERT INTO journal_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, currentDate], (_, resultSet) => {
-              const journalId = resultSet.insertId;
+        if (existingEntry) {
+          const existingEntryId = existingEntry.id;
+          await db.runAsync('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [existingEntryId, gratefulEntry, promptValue]);
+          setShowSuccessToast(true);
+        } else {
+          const result = await db.runAsync('INSERT INTO journal_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, newDate.toISOString()]);
+          const journalId = result.lastInsertRowId;
+          await db.runAsync('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, gratefulEntry, promptValue]);
+          setShowSuccessToast(true);
+        }
+      } else if (activeInput === 'promptEntry' && promptEntry.length > 0 && journalEntryLabel.length > 0) {
+        promptValue = journalEntryLabel;
 
-              tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, gratefulEntry, promptValue]);
-              setShowSuccessToast(true);
-            }, (_, error) => {
-              console.error('Error inserting grateful entry:', error);
-              setShowErrorToast(true);
-              return false;
-            })
-          }
-        }, (_, error) => {
-          console.error('Error finding entries:', error);
-          setShowErrorToast(true);
-          return false;
-        })
-      })
-    } else if (activeInput === 'promptEntry' && promptEntry.length > 0 && journalEntryLabel.length > 0) {
-      promptValue = journalEntryLabel;
-      db.transaction((tx) => {
-        tx.executeSql('SELECT id FROM journal_entries WHERE date_title = ?', [dateTitle], (_, resultSet) => {
-          if (resultSet.rows.length > 0) {
-            const journalId = resultSet.rows.item(0).id;
-
-            tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, promptEntry, promptValue], undefined, (_, error) => {
-              console.error('Error inserting prompt entry:', error);
-              setShowErrorToast(true);
-              return false;
-            });
-            setShowSuccessToast(true);
-          } else {
-            tx.executeSql('INSERT INTO journal_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, currentDate], (_, resultSet) => {
-              const journalId = resultSet.insertId;
-
-              tx.executeSql('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId!, promptEntry, journalEntryLabel]);
-              setShowSuccessToast(true);
-            }, (_, error) => {
-              console.error('Error inserting prompt entry:', error);
-              setShowErrorToast(true);
-              return false;
-            })
-          }
-        }, (_, error) => {
-          console.error('Error finding entries:', error);
-          setShowErrorToast(true);
-          return false;
-        })
-      })
-    } else if (activeInput === 'promptEntry' && promptEntry.length > 0 && journalEntryLabel.length === 0) {
-      setLabelAlert(true);
-      return;
-    } else {
-      setShowErrorToast(true);
-      return;
-    };
-
-    setActiveInput('');
-    setGratefulEntry('');
-    setPromptEntry('');
-    setJournalEntryLabel('');
-
-    setTimeout(() => {
-      if (showErrorToast) {
-        setShowErrorToast(false);
+        if (existingEntry) {
+          const existingEntryId = existingEntry.id;
+          await db.runAsync('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [existingEntryId, promptEntry, promptValue]);
+          setShowSuccessToast(true);
+        } else {
+          const result = await db.runAsync('INSERT INTO journal_entries (date_title, date_value) VALUES (?, ?)', [dateTitle, newDate.toISOString()]);
+          const journalId = result.lastInsertRowId;
+          await db.runAsync('INSERT INTO journal_details (journal_id, description, prompt) VALUES (?, ?, ?)', [journalId, promptEntry, journalEntryLabel]);
+          setShowSuccessToast(true);
+        }
+      } else if (activeInput === 'promptEntry' && promptEntry.length > 0 && journalEntryLabel.length === 0) {
+        setLabelAlert(true);
+        return;
+      } else {
+        setShowErrorToast(true);
+        return;
       }
-      setShowSuccessToast(false);
-    }, 3000);
+    } catch (error) {
+      console.error('Error inserting new entry:', error);
+      setShowErrorToast(true);
+    } finally {
+      setActiveInput('');
+      setGratefulEntry('');
+      setPromptEntry('');
+      setJournalEntryLabel('');
+
+      setTimeout(() => {
+        if (showErrorToast) {
+          setShowErrorToast(false);
+        }
+        setShowSuccessToast(false);
+      }, 3000);
+    }
   };
 
   useEffect(() => {
-    db.transaction((tx) => {
-      // tx.executeSql('DROP TABLE IF EXISTS journal_entries');
-      // tx.executeSql('DROP TABLE IF EXISTS journal_details');
-      tx.executeSql('CREATE TABLE IF NOT EXISTS journal_entries (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT)');
-      tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS journal_details (id INTEGER PRIMARY KEY AUTOINCREMENT, journal_id INTEGER, prompt TEXT, description TEXT, FOREIGN KEY (journal_id) REFERENCES Journal_entries(id))'
-      );
-    })
+    const createTables = async () => {
+      try {
+        await db.execAsync('CREATE TABLE IF NOT EXISTS journal_entries (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT)');
+        await db.execAsync('CREATE TABLE IF NOT EXISTS journal_details (id INTEGER PRIMARY KEY AUTOINCREMENT, journal_id INTEGER, description TEXT, prompt TEXT, FOREIGN KEY (journal_id) REFERENCES Journal_entries(id))');
+      } catch (error) {
+        console.error('Error creating tables:', error);
+        setShowErrorToast(true);
+      }
+    };
+
+    createTables();
   }, []);
 
   return (

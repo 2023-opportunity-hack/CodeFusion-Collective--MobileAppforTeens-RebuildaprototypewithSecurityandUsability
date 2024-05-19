@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: '100%',
     height: '100%',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     backgroundColor: '#F0EDF1',
     borderWidth: 1,
     borderRadius: 10,
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     bottom: 20,
     width: '100%',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   button: {
     width: '80%',
