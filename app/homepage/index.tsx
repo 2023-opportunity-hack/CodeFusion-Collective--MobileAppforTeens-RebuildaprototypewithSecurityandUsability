@@ -14,12 +14,12 @@ export default function Homepage() {
     if (!db) return;
     try {
       await db.execAsync(`
-        DELETE FROM journal_entries;
-        DELETE FROM journal_details;
-        DELETE FROM mood_entries;
-        DELETE FROM mood_details;
-        DELETE FROM records;
-        DELETE FROM record_details;
+        DROP TABLE IF EXISTS journal_entries;
+        DROP TABLE IF EXISTS journal_details;
+        DROP TABLE IF EXISTS mood_entries;
+        DROP TABLE IF EXISTS mood_details;
+        DROP TABLE IF EXISTS records;
+        DROP TABLE IF EXISTS record_details;
       `);
       setShowDeleteModal(false);
       setShowSuccessToast(true);

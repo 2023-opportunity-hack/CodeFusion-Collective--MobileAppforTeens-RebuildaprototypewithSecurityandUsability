@@ -1,13 +1,12 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { TextInput } from 'react-native-gesture-handler';
 import { List, RadioButton } from 'react-native-paper';
 import { PageHeader } from '../../components/PageHeader';
 import { ToastMessage } from '../../components/ToastMessage';
 
-type TimezoneKey = 'GMT-4' | 'GMT-5' | 'GMT-6' | 'GMT-7' | 'GMT-8';
+type TimezoneKey = 'GMT-0400' | 'GMT-0500' | 'GMT-0600' | 'GMT-0700' | 'GMT-0800';
 
 type TimezoneInfo = {
   ST: string;
@@ -33,13 +32,14 @@ export default function ContactProfessional() {
   const [emailError, setEmailError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
   const [requiredError, setRequiredError] = useState(false);
+  const [timeZone, setTimeZone] = useState('');
 
   const timezones: Timezones = {
-    'GMT-4': { ST: '', DT: 'EDT' },
-    'GMT-5': { ST: 'EST', DT: 'CDT' },
-    'GMT-6': { ST: 'CST', DT: 'MDT' },
-    'GMT-7': { ST: 'MST', DT: 'PDT' },
-    'GMT-8': { ST: 'PST', DT: '' },
+    'GMT-0400': { ST: '', DT: 'EDT' },
+    'GMT-0500': { ST: 'EST', DT: 'CDT' },
+    'GMT-0600': { ST: 'CST', DT: 'MDT' },
+    'GMT-0700': { ST: 'MST', DT: 'PDT' },
+    'GMT-0800': { ST: 'PST', DT: '' },
   };
 
   const formatTimeZone = () => {
@@ -52,22 +52,18 @@ export default function ContactProfessional() {
       season = 'DT';
     }
 
-    let timeZone = new Intl.DateTimeFormat('en-us', { timeZoneName: 'short' })
-    .formatToParts(new Date())
-    .find(part => part.type == "timeZoneName")?.value;
+    const GMTzone = date.toString().split(' ')[5];
 
-    if (!timeZone) {
-      return 'Error getting time zone';
+    if (timezones[GMTzone as TimezoneKey]) {
+      return timezones[GMTzone as TimezoneKey][season as 'ST' | 'DT'];
     }
 
-    if (timezones[timeZone as TimezoneKey]) {
-      return timezones[timeZone as TimezoneKey][season as 'ST' | 'DT'];
-    }
-
-    return timeZone;
+    return '';
   };
 
-  const timeZone = formatTimeZone();
+  useEffect(() => {
+    setTimeZone(formatTimeZone());
+  }, []);
 
   const timeValues = [
     { key: 0, value: 'ASAP' },
