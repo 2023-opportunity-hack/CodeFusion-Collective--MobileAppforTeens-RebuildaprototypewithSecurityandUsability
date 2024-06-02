@@ -69,6 +69,7 @@ export default function MoodTracker () {
   useEffect(() => {
     const fetchStrategies = async () => {
       try {
+        db.execAsync('CREATE TABLE IF NOT EXISTS strategies (id INTEGER PRIMARY KEY AUTOINCREMENT, strategy TEXT)');
         const strategies = await db.getAllAsync(sqlQuery) as { strategies: string }[];
         const parsedStrategies = JSON.parse(strategies[0].strategies);
         if (!parsedStrategies) {
@@ -152,15 +153,22 @@ export default function MoodTracker () {
         </Text>
         <Text style={{ fontFamily: "JakartaSemiBold" }}>Your Strategies</Text>
         <List.Section style={styles.listItemsSection}>
-          {savedStrategies.map((strategy, index) => (
-            <List.Item
-              key={index}
-              title={strategy}
-              titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold", textAlign: "left" }}
-              titleNumberOfLines={3}
-              style={[{ borderBottomWidth: 1, borderColor: "#420C5C" }, index === savedStrategies.length - 1 && { borderBottomWidth: 0 }]}
-              />
-          ))}
+          {savedStrategies.length === 0
+            ? <List.Item
+                key={0}
+                title="No saved strategies"
+                titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold", textAlign: "left" }}
+                style={{ borderColor: "#420C5C" }}
+                />
+            : savedStrategies.map((strategy, index) => (
+                <List.Item
+                  key={index}
+                  title={strategy}
+                  titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold", textAlign: "left" }}
+                  titleNumberOfLines={3}
+                  style={[{ borderBottomWidth: 1, borderColor: "#420C5C" }, index === savedStrategies.length - 1 && { borderBottomWidth: 0 }]}
+                  />
+              ))}
         </List.Section>
       </View>
     </ScrollView>
