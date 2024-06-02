@@ -118,7 +118,7 @@ export default function ContactsPage() {
   const sortedContactList = [...emergencyContacts, ...nonEmergencyContacts];
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView style={styles.container}>
       <PageHeader route="/emergency" title="Contacts" />
       {isLoading ? (
         <View style={styles.overlay}>
@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     paddingBottom: "10%",
     backgroundColor: "#F0EDF1",
     flex: 1,
+    height: "100%",
   },
   loading: {
     fontSize: 20,
