@@ -9,7 +9,7 @@ const Onboarding = () => {
     <View style={styles.container}>
       <Image
         style={styles.logo}
-        source={require("../../assets/images/onboard1.png")}
+        source={require("../../assets/images/onboardingNew.png")}
         contentFit="contain"
         onError={(err) => console.log("error: ", err)}
         />

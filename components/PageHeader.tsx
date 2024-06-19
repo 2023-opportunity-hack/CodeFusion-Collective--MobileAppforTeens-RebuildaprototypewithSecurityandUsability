@@ -1,12 +1,14 @@
 import { Link } from "expo-router";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 type RelativePathString = `/${string}`;
 
 export const PageHeader = ({ route, title }: { route: RelativePathString, title: string }) => {
+  const { width, height } = Dimensions.get('window');
+  const marginTopValue = height < 840 ? "10%" : "20%";
 
   return (
-    <View style={styles.header}>
+    <View style={[styles.header, { marginTop: marginTopValue }]}>
       <Link href={route} asChild>
         <Pressable>
           {({ pressed }) => (
@@ -29,7 +31,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    marginTop: "20%",
+    //marginTop: "20%",
     marginBottom: "10%",
     position: "relative",
   },

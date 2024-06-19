@@ -1,5 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 import { useEffect } from 'react';
 import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -18,6 +19,12 @@ const Onboarding3 = () => {
 
   return (
     <View style={styles.container}>
+      <LinearGradient
+        colors={['transparent', '#FFFFFF']}
+        style={styles.background}
+        start={{ x: 0, y: 0.1 }}
+        end={{ x: 0, y: 0.5 }}
+      />
       <Image style={styles.logo} source={require(`../../assets/images/onboard3.png`)} resizeMode="stretch" />
       <Text style={styles.title}>How to Login</Text>
       <Text style={[styles.description, { fontSize: descriptionFontSize }]}>
@@ -42,8 +49,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    backgroundColor: 'white'
+    justifyContent: 'center',
+    backgroundColor: '#F0EDF1'
+  },
+  background: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   logo: {
     width: '100%',
