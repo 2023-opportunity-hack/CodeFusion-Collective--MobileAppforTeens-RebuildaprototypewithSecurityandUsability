@@ -30,7 +30,7 @@ export default function MoodTracker () {
   const db = SQLite.openDatabaseSync('safespace.db');
 
   const [selectedMood, setSelectedMood] = useState('');
-  const [savedStrategies, setSavedStrategies] = useState([]);
+  const [savedStrategies, setSavedStrategies] = useState<string[]>([]);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
 
@@ -163,7 +163,7 @@ export default function MoodTracker () {
             : savedStrategies.map((strategy, index) => (
                 <List.Item
                   key={index}
-                  title={strategy}
+                  title={strategy.slice(0, 1).toUpperCase() + strategy.slice(1)}
                   titleStyle={{ fontSize: 15, fontFamily: "JakartaSemiBold", textAlign: "left" }}
                   titleNumberOfLines={3}
                   style={[{ borderBottomWidth: 1, borderColor: "#420C5C" }, index === savedStrategies.length - 1 && { borderBottomWidth: 0 }]}

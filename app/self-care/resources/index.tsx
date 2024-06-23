@@ -5,6 +5,7 @@ import YoutubePlayer from "react-native-youtube-iframe";
 import { PageHeader } from "../../../components/PageHeader";
 
 const Resources = () => {
+  //const { height } = Dimensions.get('window');
   const [loading, setLoading] = useState(true);
 
   const handleVideoReady = () => {
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     padding: "5%",
     backgroundColor: "#F0EDF1",
-    flex: 1,
+    flexGrow: 1,
   },
   header: {
     display: "flex",
@@ -77,6 +78,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#420C5C",
+    overflow: "hidden",
+    height: 195
   }
 })
 

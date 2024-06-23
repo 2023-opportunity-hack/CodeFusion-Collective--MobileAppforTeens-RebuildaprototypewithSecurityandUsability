@@ -2,10 +2,11 @@ import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { ToastMessage } from '../../components/ToastMessage';
 
 export default function Homepage() {
+  const { height } = Dimensions.get('window');
   const db = SQLite.openDatabaseSync('safespace.db');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
@@ -64,9 +65,13 @@ export default function Homepage() {
         </View>
       </Modal>
       <Text style={styles.title}>Home</Text>
-      <Image source={require('../../assets/images/safe-space-logo.png')} style={styles.logo} contentFit='contain'/>
+      <Image
+        source={require('../../assets/images/safe-space-logo.png')}
+        style={height < 840 ? styles.smallLogo : styles.normalLogo}
+        contentFit='contain'
+        />
       <Link href="/emergency" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
-        <Pressable style={{ marginBottom: 20 }}>
+        <Pressable style={height < 840 ? { marginBottom: 15 } : { marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -79,7 +84,7 @@ export default function Homepage() {
         </Pressable>
       </Link>
       <Link href="/contact-professional" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
-        <Pressable style={{ marginBottom: 20 }}>
+        <Pressable style={height < 840 ? { marginBottom: 15 } : { marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -92,7 +97,7 @@ export default function Homepage() {
         </Pressable>
       </Link>
       <Link href="/document-abuse" style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} asChild>
-        <Pressable style={{ marginBottom: 20 }}>
+        <Pressable style={height < 840 ? { marginBottom: 15 } : { marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -105,7 +110,7 @@ export default function Homepage() {
         </Pressable>
       </Link>
       <Link href="/safety-plan" asChild style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <Pressable style={{ marginBottom: 20 }}>
+        <Pressable style={height < 840 ? { marginBottom: 15 } : { marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -118,7 +123,7 @@ export default function Homepage() {
         </Pressable>
       </Link>
       <Link href="/self-care" asChild style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <Pressable style={{ marginBottom: 20 }}>
+        <Pressable style={height < 840 ? { marginBottom: 15 } : { marginBottom: 20 }}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <View style={styles.iconandtext}>
@@ -143,7 +148,7 @@ export default function Homepage() {
           )}
         </Pressable>
       </Link>
-      <Pressable style={{ position: 'absolute', bottom: 35, width: '100%', borderRadius: 100 }} onPress={() => setShowDeleteModal(true)}>
+      <Pressable style={{ position: 'absolute', bottom: '3%', width: '100%', borderRadius: 100 }} onPress={() => setShowDeleteModal(true)}>
         {({ pressed }) => (
           <View style={[styles.deleteButton, { opacity: pressed ? 0.5 : 1 }]}>
             <Text style={styles.deleteButtonText}>Delete all data</Text>
@@ -210,9 +215,13 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
-  logo: {
+  normalLogo: {
     height: 200,
     width: 200,
+  },
+  smallLogo: {
+    height: 110,
+    width: 150,
   },
   title: {
     fontSize: 20,

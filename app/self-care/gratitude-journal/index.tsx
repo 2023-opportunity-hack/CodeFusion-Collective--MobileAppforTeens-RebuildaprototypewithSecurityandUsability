@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
-import { Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Keyboard, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Button } from 'react-native-paper';
 import { PageHeader } from '../../../components/PageHeader';
@@ -117,7 +117,7 @@ export default function GratitiudeJournal() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center', justifyContent: 'flex-start' }}>
       {showSuccessToast ? <ToastMessage type='success' entryName='Entry' /> : null}
       {showErrorToast ? <ToastMessage type='error' entryName='Entry' /> : null}
       <PageHeader route="/self-care" title="Gratitude Journal" />
@@ -220,7 +220,7 @@ export default function GratitiudeJournal() {
           </TouchableOpacity>
         </Link>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -234,15 +234,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
     backgroundColor: '#F0EDF1',
     padding: '5%',
   },
   form: {
     width: '100%',
-    height: '90%',
     flexDirection: 'column',
+    paddingBottom: '10%',
   },
   dropDown: {
     borderColor: '#420C5C',

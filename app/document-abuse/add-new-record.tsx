@@ -1,6 +1,6 @@
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import * as SQLite from 'expo-sqlite';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import MediaUploadModal from "../../components/MediaUploadModal";
 import { PageHeader } from '../../components/PageHeader';
@@ -72,25 +72,6 @@ export default function AddNewRecordPage() {
       }
     }
   };
-
-  useEffect(() => {
-    const createTables = async () => {
-      try {
-        db.execAsync('CREATE TABLE IF NOT EXISTS records (id INTEGER PRIMARY KEY AUTOINCREMENT, date_title TEXT, date_value TEXT);');
-        db.execAsync('CREATE TABLE IF NOT EXISTS record_details (id INTEGER PRIMARY KEY AUTOINCREMENT, record_id INTEGER, description TEXT, date TEXT, FOREIGN KEY (record_id) REFERENCES records(id))');
-      } catch (error) {
-        setShowErrorToast(true);
-        console.error('Error creating tables:', error);
-        setTimeout(() => {
-          if (showErrorToast) {
-            setShowErrorToast(false);
-          }
-        }, 3000);
-      }
-    };
-
-    createTables();
-  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -184,7 +165,7 @@ export default function AddNewRecordPage() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',

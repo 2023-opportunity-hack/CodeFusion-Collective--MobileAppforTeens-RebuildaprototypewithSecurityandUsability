@@ -54,9 +54,13 @@ const MySavedStrategies = () => {
     const getStrategies = async () => {
       try {
         const result = await db.getAllAsync(sqlQuery) as { strategies: string }[];
-        if (result[0].strategies.length > 0) {
-          const parsedStrategies = JSON.parse(result[0].strategies);
-          setSelected(parsedStrategies);
+        if (result[0].strategies) {
+          if (result[0].strategies.length > 0) {
+            const parsedStrategies = JSON.parse(result[0].strategies);
+            setSelected(parsedStrategies);
+          } else {
+            setSelected([]);
+          }
         } else {
           setSelected([]);
         }

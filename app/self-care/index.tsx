@@ -1,12 +1,14 @@
 import { Link } from 'expo-router';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { PageHeader } from '../../components/PageHeader';
 
 export default function SelfCare() {
+  const { width, height } = Dimensions.get('window');
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <PageHeader route="/homepage" title="Self Care" />
-      <Image source={require('../../assets/images/self-care.png')} style={styles.logo} resizeMode='contain'/>
+      <Image source={require('../../assets/images/self-care.png')} style={height < 840 ? styles.smallLogo : styles.normalLogo } resizeMode='contain'/>
       <Text style={styles.pagedescription}>
         Self care means taking time to do good things for yourself. Even small acts of self care in your daily life can have a big impact. Self care looks different for everyone. You may try different things before discovering what works best for you.
       </Text>
@@ -116,9 +118,13 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
-  logo: {
+  normalLogo: {
     height: 200,
     width: 200,
+  },
+  smallLogo: {
+    height: 110,
+    width: 150,
   },
   pagedescription: {
     fontFamily: "JakartaSemiBold",
