@@ -4,7 +4,7 @@ import { Dimensions, Image, Pressable, StyleSheet, Text, View } from "react-nati
 type RelativePathString = `/${string}`;
 
 export const PageHeader = ({ route, title }: { route: RelativePathString, title: string }) => {
-  const { width, height } = Dimensions.get('window');
+  const { height } = Dimensions.get('window');
   const marginTopValue = height < 840 ? "10%" : "20%";
 
   return (

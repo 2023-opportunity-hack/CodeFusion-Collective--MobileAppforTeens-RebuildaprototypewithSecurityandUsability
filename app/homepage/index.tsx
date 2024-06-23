@@ -6,9 +6,7 @@ import { Dimensions, Modal, Pressable, StyleSheet, Text, View } from 'react-nati
 import { ToastMessage } from '../../components/ToastMessage';
 
 export default function Homepage() {
-  const { width, height } = Dimensions.get('window');
-  console.log("This is the width: ", width);
-  console.log("This is the height: ", height);
+  const { height } = Dimensions.get('window');
   const db = SQLite.openDatabaseSync('safespace.db');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);

@@ -1,15 +1,17 @@
 import { A } from '@expo/html-elements';
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 
 interface functionProps {
   closeModal: () => void;
 }
 
 export default function MediaUploadModal({closeModal = () => {}}: functionProps) {
+  const { height } = Dimensions.get('window');
+  const marginHeight = height < 840 ? 20 : 40;
   return (
     <View style={styles.modalContents}>
       <Text style={{ fontFamily: 'JakartaMed', fontSize: 14 }}>If you have any sensitive photos or videos that you don't want others to see, be sure to properly secure or hide them.</Text>
-      <A style={{marginVertical: 40, color: 'blue', textDecorationLine: 'underline'}}href="https://support.apple.com/en-us/HT205891">Hide photos on iOS with the Hidden album</A>
+      <A style={{marginVertical: marginHeight, color: 'blue', textDecorationLine: 'underline'}}href="https://support.apple.com/en-us/HT205891">Hide photos on iOS with the Hidden album</A>
       <A style={{marginVertical: 20, color: 'blue', textDecorationLine: 'underline'}}href="https://support.google.com/files/answer/9935264">Protect your files on Android with Safe folder</A>
       <Pressable
         onPress={closeModal}

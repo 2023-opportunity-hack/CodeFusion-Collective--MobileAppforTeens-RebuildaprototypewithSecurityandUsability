@@ -54,7 +54,6 @@ const MySavedStrategies = () => {
     const getStrategies = async () => {
       try {
         const result = await db.getAllAsync(sqlQuery) as { strategies: string }[];
-        console.log("This is the result: ", result);
         if (result[0].strategies) {
           if (result[0].strategies.length > 0) {
             const parsedStrategies = JSON.parse(result[0].strategies);
